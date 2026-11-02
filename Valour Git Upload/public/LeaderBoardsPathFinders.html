@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PathFinders Leaderboards - FX-13 Valour</title>
+    <style>
+      /* Interactive Background Canvas */
+      #bg-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+        pointer-events: none;
+        /* Allows clicks to pass through */
+      }
+
+      /* ── VARIABLES ──────────────────────────────────────────── */
+      :root {
+        --matte-black: #0d0d0d;
+        --deep-charcoal: #161616;
+        --electric-blue: #007bff;
+        --blue-dim: rgba(0, 123, 255, 0.08);
+        --blue-border: rgba(0, 123, 255, 0.25);
+        --off-white: #e8e8e8;
+        --muted-gray: #888888;
+        --divider: rgba(255, 255, 255, 0.06);
+        --transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+
+      /* ── RESET ──────────────────────────────────────────────── */
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", "Segoe UI", sans-serif;
+      }
+
+      body {
+        background-color: var(--matte-black);
+        color: var(--off-white);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* ── PAGE HEADER ────────────────────────────────────────── */
+      .page-header {
+        padding: 60px 5% 40px;
+        border-bottom: 1px solid var(--divider);
+      }
+
+      .page-header h1 {
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        font-weight: 900;
+        letter-spacing: -1.5px;
+        color: var(--off-white);
+        border-left: 5px solid var(--electric-blue);
+        padding-left: 18px;
+        margin-bottom: 10px;
+      }
+
+      .page-header p {
+        font-size: 0.85rem;
+        color: var(--muted-gray);
+        padding-left: 23px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      /* ── CONTAINER ──────────────────────────────────────────── */
+      #leaderboardsContainer {
+        padding: 40px 5% 80px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      /* ── ACCORDION TRIGGER (the wide button) ────────────────── */
+      .leaderboardTitle {
+        width: 100%;
+        background: var(--deep-charcoal);
+        border: 1px solid var(--blue-border);
+        padding: 0 28px;
+        height: 68px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--off-white);
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: var(--transition);
+        position: relative;
+        user-select: none;
+      }
+
+      /* Top-left robotic bracket */
+      .leaderboardTitle::before {
+        content: "";
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        width: 14px;
+        height: 14px;
+        border-top: 2px solid var(--electric-blue);
+        border-left: 2px solid var(--electric-blue);
+        opacity: 0.5;
+        transition: var(--transition);
+      }
+
+      .leaderboardTitle:hover,
+      .leaderboardTitle.open {
+        background: var(--blue-dim);
+        border-color: var(--electric-blue);
+        box-shadow: 0 0 20px rgba(0, 123, 255, 0.1);
+      }
+
+      .leaderboardTitle:hover::before,
+      .leaderboardTitle.open::before {
+        opacity: 1;
+      }
+
+      /* Chevron arrow */
+      .leaderboardTitle::after {
+        content: "▾";
+        font-size: 1rem;
+        color: var(--electric-blue);
+        transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+        opacity: 0.7;
+      }
+
+      .leaderboardTitle.open::after {
+        transform: rotate(180deg);
+        opacity: 1;
+      }
+
+      /* ── LEADERBOARD PANEL ──────────────────────────────────── */
+      .leaderboard {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        background: var(--matte-black);
+        border: 1px solid transparent;
+        border-top: none;
+        border-radius: 0 0 4px 4px;
+      }
+
+      .leaderboard.open {
+        border-color: var(--blue-border);
+      }
+
+      /* ── CONTENTS ROW (horizontal classes) ──────────────────── */
+      .Contents {
+        display: flex;
+        align-items: stretch;
+        padding: 28px;
+        gap: 0;
+      }
+
+      /* ── SINGLE CLASS DIVISION ──────────────────────────────── */
+      .class {
+        flex: 1;
+        padding: 0 24px;
+      }
+
+      .class:first-child {
+        padding-left: 0;
+      }
+      .class:last-child {
+        padding-right: 0;
+      }
+
+      /* ── DIVIDER between classes ────────────────────────────── */
+      #divider {
+        width: 1px;
+        background: var(--divider);
+        flex-shrink: 0;
+        align-self: stretch;
+      }
+
+      /* ── HEADINGS ROW ───────────────────────────────────────── */
+      #headings {
+        display: grid;
+        grid-template-columns: 56px 1fr;
+        padding-bottom: 10px;
+        margin-bottom: 4px;
+        border-bottom: 1px solid var(--divider);
+      }
+
+      #headings span {
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--electric-blue);
+        opacity: 0.8;
+      }
+
+      /* ── RANK ROWS ──────────────────────────────────────────── */
+      #textContents {
+        display: grid;
+        grid-template-columns: 56px 1fr;
+        align-items: center;
+      }
+
+      #textContents span {
+        padding: 10px 0;
+        font-size: 0.9rem;
+        color: var(--off-white);
+        border-bottom: 1px solid var(--divider);
+      }
+
+      /* Remove border from last row */
+      #textContents span:nth-last-child(-n + 2) {
+        border-bottom: none;
+      }
+
+      /* Rank column (1st, 2nd, 3rd) */
+      #textContents span:nth-child(odd) {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--muted-gray);
+        letter-spacing: 0.5px;
+      }
+
+      /* ── RESPONSIVE ─────────────────────────────────────────── */
+      @media (max-width: 600px) {
+        .leaderboardTitle {
+          height: 60px;
+          padding: 0 20px;
+          font-size: 0.92rem;
+        }
+
+        .Contents {
+          flex-direction: column;
+          padding: 20px;
+          gap: 24px;
+        }
+
+        .class {
+          padding: 0;
+        }
+
+        #divider {
+          width: 100%;
+          height: 1px;
+        }
+      }
+
+      @media (max-width: 400px) {
+        .page-header {
+          padding: 40px 5% 28px;
+        }
+        .leaderboardTitle {
+          font-size: 0.85rem;
+          padding: 0 16px;
+        }
+      }
+
+      /* ── GO HOME BUTTON ─────────────────────────────────────── */
+button[onclick] {
+    display: block;
+    margin: 0 auto 80px;
+    height: 48px;
+    padding: 0 32px;
+    margin-top: 100px;
+    background: transparent;
+    border: 1px solid var(--blue-border);
+    border-radius: 4px;
+    color: var(--off-white);
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+}
+
+button[onclick]::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid var(--electric-blue);
+    border-left: 2px solid var(--electric-blue);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+button[onclick]:hover {
+    background: var(--blue-dim);
+    border-color: var(--electric-blue);
+    color: var(--electric-blue);
+    box-shadow: 0 0 20px rgba(0, 123, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+button[onclick]:hover::before { opacity: 1; }
+
+button[onclick]:active {
+    transform: translateY(0);
+    filter: brightness(0.85);
+}
+    </style>
+  </head>
+  <body>
+    <!-- Interactive Background :DDD -->
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="page-header">
+      <h1>PathFinders Leaderboards</h1>
+      <p>Event Hosted by, FX-13 Valour Robotics Club</p>
+    </div>
+    <!-- =============================================================================================================== -->
+    <!-- AMLAN BHAIYA FOLLOW THE FORMAT OF PATHFINDERS ONE TO WRITE THE CODE OF REST OF THE PATHFINDERS -->
+    <!-- =============================================================================================================== -->
+    <div id="leaderboardsContainer"> 
+      <!-- PathFinders 1 -->
+      <p class="leaderboardTitle">PathFinders 1</p>
+      <div id="PathFinders1" class="leaderboard">
+        <div id="PathFinders1Contents" class="Contents">
+          <div id="Class3" class="class">
+            <p>Class: 3</p>
+            <p id="headings">
+              <span id="Rank">Rank</span>
+              <span id="Name">Name</span>
+            </p>
+            <p id="textContents">
+              <span>1st</span><span>Sherina</span> <span>2nd</span
+              ><span>Mobasshira Mehjabin</span> <span>3rd</span
+              ><span>Souvik</span>
+            </p>
+          </div>
+          <div id="divider"></div>
+          <div id="Class4" class="class">
+            <p>Class: 4</p>
+            <p id="headings">
+              <span id="Rank">Rank</span>
+              <span id="Name">Name</span>
+            </p>
+            <p id="textContents">
+              <span>1st</span><span>Mortaza Tomal</span> <span>2nd</span
+              ><span>Jyotisko Bose</span> <span>3rd</span
+              ><span>Inayaa Hossain</span>
+            </p>
+          </div>
+          <div id="divider"></div>
+          <div id="Class5" class="class">
+            <p>Class: 5</p>
+            <p id="headings">
+              <span id="Rank">Rank</span>
+              <span id="Name">Name</span>
+            </p>
+            <p id="textContents">
+              <span>1st</span><span>Priyangshu Roy</span> <span>2nd</span
+              ><span>Srijita Ghosh</span> <span>3rd</span
+              ><span>Soumit Barai</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PathFinders 2 -->
+      <p class="leaderboardTitle">PathFinders 2</p>
+      <div id="PathFinders2" class="leaderboard">
+        <div id="PathFinders2Contents" class="Contents">
+          <div id="Class3" class="class">
+            <p>Class: 3</p>
+            <p id="headings">
+              <span id="Rank">Rank</span>
+              <span id="Name">Name</span>
+            </p>
+            <p id="textContents">
+              <span>1st</span><span>Agrajit Dev</span>
+               <span>2nd</span><span>Breyan Francis</span> 
+              <span>3rd</span><span>Walia Hasan Uzma</span>
+            </p>
+          </div>
+          <div id="divider"></div>
+          <div id="Class4" class="class">
+            <p>Class:4</p>
+            <p id="headings">
+              <span id="Rank">Rank</span>
+              <span id="Name">Name</span>
+            </p>
+            <p id="textContents">
+              <span>1st</span><span>Jyotisko Bose</span> 
+              <span>2nd</span><span>Zayan Ahmed</span>
+              <span>3rd</span><span>Mortaza Tomal Pasha</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PathFinders 3 -->
+      <p class="leaderboardTitle">PathFinders 3</p>
+      <div id="PathFinders3" class="leaderboard">
+        <div id="PathFinders3Contents" class="Contents">
+          <div id="Class3" class="class">
+            Coming Soon!
+          </div>
+          <div id="divider"></div>
+          <div id="Class4" class="class">
+            <p>Class:4</p>
+            <p id="headings">
+              <span id="Rank">Rank</span>
+              <span id="Name">Name</span>
+            </p>
+            <p id="textContents">
+              <span>1st</span><span>Sabir Al Mamun</span> 
+              <span>2nd</span><span>Walia Hasan Uzma</span>
+              <span>3rd</span><span>Arnina Naim</span>
+            </p>
+          </div>
+      </div>
+    </div>
+
+  <div>      <!-- Go back home button -->
+    <button type="button" onclick="window.location.href = 'index.html'">
+      Go back home
+    </button>
+  </div>
+
+
+    <script>
+      document.querySelectorAll(".leaderboardTitle").forEach((title) => {
+        title.addEventListener("click", () => {
+          const panel = title.nextElementSibling;
+          const isOpen = title.classList.contains("open");
+
+          // Close all
+          document.querySelectorAll(".leaderboardTitle").forEach((t) => {
+            t.classList.remove("open");
+            t.nextElementSibling.classList.remove("open");
+            t.nextElementSibling.style.maxHeight = "0";
+          });
+
+          // Open clicked if it was closed
+          if (!isOpen) {
+            title.classList.add("open");
+            panel.classList.add("open");
+            panel.style.maxHeight = panel.scrollHeight + "px";
+          }
+        });
+      });
+
+      /* =====================================================
+   PARTICLE SYSTEM (
+==================================================== */
+      const canvas = document.getElementById("bg-canvas");
+      const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+      const isSmallPhone = window.matchMedia("(max-width: 360px)").matches;
+      const particleDivisor = isSmallPhone ? 20000 : isMobile ? 15000 : 9000;
+
+      if (canvas) {
+        const ctx = canvas.getContext("2d");
+
+        let width, height;
+        let particles = [];
+
+        const mouse = { x: null, y: null, radius: 150 };
+
+        if (!isMobile) {
+          window.addEventListener("mousemove", (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+          });
+
+          window.addEventListener("mouseout", () => {
+            mouse.x = null;
+            mouse.y = null;
+          });
+        }
+
+        function resize() {
+          width = canvas.width = window.innerWidth;
+          height = canvas.height = window.innerHeight;
+          initParticles();
+        }
+
+        class Particle {
+          constructor(x, y, dx, dy, size) {
+            this.x = x;
+            this.y = y;
+            this.dx = dx;
+            this.dy = dy;
+            this.size = size;
+          }
+
+          draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(232,232,232,0.8)";
+            ctx.fill();
+          }
+
+          update() {
+            if (this.x > width || this.x < 0) this.dx = -this.dx;
+            if (this.y > height || this.y < 0) this.dy = -this.dy;
+
+            this.x += this.dx;
+            this.y += this.dy;
+            this.draw();
+          }
+        }
+
+        function initParticles() {
+          particles = [];
+
+          let count = (width * height) / particleDivisor;
+
+          for (let i = 0; i < count; i++) {
+            particles.push(
+              new Particle(
+                Math.random() * width,
+                Math.random() * height,
+                (Math.random() - 0.5) * 0.5,
+                (Math.random() - 0.5) * 0.5,
+                Math.random() * 1.5,
+              ),
+            );
+          }
+        }
+
+        function animate() {
+          requestAnimationFrame(animate);
+          ctx.clearRect(0, 0, width, height);
+          particles.forEach((p) => p.update());
+        }
+
+        window.addEventListener("resize", resize);
+
+        resize();
+        animate();
+      }
+    </script>
+  </body>
+</html>

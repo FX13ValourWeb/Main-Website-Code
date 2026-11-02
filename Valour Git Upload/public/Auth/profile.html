@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Executive Profile - FX-13 Valour</title>
+     <link rel="stylesheet" href="profile.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+     <link rel="icon" type="image/png" href="/Images/Robotics Club Logo.png"> 
+</head>
+<body>
+    <header class="main-header">
+         <div class="logo-container">
+              <h1 class="logo-text">FX-13 <span class="highlight">VALOUR</span></h1>
+              <p class="logo-subtext">Robotics Club</p>
+         </div>
+    </header>
+
+    
+         <!-- Interactive Background :DDD -->
+    <canvas id="bg-canvas"></canvas>
+
+    <div id="profile">
+          <div id="profileImageContainer">
+               <div id="img">
+                    <p>Development underway: Profile Image Upload</p>
+               </div>
+               <p id="p1">Profile Picture</p>
+          </div>
+
+          <div id="profileDetails">
+               <div class="detail-row main-row">
+                    <h1 id="fullNameDisplay"><span>Loading...</span></h1>
+                    <div id="tags">
+                         <span class="tag special-position-tag" id="positionTag"></span>
+                         <span class="tag executive-tag" id="roleTag">Executive</span>
+                         <span class="tag" id="specialTag1" style="display:none;"></span>
+                         <span class="tag" id="specialTag2" style="display:none;"></span>
+                         <span class="tag" id="specialTag3" style="display:none;"></span>
+                         <span class="tag" id="specialTag4" style="display:none;"></span>
+                         <span class="tag" id="specialTag6" style="display:none;"></span>
+                         <span class="tag" id="specialTag7" style="display:none;"></span>
+                         <span class="tag" id="specialTag8" style="display:none;"></span>
+                         <span class="tag" id="specialTag9" style="display:none;"></span>
+                         <span class="tag" id="specialTag10" style="display:none;"></span>
+                    </div>
+               </div>
+
+               <div class="detail-row info-grid">
+                    <p>Class: <span id="displayClass">--</span></p>
+                    <p>Section: <span id="displaySection">--</span></p>
+                    <p>Gender: <span id="displayGender">--</span></p>
+                    <p>Joined: <span id="displayYear">--</span></p>
+               </div>
+
+               <div class="detail-row contact-row">
+                    <p>Email: <span id="displayEmail">--</span></p>
+                    <p>Phone: <span id="displayPhone">--</span></p>
+                    <p>Registration Number: <span id="displayMemberReg">--</span></p>
+               </div>
+
+               <div id="buttonsContainer">
+                    <button id="editProfile"><i class="fa-solid fa-pen-to-square"></i> Edit Profile</button>
+                    <button id="website">Go to Website</button>
+                    <button id="logOut">Log Out</button>
+               </div>
+          </div>
+     </div>
+
+     <div id="contributionsAndAttendance">
+          <div id="Contributions" class="data-card">
+               <h3>Project Contributions</h3>
+               <div id="contributionsList">No data yet.</div>
+          </div>
+          <div id="attendance" class="data-card">
+               <h3>Attendance Log</h3>
+               <div id="attendanceList">No data yet.</div>
+          </div>
+     </div>
+
+     <div id="participantAchievements" class="data-card">
+          <h3>Achievements</h3>
+          <div id="noAchievementsList"><p class="empty-msg">You will be able to see Your Achievement Certificates here!</p></div>
+               <!-- Pathfinders2 Certificate View Box-->
+    <div id="achievementsList">
+        <!-- 5 Sample Cards to test the row layout -->
+        
+        <!-- Card 1 -->
+        <div id="pathFinders2Container">
+            <div class="card-bg-glow"></div>
+            <svg class="trophy-icon" viewBox="0 0 24 24" fill="none" stroke="#007BFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 9V2H18V9C18 12.3137 15.3137 15 12 15C8.68629 15 6 12.3137 6 9Z"/>
+                <path d="M6 5H4C2.89543 5 2 5.89543 2 7V8C2 9.10457 2.89543 10 4 10H6"/>
+                <path d="M18 5H20C21.1046 5 22 5.89543 22 7V8C22 9.10457 21.1046 10 20 10H18"/>
+                <path d="M12 15V22"/>
+                <path d="M8 22H16"/>
+            </svg>
+            <p id="achievementTitle">PathFinders-2 <span>AWARD</span></p>
+            <p class="awardClass">Class: <span id="awardClassT">3 & 4</span></p>
+            <button id="pathFinders2CertificateView">View Certificate</button>
+        </div>
+
+    </div>
+    </div>
+
+     <footer id="main-footer">
+        <div class="footer-divider"></div>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p><i class="fa-regular fa-envelope"></i> fx13valourrobotics@gmail.com</p>
+                <p><i class="fa-solid fa-location-dot"></i> 24 Asad Avenue, Mohammadpur, Dhaka</p>
+            </div>
+            <div class="footer-section">
+                <h3>Development</h3>
+                <p>Built for FX-13 Valour Robotics Club</p>
+                <p>Developed by <a href="#" class="dev-link">Nuban Sami Alam</a> & <a href="#" class="dev-link">Shreyan Ahmed</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>Sponsors</h3>
+                <div class="sponsors-grid">
+                    <div class="sponsor-box">SFX Greenherald International School</div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Robotics Club. All Systems Operational.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="profile.js"></script>
+</body>
+</html>

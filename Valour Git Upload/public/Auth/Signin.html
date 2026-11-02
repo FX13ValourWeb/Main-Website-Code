@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Sign In - FX-13 Valour</title>
+     <link rel="icon" type="image/png" href="/Images/Robotics Club Logo.png"> 
+     <style>
+          /* --- Global Theme Integration --- */
+:root {
+    --electric-blue: #007BFF;
+    --matte-black: #0d0d0d;
+    --deep-charcoal: #161616;
+    --off-white: #e8e8e8;
+    --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+body {
+    background-color: var(--matte-black);
+    color: var(--off-white);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- Selection Container --- */
+#container {
+    background: var(--deep-charcoal);
+    padding: 60px 40px;
+    border: 1px solid rgba(0, 123, 255, 0.15);
+    border-radius: 20px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    position: relative;
+}
+
+/* Decorative Scanner Line */
+#container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40%;
+    height: 2px;
+    background: var(--electric-blue);
+    box-shadow: 0 0 15px var(--electric-blue);
+}
+
+#text {
+    font-size: 0.9rem;
+    letter-spacing: 4px;
+    font-weight: 700;
+    color: var(--off-white);
+    margin-bottom: 40px;
+    opacity: 0.8;
+    text-transform: uppercase;
+}
+
+/* --- Action Buttons --- */
+.btn {
+    display: block;
+    width: 100%;
+    background: transparent;
+    border: 1px solid rgba(0, 123, 255, 0.3);
+    margin: 15px 0;
+    padding: 0; /* Important: padding moves to the <a> tag */
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn a {
+    display: block;
+    padding: 20px;
+    color: var(--off-white);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    position: relative;
+    z-index: 2;
+    transition: var(--transition);
+}
+
+/* Hover Fill Effect */
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--electric-blue);
+    transition: var(--transition);
+    z-index: 1;
+}
+
+.btn:hover {
+    border-color: var(--electric-blue);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 123, 255, 0.2);
+}
+
+.btn:hover::after {
+    left: 0;
+}
+
+.btn:hover a {
+    color: var(--matte-black);
+}
+
+/* Active State */
+.btn:active {
+    transform: translateY(-1px);
+}
+
+/* Bottom Label */
+#container::after {
+    content: "FX-13 SECURITY PROTOCOL";
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    opacity: 0.3;
+    color: var(--electric-blue);
+}
+     </style>
+</head>
+<body>
+     <div id="container">
+          <p id="text">WHICH TYPE OF MEMBER ARE YOU TO THIS CLUB?</p>
+          <button class="btn"><a href="participantSignIn.html">I am a member/participant</a></button>
+          <button class="btn"><a href="executiveSignIn.html">I am an executive</a></button>
+     </div>
+</body>
+</html>
