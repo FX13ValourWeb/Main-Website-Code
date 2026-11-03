@@ -1,0 +1,13 @@
+{
+  "name": "FX-13 Valour Robotics Club",
+  "short_name": "FX-13 Valour",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d0d0d",
+  "theme_color": "#0d0d0d",
+  "icons": [
+    { "src": "/Images/icons/favicon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/Images/icons/favicon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/Images/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
