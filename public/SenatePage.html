@@ -5,49 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>FX-13 Valour Cabinet</title>
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/12.11.0/firebase-app-compat.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/12.11.0/firebase-auth-compat.js"></script>
-    <script
-      defer
-      src="/__/firebase/12.11.0/firebase-database-compat.js"
-    ></script>
-    <script
-      defer
-      src="/__/firebase/12.11.0/firebase-firestore-compat.js"
-    ></script>
-    <script
-      defer
-      src="/__/firebase/12.11.0/firebase-functions-compat.js"
-    ></script>
-    <script
-      defer
-      src="/__/firebase/12.11.0/firebase-messaging-compat.js"
-    ></script>
-    <script
-      defer
-      src="/__/firebase/12.11.0/firebase-storage-compat.js"
-    ></script>
-    <script
-      defer
-      src="/__/firebase/12.11.0/firebase-analytics-compat.js"
-    ></script>
-    <script
-      defer
-      src="/__/firebase/12.11.0/firebase-remote-config-compat.js"
-    ></script>
-    <script
-      defer
-      src="/__/firebase/12.11.0/firebase-performance-compat.js"
-    ></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-
+    <script>document.documentElement.classList.add("js");</script>
+    <link rel="stylesheet" href="CSS/main.css" />
     <link rel="stylesheet" href="CSS/SenatePage.css" />
+    <link rel="stylesheet" href="CSS/motion.css" />
 
     <link
       rel="stylesheet"
@@ -88,21 +49,21 @@
             </div>
           </div>
         </div>
-        <a href="https://fx13valour.org/" class="nav-item-link">Home</a>
-        <a href="#events-page-section" class="nav-item-link">Events</a>
+        <a href="index.html#home-page-section" class="nav-item-link">Home</a>
+        <a href="index.html#events-page-section" class="nav-item-link">Events</a>
 
         <div class="nav-dropdown">
           <button class="dropdown-trigger">
             Projects <span class="arrow">▾</span>
           </button>
           <div class="dropdown-content">
-            <a href="#projects-page-section">AeroSense Drone</a>
+            <a href="index.html#projects-page-section">AeroSense Drone</a>
             <a href="#">Coming Soon...</a>
             <a href="#">Coming Soon...</a>
           </div>
         </div>
 
-        <a href="#executives-page-section" class="nav-item-link">Executives</a>
+        <a href="SenatePage.html" class="nav-item-link">Executives</a>
       </div>
 
       <div class="nav-section logo-container">
@@ -112,8 +73,11 @@
       </div>
 
       <div class="nav-section button-group">
-        <button id="Contact-Button">
-          <a href="/contactus.html">Contact us</a>
+        <button
+          id="Contact-Button"
+          onclick="window.location.href = '/contactus.html'"
+        >
+          Contact Us
         </button>
         <!-- REMEMBER TO CHANGE IT TO PUBLIC HREF -->
         <button id="Sign-in-Button">
@@ -166,32 +130,30 @@
               <a href="#">Guidelines for Fairness</a>
             </div>
           </div>
-          <a href="#home-page-section" class="nav-item-link">Home</a>
-          <a href="#events-page-section" class="nav-item-link">Events</a>
-          <a href="#" class="nav-item-link">AQ-levels</a>
+          <a href="index.html#home-page-section" class="nav-item-link">Home</a>
+          <a href="index.html#events-page-section" class="nav-item-link">Events</a>
+          <a href="aerosense.html" class="nav-item-link">AQ-levels</a>
           <div class="mobile-dropdown-group">
             <button class="mobile-dropdown-trigger" id="mdTrigger2">
               <span>Projects</span>
               <span class="arrow">▾</span>
             </button>
             <div class="mobile-dropdown-inner" id="mdInner2">
-              <a href="#projects-page-section">AeroSense Drone</a>
+              <a href="index.html#projects-page-section">AeroSense Drone</a>
               <a href="#">Coming Soon...</a>
               <a href="#">Coming Soon...</a>
             </div>
           </div>
-          <a href="#executives-page-section" class="nav-item-link"
-            >Executives</a
-          >
+          <a href="SenatePage.html" class="nav-item-link">Executives</a>
         </div>
         <div class="mobile-buttons">
-          <button id="Contact-Button">
+          <button id="Contact-Button-Mobile">
             <a href="/contactus.html">Contact us</a>
           </button>
-          <button id="Sign-in-Button">
+          <button id="Sign-in-Button-Mobile">
             <a href="/Auth/Signin.html">Sign in</a>
           </button>
-          <button id="Profile-Button">
+          <button id="Profile-Button-Mobile">
             <span class="icon-wrapper">
               <img
                 src="https://img.icons8.com/ios-glyphs/30/007BFF/user-male-circle.png"
@@ -204,177 +166,177 @@
       </div>
     </nav>
 
-<dix id="page-Wrapper">
-<h1>OUR SENATE</h1>
-    <p id="SenateDef">
+<div id="page-Wrapper">
+<h1 class="fx-enter">OUR SENATE</h1>
+    <p id="SenateDef" class="fx-enter" style="--d: 0.12s">
       In FX-13 Valour we use the term "Senate" to refer to our Cabinet. Senate
-      reffers to the upper house or chamber of a bicameral legislature in many
-      governments
+      refers to the upper house or chamber of a bicameral legislature in many
+      governments.
     </p>
 
-    <p id="ModHeading">Our Moderators</p>
-    <div id="ModeratorsWrapper">
-      <div class="ModProfile">
-        <img src="/Executive Images/Ronald Sir .jpg" alt="Roland Crus" />
+    <p id="ModHeading" data-reveal>Our Moderators</p>
+    <div id="ModeratorsWrapper" data-reveal-stagger="0.12">
+      <div class="ModProfile" data-reveal>
+        <img loading="lazy" decoding="async" src="/Executive Images/Ronald Sir .jpg" alt="Ronald Cruz" />
         <h1>Ronald Cruz</h1>
         <p>Chief Moderator</p>
       </div>
-      <div class="ModProfile">
-        <img src="/Executive Images/Afanan- second moderator.jpg" alt="Afanan Shah Qureshi" />
+      <div class="ModProfile" data-reveal>
+        <img loading="lazy" decoding="async" src="/Executive Images/Afanan- second moderator.jpg" alt="Afnan Shah Qureshi" />
         <h1>Afnan Shah Qureshi</h1>
         <p>Moderator</p>
       </div>
     </div>
-    <p id="FoundingCabH">Our Founding Cabinet</p>
-    <div class="Top3Profiles">
-      <div class="Pres">
-        <img src="/Executive Images/Amlan Halde - President.JPG" alt="Amlan Halder" />
+    <p id="FoundingCabH" data-reveal>Our Founding Cabinet</p>
+    <div class="Top3Profiles" data-reveal-stagger="0.12">
+      <div class="Pres" data-reveal="scale">
+        <img loading="lazy" decoding="async" src="/Executive Images/Amlan Halde - President.JPG" alt="Amlan Halder" />
         <h1>Amlan Halder</h1>
         <p>Founding President</p>
       </div>
-      <div class="VicePres">
-        <img src="/Executive Images/Ariq Ahmed - Vice President.JPG" alt="Ariq Ahmed" />
+      <div class="VicePres" data-reveal>
+        <img loading="lazy" decoding="async" src="/Executive Images/Ariq Ahmed - Vice President.JPG" alt="Ariq Ahmed" />
         <h1>Ariq Ahmed</h1>
         <p>Vice President</p>
       </div>
-      <div class="Genral Sectretary">
-        <img src="/Executive Images/Shehreen Tasnim Titir - General Secretary.JPG" alt="Shehreen Tasnim Titir" />
+      <div class="Genral Sectretary" data-reveal>
+        <img loading="lazy" decoding="async" src="/Executive Images/Shehreen Tasnim Titir - General Secretary.JPG" alt="Shehreen Tasnim Titir" />
         <h1>Shehreen Tasnim Titir</h1>
         <p>General Secretary</p>
       </div>
     </div>
 
-    <div class="CabinetCardsWrapper">
-        <div class="cabinetCard">
-            <img src="/Executive Images/Avaranil bhaiya.jpg" alt="">
+    <div class="CabinetCardsWrapper" data-reveal-stagger="0.07">
+        <div class="cabinetCard" data-reveal>
+            <img loading="lazy" decoding="async" src="/Executive Images/Avaranil bhaiya.jpg" alt="Avranil Saha">
             <h1>Avranil Saha</h1>
             <p>Treasurer</p>
         </div>
-        <div class="cabinetCard">
-            <img src="/Executive Images/Neer Barua - Head of Technology.JPG" alt="">
+        <div class="cabinetCard" data-reveal>
+            <img loading="lazy" decoding="async" src="/Executive Images/Neer Barua - Head of Technology.JPG" alt="Neer Barua">
             <h1>Neer Barua</h1>
             <p>Head of Technology</p>
         </div>
-        <div class="cabinetCard">
-            <img src="/Executive Images/Sheik Fateema Mehnaz- Lead Graphics Designer.JPG" alt="">
+        <div class="cabinetCard" data-reveal>
+            <img loading="lazy" decoding="async" src="/Executive Images/Sheik Fateema Mehnaz- Lead Graphics Designer.JPG" alt="Sheikh Fateema Mehnaz">
             <h1>Sheikh Fateema Mehnaz</h1>
             <p>Lead Graphics Designer</p>
         </div>
-        <div class="cabinetCard">
-            <img src="/Executive Images/Bipul Saha.jpg" alt="">
+        <div class="cabinetCard" data-reveal>
+            <img loading="lazy" decoding="async" src="/Executive Images/Bipul Saha.jpg" alt="Bipul Saha">
             <h1>Bipul Saha</h1>
             <p>Head Of Olympiad</p>
         </div>
-        <div class="cabinetCard">
-            <img src="/Executive Images/Debarya Panday - Head of Reasearch and Development.JPG" alt="">
+        <div class="cabinetCard" data-reveal>
+            <img loading="lazy" decoding="async" src="/Executive Images/Debarya Panday - Head of Reasearch and Development.JPG" alt="Debarya Panday">
             <h1>Debarya Panday</h1>
             <p>Head of Research and Development</p>
         </div>
-        <div class="cabinetCard">
-            <img src="/Executive Images/Fahim bhiaya.jpg" alt="">
+        <div class="cabinetCard" data-reveal>
+            <img loading="lazy" decoding="async" src="/Executive Images/Fahim bhiaya.jpg" alt="Khondoker Fahim Mahmud">
             <h1>Khondoker Fahim Mahmud</h1>
             <p>Head of Event Management</p>
         </div>
-        <div class="cabinetCard">
-            <img src="/Executive Images/Azmain Bhaiya.jpg" alt="">
+        <div class="cabinetCard" data-reveal>
+            <img loading="lazy" decoding="async" src="/Executive Images/Azmain Bhaiya.jpg" alt="Md. Azmain Abrar Zaman">
             <h1>Md. Azmain Abrar Zaman</h1>
             <p>Head of Public Relations</p>
         </div>
-        <div class="cabinetCard">
-            <img src="/Executive Images/Sakib Ahmed.jpg" alt="">
-            <h1>Sakib Ahme</h1>
+        <div class="cabinetCard" data-reveal>
+            <img loading="lazy" decoding="async" src="/Executive Images/Sakib Ahmed.jpg" alt="Sakib Ahmed">
+            <h1>Sakib Ahmed</h1>
             <p>Head of Human Resources</p>
         </div>
     </div>
 
-    </div>
     <!-- <p id="CurrentCabH">Our Executives</p> -->
     <!-- <div class="Top3Profiles">
       <div class="Pres">
-        <img src="/Executive Images/Amlan Halde - President.JPG" alt="Amlan Halder" />
+        <img loading="lazy" decoding="async" src="/Executive Images/Amlan Halde - President.JPG" alt="Amlan Halder" />
         <h1>Amlan Halder</h1>
         <p>Founding President</p>
       </div>
       <div class="VicePres">
-        <img src="/Executive Images/Amlan Halde - President.JPG" alt="Amlan Halder" />
+        <img loading="lazy" decoding="async" src="/Executive Images/Amlan Halde - President.JPG" alt="Amlan Halder" />
         <h1>Amlan Halder</h1>
         <p>Founding President</p>
       </div>
       <div class="Genral Sectretary">
-        <img src="/Executive Images/Amlan Halde - President.JPG" alt="Amlan Halder" />
+        <img loading="lazy" decoding="async" src="/Executive Images/Amlan Halde - President.JPG" alt="Amlan Halder" />
         <h1>Amlan Halder</h1>
         <p>Founding President</p>
       </div>
     </div> -->
 
     <!-- <div class="CabinetCardsWrapper">
-        <div class="cabinetCard">
-            <img src="/Executive Images/Avaranil bhaiya.jpg" alt="">
+        <div class="cabinetCard" data-reveal>
+            <img loading="lazy" decoding="async" src="/Executive Images/Avaranil bhaiya.jpg" alt="Executive 1">
             <h1>Executive 1</h1>
             <p>Treasurer</p>
         </div>
-        <div class="cabinetCard">
-            <img src="/Executive Images/Avaranil bhaiya.jpg" alt="">
+        <div class="cabinetCard" data-reveal>
+            <img loading="lazy" decoding="async" src="/Executive Images/Avaranil bhaiya.jpg" alt="Executive 1">
             <h1>Executive 1</h1>
             <p>Treasurer</p>
         </div>
-        <div class="cabinetCard">
-            <img src="/Executive Images/Avaranil bhaiya.jpg" alt="">
+        <div class="cabinetCard" data-reveal>
+            <img loading="lazy" decoding="async" src="/Executive Images/Avaranil bhaiya.jpg" alt="Executive 1">
             <h1>Executive 1</h1>
             <p>Treasurer</p>
         </div>
-        <div class="cabinetCard">
-            <img src="/Executive Images/Avaranil bhaiya.jpg" alt="">
+        <div class="cabinetCard" data-reveal>
+            <img loading="lazy" decoding="async" src="/Executive Images/Avaranil bhaiya.jpg" alt="Executive 1">
             <h1>Executive 1</h1>
             <p>Treasurer</p>
         </div>
-        <div class="cabinetCard">
-            <img src="/Executive Images/Avaranil bhaiya.jpg" alt="">
+        <div class="cabinetCard" data-reveal>
+            <img loading="lazy" decoding="async" src="/Executive Images/Avaranil bhaiya.jpg" alt="Executive 1">
             <h1>Executive 1</h1>
             <p>Treasurer</p>
         </div>
-        <div class="cabinetCard">
-            <img src="/Executive Images/Avaranil bhaiya.jpg" alt="">
+        <div class="cabinetCard" data-reveal>
+            <img loading="lazy" decoding="async" src="/Executive Images/Avaranil bhaiya.jpg" alt="Executive 1">
             <h1>Executive 1</h1>
             <p>Treasurer</p>
         </div>
-        <div class="cabinetCard">
-            <img src="/Executive Images/Avaranil bhaiya.jpg" alt="">
+        <div class="cabinetCard" data-reveal>
+            <img loading="lazy" decoding="async" src="/Executive Images/Avaranil bhaiya.jpg" alt="Executive 1">
             <h1>Executive 1</h1>
             <p>Treasurer</p>
         </div>
-        <div class="cabinetCard">
-            <img src="/Executive Images/Avaranil bhaiya.jpg" alt="">
+        <div class="cabinetCard" data-reveal>
+            <img loading="lazy" decoding="async" src="/Executive Images/Avaranil bhaiya.jpg" alt="Executive 1">
             <h1>Executive 1</h1>
             <p>Treasurer</p>
         </div> -->
-    </div>
 
-    <button id="goBackHomeBtn" onclick="window.location.href='fx13valour.org'">GO BACK HOME</button>
+    <button id="goBackHomeBtn" type="button" data-reveal onclick="window.location.href = '/'">
+      GO BACK HOME
+    </button>
 
-</dix>
+</div>
 
     <!-- FOOTER FOOTER FOOTER -->
      <footer id="main-footer">
     <div class="footer-divider"></div>
 
-    <div class="footer-container">
-        <div class="footer-section">
+    <div class="footer-container" data-reveal-stagger="0.1">
+        <div class="footer-section" data-reveal>
             <h3>Contact Us</h3>
             <p><i class="fa-regular fa-envelope"></i> fx13valourrobotics@gmail.com</p>
             <p><i class="fa-solid fa-location-dot"></i> 24 Asad Avenue, Mohammadpur, Dhaka – 1207, Bangladesh</p>
         </div>
 
-        <div class="footer-section">
+        <div class="footer-section" data-reveal>
             <h3>Development</h3>
             <p>Built for FX-13 Valour Robotics Club</p>
-            <p>Developed by <a href="your-portfolio-link.html" class="dev-link">Nuban Sami Alam</a>, <a href="" class="dev-link">Shreyan Ahmed</a> & <a href="" class="dev-link">Amlan Halder</a></p>
+            <p>Developed by <span class="dev-link">Nuban Sami Alam</span>, <span class="dev-link">Shreyan Ahmed</span> &amp; <span class="dev-link">Amlan Halder</span></p>
         </div>
 
-        <div class="footer-section">
+        <div class="footer-section" data-reveal>
             <h3>Patrons</h3>
             <div class="sponsors-grid">
-                <div href="https://www.facebook.com/SFXGH" class="sponsor-box">SFX Greenherald International School</div>
+                <a href="https://www.facebook.com/SFXGH" class="sponsor-box" target="_blank" rel="noopener noreferrer">SFX Greenherald International School</a>
             </div>
         </div>
     </div>
@@ -384,10 +346,9 @@
     </div>
 </footer>
     
+    <script defer src="particles.js"></script>
+    <script defer src="site.js"></script>
     <script type="module">
-      /* ---------------------------
-   Firebase 
----------------------------- */
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
       import {
         getAuth,
@@ -404,215 +365,29 @@
         measurementId: "G-GCS4EENQ9R",
       };
 
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      /* ---------------------------
-   DEVICE FLAGS
----------------------------- */
-      const isMobile = window.matchMedia("(max-width: 768px)").matches;
-      const isSmallPhone = window.matchMedia("(max-width: 480px)").matches;
-      /* ---------------------------
-   SAFE DOM HELPERS 
----------------------------- */
+      const auth = getAuth(initializeApp(firebaseConfig));
+
+      /* Sign-in / profile buttons (desktop + mobile menu) */
       const $ = (id) => document.getElementById(id);
-      /* =====================================================
-   AUTH UI 
-===================================================== */
-      const signInBtns = document.querySelectorAll('[id="Sign-in-Button"]');
-      const profileBtns = document.querySelectorAll('[id="Profile-Button"]');
+      const signInBtns = ["Sign-in-Button", "Sign-in-Button-Mobile"].map($).filter(Boolean);
+      const profileBtns = ["Profile-Button", "Profile-Button-Mobile"].map($).filter(Boolean);
 
-      // Authentication may not be loaded on this page; only subscribe when available.
-      if (
-        signInBtns.length &&
-        profileBtns.length &&
-        typeof onAuthStateChanged === "function" &&
-        typeof auth !== "undefined"
-      ) {
-        onAuthStateChanged(auth, (user) => {
-          signInBtns.forEach((button) => {
-            button.style.display = user ? "none" : "flex";
-          });
-          profileBtns.forEach((button) => {
-            button.style.display = user ? "flex" : "none";
-          });
-        });
-      }
-
-      profileBtns.forEach((button) => {
-        button.addEventListener("click", () => {
-          window.location.href = "Auth/profile.html";
-        });
+      onAuthStateChanged(auth, (user) => {
+        signInBtns.forEach((b) => (b.style.display = user ? "none" : "flex"));
+        profileBtns.forEach((b) => (b.style.display = user ? "flex" : "none"));
       });
 
-      /* =====================================================
-   MOBILE MENU 
-===================================================== */
-      const toggle = $("mobileToggle");
-      const menu = $("mobileMenu");
-      const icon = $("mobileIcon");
+      profileBtns.forEach((b) =>
+        b.addEventListener("click", () => {
+          window.location.href = "Auth/profile.html";
+        }),
+      );
 
-      if (toggle && menu && icon) {
-        let menuOpen = false;
-
-        toggle.addEventListener("click", () => {
-          menuOpen = !menuOpen;
-          menu.classList.toggle("open", menuOpen);
-          toggle.setAttribute("aria-expanded", menuOpen);
-          icon.className = menuOpen ? "fa-solid fa-xmark" : "fa-solid fa-bars";
+      const contactBtn = $("Contact-Button");
+      if (contactBtn) {
+        contactBtn.addEventListener("click", () => {
+          window.location.href = "/contactus.html";
         });
-      }
-      /* =====================================================
-   PARTICLE SYSTEM (
-==================================================== */
-      // --- Interactive Star Particle Background ---
-      const canvas = document.getElementById("bg-canvas");
-      if (canvas) {
-        const ctx = canvas.getContext("2d");
-        let width, height;
-        let particles = [];
-
-        // Mouse interaction
-        const mouse = { x: null, y: null, radius: 150 };
-
-        window.addEventListener("mousemove", (event) => {
-          mouse.x = event.clientX; // Changed to clientX for cleaner viewport space tracking
-          mouse.y = event.clientY; // Changed to clientY
-        });
-
-        window.addEventListener("mouseout", () => {
-          mouse.x = null;
-          mouse.y = null;
-        });
-
-        // Touch interaction support for mobile devices
-        window.addEventListener("touchstart", (event) => {
-          if (event.touches.length > 0) {
-            mouse.x = event.touches[0].clientX;
-            mouse.y = event.touches[0].clientY;
-          }
-        });
-
-        window.addEventListener("touchmove", (event) => {
-          if (event.touches.length > 0) {
-            mouse.x = event.touches[0].clientX;
-            mouse.y = event.touches[0].clientY;
-          }
-        });
-
-        window.addEventListener("touchend", () => {
-          mouse.x = null;
-          mouse.y = null;
-        });
-
-        function resize() {
-          width = window.innerWidth;
-          height = window.innerHeight;
-          canvas.width = width;
-          canvas.height = height;
-          initParticles();
-        }
-        window.addEventListener("resize", resize);
-
-        class Particle {
-          constructor(x, y, dx, dy, size) {
-            this.x = x;
-            this.y = y;
-            this.dx = dx;
-            this.dy = dy;
-            this.size = size;
-          }
-          draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-            ctx.fillStyle = "rgba(232, 232, 232, 0.8)";
-            ctx.fill();
-          }
-          update() {
-            if (this.x > width || this.x < 0) this.dx = -this.dx;
-            if (this.y > height || this.y < 0) this.dy = -this.dy;
-
-            // Interaction with mouse (repel slightly)
-            if (mouse.x != null && mouse.y != null) {
-              let dx = mouse.x - this.x;
-              let dy = mouse.y - this.y;
-              let distance = Math.sqrt(dx * dx + dy * dy);
-              if (distance < mouse.radius) {
-                const forceDirectionX = dx / distance;
-                const forceDirectionY = dy / distance;
-                const force = (mouse.radius - distance) / mouse.radius;
-                this.x -= forceDirectionX * force * 1.5;
-                this.y -= forceDirectionY * force * 1.5;
-              }
-            }
-
-            this.x += this.dx;
-            this.y += this.dy;
-            this.draw();
-          }
-        }
-
-        function initParticles() {
-          particles = [];
-          let numberOfParticles = (width * height) / 9000;
-          for (let i = 0; i < numberOfParticles; i++) {
-            let size = Math.random() * 1.5 + 0.5;
-            let x = Math.random() * (width - size * 2) + size * 2;
-            let y = Math.random() * (height - size * 2) + size * 2;
-            let dx = (Math.random() - 0.5) * 0.5;
-            let dy = (Math.random() - 0.5) * 0.5;
-            particles.push(new Particle(x, y, dx, dy, size));
-          }
-        }
-
-        function animateParticles() {
-          requestAnimationFrame(animateParticles);
-          ctx.clearRect(0, 0, width, height);
-
-          for (let i = 0; i < particles.length; i++) {
-            particles[i].update();
-          }
-          connectParticles();
-        }
-
-        function connectParticles() {
-          let maxDistance = 100;
-          for (let a = 0; a < particles.length; a++) {
-            for (let b = a; b < particles.length; b++) {
-              let dx = particles[a].x - particles[b].x;
-              let dy = particles[a].y - particles[b].y;
-              let distance = dx * dx + dy * dy;
-
-              if (distance < maxDistance * maxDistance) {
-                let opacity = 1 - distance / (maxDistance * maxDistance);
-                ctx.strokeStyle = `rgba(232, 232, 232, ${opacity * 0.15})`;
-                ctx.lineWidth = 0.5;
-                ctx.beginPath();
-                ctx.moveTo(particles[a].x, particles[a].y);
-                ctx.lineTo(particles[b].x, particles[b].y);
-                ctx.stroke();
-              }
-            }
-
-            if (mouse.x != null && mouse.y != null) {
-              let dx = particles[a].x - mouse.x;
-              let dy = particles[a].y - mouse.y;
-              let distance = dx * dx + dy * dy;
-              if (distance < mouse.radius * mouse.radius) {
-                let opacity = 1 - distance / (mouse.radius * mouse.radius);
-                ctx.strokeStyle = `rgba(0, 123, 255, ${opacity * 0.9})`;
-                ctx.lineWidth = 1.2;
-                ctx.beginPath();
-                ctx.moveTo(particles[a].x, particles[a].y);
-                ctx.lineTo(mouse.x, mouse.y);
-                ctx.stroke();
-              }
-            }
-          }
-        }
-
-        // Run setup smoothly
-        resize();
-        animateParticles();
       }
     </script>
   </body>

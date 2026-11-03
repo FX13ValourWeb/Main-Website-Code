@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PathFinders Leaderboards - FX-13 Valour</title>
+    <link rel="icon" type="image/png" href="/Images/Robotics Club Logo.png" />
+    <link rel="stylesheet" href="CSS/motion.css" />
     <style>
       /* Interactive Background Canvas */
       #bg-canvas {
@@ -84,6 +86,8 @@
       /* ── ACCORDION TRIGGER (the wide button) ────────────────── */
       .leaderboardTitle {
         width: 100%;
+        font-family: inherit;
+        text-align: left;
         background: var(--deep-charcoal);
         border: 1px solid var(--blue-border);
         padding: 0 28px;
@@ -133,7 +137,7 @@
         content: "▾";
         font-size: 1rem;
         color: var(--electric-blue);
-        transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+        transition: transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1);
         opacity: 0.7;
       }
 
@@ -146,7 +150,9 @@
       .leaderboard {
         max-height: 0;
         overflow: hidden;
-        transition: max-height 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        transition:
+          max-height 0.55s cubic-bezier(0.65, 0, 0.35, 1),
+          border-color 0.4s ease;
         background: var(--matte-black);
         border: 1px solid transparent;
         border-top: none;
@@ -156,6 +162,55 @@
       .leaderboard.open {
         border-color: var(--blue-border);
       }
+
+      /* Class columns and their rows fade up one after another */
+      .leaderboard .class,
+      .leaderboard .textContents span {
+        opacity: 0;
+        transform: translateY(8px);
+        transition:
+          opacity 0.4s ease,
+          transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .leaderboard.open .class,
+      .leaderboard.open .textContents span {
+        opacity: 1;
+        transform: none;
+      }
+      .leaderboard.open .class:nth-of-type(2) { transition-delay: 0.08s; }
+      .leaderboard.open .class:nth-of-type(3) { transition-delay: 0.16s; }
+      .leaderboard.open .textContents span:nth-child(n + 3) { transition-delay: 0.12s; }
+      .leaderboard.open .textContents span:nth-child(n + 5) { transition-delay: 0.2s; }
+
+      /* "Class: 3" label */
+      .className {
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--off-white);
+        margin-bottom: 12px;
+      }
+
+      .comingSoon {
+        color: var(--muted-gray);
+        font-size: 0.9rem;
+        padding: 10px 0;
+      }
+
+      /* Page entrance */
+      .page-header,
+      #leaderboardsContainer > * ,
+      .go-home-wrap {
+        animation: fx-enter 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      #leaderboardsContainer > :nth-child(1),
+      #leaderboardsContainer > :nth-child(2) { animation-delay: 0.1s; }
+      #leaderboardsContainer > :nth-child(3),
+      #leaderboardsContainer > :nth-child(4) { animation-delay: 0.18s; }
+      #leaderboardsContainer > :nth-child(5),
+      #leaderboardsContainer > :nth-child(6) { animation-delay: 0.26s; }
+      .go-home-wrap { animation-delay: 0.34s; }
 
       /* ── CONTENTS ROW (horizontal classes) ──────────────────── */
       .Contents {
@@ -179,7 +234,7 @@
       }
 
       /* ── DIVIDER between classes ────────────────────────────── */
-      #divider {
+      .divider {
         width: 1px;
         background: var(--divider);
         flex-shrink: 0;
@@ -187,7 +242,7 @@
       }
 
       /* ── HEADINGS ROW ───────────────────────────────────────── */
-      #headings {
+      .headings {
         display: grid;
         grid-template-columns: 56px 1fr;
         padding-bottom: 10px;
@@ -195,7 +250,7 @@
         border-bottom: 1px solid var(--divider);
       }
 
-      #headings span {
+      .headings span {
         font-size: 0.65rem;
         font-weight: 700;
         text-transform: uppercase;
@@ -205,13 +260,13 @@
       }
 
       /* ── RANK ROWS ──────────────────────────────────────────── */
-      #textContents {
+      .textContents {
         display: grid;
         grid-template-columns: 56px 1fr;
         align-items: center;
       }
 
-      #textContents span {
+      .textContents span {
         padding: 10px 0;
         font-size: 0.9rem;
         color: var(--off-white);
@@ -219,12 +274,12 @@
       }
 
       /* Remove border from last row */
-      #textContents span:nth-last-child(-n + 2) {
+      .textContents span:nth-last-child(-n + 2) {
         border-bottom: none;
       }
 
       /* Rank column (1st, 2nd, 3rd) */
-      #textContents span:nth-child(odd) {
+      .textContents span:nth-child(odd) {
         font-size: 0.78rem;
         font-weight: 700;
         color: var(--muted-gray);
@@ -249,7 +304,7 @@
           padding: 0;
         }
 
-        #divider {
+        .divider {
           width: 100%;
           height: 1px;
         }
@@ -266,7 +321,7 @@
       }
 
       /* ── GO HOME BUTTON ─────────────────────────────────────── */
-button[onclick] {
+.go-home-btn {
     display: block;
     margin: 0 auto 80px;
     height: 48px;
@@ -283,9 +338,10 @@ button[onclick] {
     cursor: pointer;
     transition: var(--transition);
     position: relative;
+    font-family: inherit;
 }
 
-button[onclick]::before {
+.go-home-btn::before {
     content: '';
     position: absolute;
     top: -2px;
@@ -298,7 +354,7 @@ button[onclick]::before {
     transition: var(--transition);
 }
 
-button[onclick]:hover {
+.go-home-btn:hover {
     background: var(--blue-dim);
     border-color: var(--electric-blue);
     color: var(--electric-blue);
@@ -306,9 +362,9 @@ button[onclick]:hover {
     transform: translateY(-2px);
 }
 
-button[onclick]:hover::before { opacity: 1; }
+.go-home-btn:hover::before { opacity: 1; }
 
-button[onclick]:active {
+.go-home-btn:active {
     transform: translateY(0);
     filter: brightness(0.85);
 }
@@ -320,82 +376,86 @@ button[onclick]:active {
 
     <div class="page-header">
       <h1>PathFinders Leaderboards</h1>
-      <p>Event Hosted by, FX-13 Valour Robotics Club</p>
+      <p>Event Hosted by FX-13 Valour Robotics Club</p>
     </div>
     <!-- =============================================================================================================== -->
-    <!-- AMLAN BHAIYA FOLLOW THE FORMAT OF PATHFINDERS ONE TO WRITE THE CODE OF REST OF THE PATHFINDERS -->
+    <!-- TO ADD A NEW PATHFINDERS: copy one button + .leaderboard block below and change the title, id and names -->
     <!-- =============================================================================================================== -->
-    <div id="leaderboardsContainer"> 
+    <div id="leaderboardsContainer">
       <!-- PathFinders 1 -->
-      <p class="leaderboardTitle">PathFinders 1</p>
-      <div id="PathFinders1" class="leaderboard">
-        <div id="PathFinders1Contents" class="Contents">
-          <div id="Class3" class="class">
-            <p>Class: 3</p>
-            <p id="headings">
-              <span id="Rank">Rank</span>
-              <span id="Name">Name</span>
+      <button type="button" class="leaderboardTitle" aria-expanded="false" aria-controls="PathFinders1">
+        PathFinders 1
+      </button>
+      <div id="PathFinders1" class="leaderboard" role="region">
+        <div class="Contents">
+          <div class="class">
+            <p class="className">Class: 3</p>
+            <p class="headings">
+              <span>Rank</span>
+              <span>Name</span>
             </p>
-            <p id="textContents">
-              <span>1st</span><span>Sherina</span> <span>2nd</span
-              ><span>Mobasshira Mehjabin</span> <span>3rd</span
-              ><span>Souvik</span>
-            </p>
-          </div>
-          <div id="divider"></div>
-          <div id="Class4" class="class">
-            <p>Class: 4</p>
-            <p id="headings">
-              <span id="Rank">Rank</span>
-              <span id="Name">Name</span>
-            </p>
-            <p id="textContents">
-              <span>1st</span><span>Mortaza Tomal</span> <span>2nd</span
-              ><span>Jyotisko Bose</span> <span>3rd</span
-              ><span>Inayaa Hossain</span>
+            <p class="textContents">
+              <span>1st</span><span>Sherina</span>
+              <span>2nd</span><span>Mobasshira Mehjabin</span>
+              <span>3rd</span><span>Souvik</span>
             </p>
           </div>
-          <div id="divider"></div>
-          <div id="Class5" class="class">
-            <p>Class: 5</p>
-            <p id="headings">
-              <span id="Rank">Rank</span>
-              <span id="Name">Name</span>
+          <div class="divider"></div>
+          <div class="class">
+            <p class="className">Class: 4</p>
+            <p class="headings">
+              <span>Rank</span>
+              <span>Name</span>
             </p>
-            <p id="textContents">
-              <span>1st</span><span>Priyangshu Roy</span> <span>2nd</span
-              ><span>Srijita Ghosh</span> <span>3rd</span
-              ><span>Soumit Barai</span>
+            <p class="textContents">
+              <span>1st</span><span>Mortaza Tomal</span>
+              <span>2nd</span><span>Jyotisko Bose</span>
+              <span>3rd</span><span>Inayaa Hossain</span>
+            </p>
+          </div>
+          <div class="divider"></div>
+          <div class="class">
+            <p class="className">Class: 5</p>
+            <p class="headings">
+              <span>Rank</span>
+              <span>Name</span>
+            </p>
+            <p class="textContents">
+              <span>1st</span><span>Priyangshu Roy</span>
+              <span>2nd</span><span>Srijita Ghosh</span>
+              <span>3rd</span><span>Soumit Barai</span>
             </p>
           </div>
         </div>
       </div>
 
       <!-- PathFinders 2 -->
-      <p class="leaderboardTitle">PathFinders 2</p>
-      <div id="PathFinders2" class="leaderboard">
-        <div id="PathFinders2Contents" class="Contents">
-          <div id="Class3" class="class">
-            <p>Class: 3</p>
-            <p id="headings">
-              <span id="Rank">Rank</span>
-              <span id="Name">Name</span>
+      <button type="button" class="leaderboardTitle" aria-expanded="false" aria-controls="PathFinders2">
+        PathFinders 2
+      </button>
+      <div id="PathFinders2" class="leaderboard" role="region">
+        <div class="Contents">
+          <div class="class">
+            <p class="className">Class: 3</p>
+            <p class="headings">
+              <span>Rank</span>
+              <span>Name</span>
             </p>
-            <p id="textContents">
+            <p class="textContents">
               <span>1st</span><span>Agrajit Dev</span>
-               <span>2nd</span><span>Breyan Francis</span> 
+              <span>2nd</span><span>Breyan Francis</span>
               <span>3rd</span><span>Walia Hasan Uzma</span>
             </p>
           </div>
-          <div id="divider"></div>
-          <div id="Class4" class="class">
-            <p>Class:4</p>
-            <p id="headings">
-              <span id="Rank">Rank</span>
-              <span id="Name">Name</span>
+          <div class="divider"></div>
+          <div class="class">
+            <p class="className">Class: 4</p>
+            <p class="headings">
+              <span>Rank</span>
+              <span>Name</span>
             </p>
-            <p id="textContents">
-              <span>1st</span><span>Jyotisko Bose</span> 
+            <p class="textContents">
+              <span>1st</span><span>Jyotisko Bose</span>
               <span>2nd</span><span>Zayan Ahmed</span>
               <span>3rd</span><span>Mortaza Tomal Pasha</span>
             </p>
@@ -404,146 +464,72 @@ button[onclick]:active {
       </div>
 
       <!-- PathFinders 3 -->
-      <p class="leaderboardTitle">PathFinders 3</p>
-      <div id="PathFinders3" class="leaderboard">
-        <div id="PathFinders3Contents" class="Contents">
-          <div id="Class3" class="class">
-            Coming Soon!
+      <button type="button" class="leaderboardTitle" aria-expanded="false" aria-controls="PathFinders3">
+        PathFinders 3
+      </button>
+      <div id="PathFinders3" class="leaderboard" role="region">
+        <div class="Contents">
+          <div class="class">
+            <p class="className">Class: 3</p>
+            <p class="comingSoon">Coming Soon!</p>
           </div>
-          <div id="divider"></div>
-          <div id="Class4" class="class">
-            <p>Class:4</p>
-            <p id="headings">
-              <span id="Rank">Rank</span>
-              <span id="Name">Name</span>
+          <div class="divider"></div>
+          <div class="class">
+            <p class="className">Class: 4</p>
+            <p class="headings">
+              <span>Rank</span>
+              <span>Name</span>
             </p>
-            <p id="textContents">
-              <span>1st</span><span>Sabir Al Mamun</span> 
+            <p class="textContents">
+              <span>1st</span><span>Sabir Al Mamun</span>
               <span>2nd</span><span>Walia Hasan Uzma</span>
               <span>3rd</span><span>Arnina Naim</span>
             </p>
           </div>
+        </div>
       </div>
     </div>
 
-  <div>      <!-- Go back home button -->
-    <button type="button" onclick="window.location.href = 'index.html'">
-      Go back home
-    </button>
-  </div>
-
+    <!-- Go back home button -->
+    <div class="go-home-wrap">
+      <button
+        type="button"
+        class="go-home-btn"
+        onclick="window.location.href = 'index.html'"
+      >
+        Go back home
+      </button>
+    </div>
 
     <script>
-      document.querySelectorAll(".leaderboardTitle").forEach((title) => {
+      /* Accordion: one board open at a time, smooth height animation */
+      const titles = document.querySelectorAll(".leaderboardTitle");
+      titles.forEach((title) => {
         title.addEventListener("click", () => {
           const panel = title.nextElementSibling;
           const isOpen = title.classList.contains("open");
-
-          // Close all
-          document.querySelectorAll(".leaderboardTitle").forEach((t) => {
+          titles.forEach((t) => {
             t.classList.remove("open");
+            t.setAttribute("aria-expanded", "false");
             t.nextElementSibling.classList.remove("open");
             t.nextElementSibling.style.maxHeight = "0";
           });
-
-          // Open clicked if it was closed
           if (!isOpen) {
             title.classList.add("open");
+            title.setAttribute("aria-expanded", "true");
             panel.classList.add("open");
             panel.style.maxHeight = panel.scrollHeight + "px";
           }
         });
       });
 
-      /* =====================================================
-   PARTICLE SYSTEM (
-==================================================== */
-      const canvas = document.getElementById("bg-canvas");
-      const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-      const isSmallPhone = window.matchMedia("(max-width: 360px)").matches;
-      const particleDivisor = isSmallPhone ? 20000 : isMobile ? 15000 : 9000;
-
-      if (canvas) {
-        const ctx = canvas.getContext("2d");
-
-        let width, height;
-        let particles = [];
-
-        const mouse = { x: null, y: null, radius: 150 };
-
-        if (!isMobile) {
-          window.addEventListener("mousemove", (e) => {
-            mouse.x = e.x;
-            mouse.y = e.y;
-          });
-
-          window.addEventListener("mouseout", () => {
-            mouse.x = null;
-            mouse.y = null;
-          });
-        }
-
-        function resize() {
-          width = canvas.width = window.innerWidth;
-          height = canvas.height = window.innerHeight;
-          initParticles();
-        }
-
-        class Particle {
-          constructor(x, y, dx, dy, size) {
-            this.x = x;
-            this.y = y;
-            this.dx = dx;
-            this.dy = dy;
-            this.size = size;
-          }
-
-          draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = "rgba(232,232,232,0.8)";
-            ctx.fill();
-          }
-
-          update() {
-            if (this.x > width || this.x < 0) this.dx = -this.dx;
-            if (this.y > height || this.y < 0) this.dy = -this.dy;
-
-            this.x += this.dx;
-            this.y += this.dy;
-            this.draw();
-          }
-        }
-
-        function initParticles() {
-          particles = [];
-
-          let count = (width * height) / particleDivisor;
-
-          for (let i = 0; i < count; i++) {
-            particles.push(
-              new Particle(
-                Math.random() * width,
-                Math.random() * height,
-                (Math.random() - 0.5) * 0.5,
-                (Math.random() - 0.5) * 0.5,
-                Math.random() * 1.5,
-              ),
-            );
-          }
-        }
-
-        function animate() {
-          requestAnimationFrame(animate);
-          ctx.clearRect(0, 0, width, height);
-          particles.forEach((p) => p.update());
-        }
-
-        window.addEventListener("resize", resize);
-
-        resize();
-        animate();
-      }
+      // Keep an open panel sized correctly if the layout changes
+      window.addEventListener("resize", () => {
+        document.querySelectorAll(".leaderboard.open").forEach((panel) => {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        });
+      });
     </script>
+    <script defer src="particles.js"></script>
   </body>
 </html>

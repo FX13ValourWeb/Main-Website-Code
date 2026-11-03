@@ -9,6 +9,7 @@ import {
   getDoc,
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
+import { withLoading, submitOnEnter } from "./auth-ui.js";
 // ✅ UPDATED TO NEW PROJECT CONFIG
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -34,7 +35,7 @@ const successSignInExecutive = document.getElementById(
 );
 const notExecutive = document.getElementById("notExecutive");
 
-loginBtn.addEventListener("click", async () => {
+loginBtn.addEventListener('click', withLoading(loginBtn, async () => {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
 
@@ -74,4 +75,7 @@ loginBtn.addEventListener("click", async () => {
       alert("Error: " + error.message);
     }
   }
-});
+}));
+
+// Enter key submits the form
+submitOnEnter(loginBtn);

@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Aerosense - Coming Soon</title>
 
+    <script>document.documentElement.classList.add("js");</script>
     <link rel="stylesheet" href="CSS/main.css" />
+    <link rel="stylesheet" href="CSS/motion.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -14,7 +16,8 @@
 
     <style>
       .coming-soon-wrapper {
-        height: calc(100vh - 80px); /* Adjusted based on navbar height */
+        min-height: calc(100vh - var(--nav-h, 80px));
+        min-height: calc(100dvh - var(--nav-h, 80px));
         display: flex;
         align-items: center;
         justify-content: center;
@@ -35,8 +38,17 @@
         max-width: 600px;
         width: 100%;
         box-shadow: none;
-        animation: fadeInScale 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        animation: fadeInScale 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
       }
+
+      .coming-soon-card > * {
+        animation: fx-enter 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      .coming-soon-card > :nth-child(2) { animation-delay: 0.1s; }
+      .coming-soon-card > :nth-child(3) { animation-delay: 0.18s; }
+      .coming-soon-card > :nth-child(4) { animation-delay: 0.26s; }
+      .coming-soon-card > :nth-child(5) { animation-delay: 0.34s; }
+      .coming-soon-card > :nth-child(6) { animation-delay: 0.42s; }
 
       @keyframes fadeInScale {
         from {
@@ -50,8 +62,9 @@
       }
 
       .coming-soon-title {
-        font-size: 4rem;
-        letter-spacing: 3px;
+        font-size: clamp(2.2rem, 11vw, 4rem);
+        letter-spacing: clamp(1px, 0.6vw, 3px);
+        overflow-wrap: anywhere;
         font-weight: 800;
         color: var(--off-white);
         text-transform: uppercase;
@@ -91,18 +104,17 @@
         box-shadow: 0 0 15px var(--electric-blue);
         border-radius: 2px;
         position: absolute;
-        animation: moveLoading 5s infinite ease-in-out;
+        left: 0;
+        /* transform instead of "left" → animated on the GPU, no layout work */
+        animation: moveLoading 2.6s infinite cubic-bezier(0.65, 0, 0.35, 1);
       }
 
       @keyframes moveLoading {
         0% {
-          left: -40%;
-        }
-        50% {
-          left: 100%;
+          transform: translateX(-110%);
         }
         100% {
-          left: -40%;
+          transform: translateX(340%);
         }
       }
 
@@ -123,7 +135,31 @@
         font-weight: 700;
         letter-spacing: 1px;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease,
+          box-shadow 0.3s ease,
+          transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .back-btn i {
+        transition: transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1);
+      }
+      .back-btn:hover i {
+        transform: translateX(-4px);
+      }
+
+      .back-btn:active {
+        transform: scale(0.98);
+      }
+
+      @media (max-width: 600px) {
+        .coming-soon-card {
+          padding: 40px 22px;
+        }
+        .coming-soon-text {
+          font-size: 1.5rem;
+        }
       }
 
       .back-btn:hover {
@@ -138,7 +174,7 @@
     <!-- Background Canvas from index.html -->
     <canvas id="bg-canvas"></canvas>
 
-    <!-- Navbar from index.html -->
+    <!-- Navbar (same as index.html) -->
     <nav class="main-navigation-bar">
       <div class="nav-section links-group">
         <div class="nav-dropdown">
@@ -161,22 +197,21 @@
             </div>
           </div>
         </div>
-        <a href="#home-page-section" class="nav-item-link">Home</a>
-        <a href="#events-page-section" class="nav-item-link">Events</a>
-        <a href="#" class="nav-item-link">AQ-levels</a>
+        <a href="index.html#home-page-section" class="nav-item-link">Home</a>
+        <a href="index.html#events-page-section" class="nav-item-link">Events</a>
 
         <div class="nav-dropdown">
           <button class="dropdown-trigger">
             Projects <span class="arrow">▾</span>
           </button>
           <div class="dropdown-content">
-            <a href="#projects-page-section">AeroSense Drone</a>
+            <a href="index.html#projects-page-section">AeroSense Drone</a>
             <a href="#">Coming Soon...</a>
             <a href="#">Coming Soon...</a>
           </div>
         </div>
 
-        <a href="#executives-page-section" class="nav-item-link">Executives</a>
+        <a href="SenatePage.html" class="nav-item-link">Executives</a>
       </div>
 
       <div class="nav-section logo-container">
@@ -186,7 +221,12 @@
       </div>
 
       <div class="nav-section button-group">
-        <button id="Contact-Button">Contact us</button>
+        <button
+          id="Contact-Button"
+          onclick="window.location.href = '/contactus.html'"
+        >
+          Contact Us
+        </button>
         <!-- REMEMBER TO CHANGE IT TO PUBLIC HREF -->
         <button id="Sign-in-Button">
           <a href="/Auth/Signin.html">Sign in</a>
@@ -201,6 +241,76 @@
           </span>
           View Profile
         </button>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button
+        class="mobile-menu-toggle"
+        id="mobileToggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <i class="fa-solid fa-bars" id="mobileIcon"></i>
+      </button>
+
+      <!-- Mobile slide-down menu -->
+      <div class="mobile-menu-overlay" id="mobileMenu" role="navigation">
+        <div class="mobile-nav-links">
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger1">
+              <span
+                >Browse
+                <i
+                  class="fa-solid fa-bars"
+                  style="font-size: 0.85rem; margin-left: 6px"
+                ></i
+              ></span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner1">
+              <h4 class="dropdown-subheader">Posters</h4>
+              <a href="#">Tech in Fiction</a>
+              <a href="#">Tech in Motion</a>
+              <h4 class="dropdown-subheader" style="margin-top: 8px">
+                Additional information
+              </h4>
+              <a href="#">Rules for events</a>
+              <a href="#">Guidelines for Fairness</a>
+            </div>
+          </div>
+          <a href="index.html#home-page-section" class="nav-item-link">Home</a>
+          <a href="index.html#events-page-section" class="nav-item-link">Events</a>
+          <a href="aerosense.html" class="nav-item-link">AQ-levels</a>
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger2">
+              <span>Projects</span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner2">
+              <a href="index.html#projects-page-section">AeroSense Drone</a>
+              <a href="#">Coming Soon...</a>
+              <a href="#">Coming Soon...</a>
+            </div>
+          </div>
+          <a href="SenatePage.html" class="nav-item-link">Executives</a>
+        </div>
+        <div class="mobile-buttons">
+          <button id="Contact-Button-Mobile">
+            <a href="/contactus.html">Contact us</a>
+          </button>
+          <button id="Sign-in-Button-Mobile">
+            <a href="/Auth/Signin.html">Sign in</a>
+          </button>
+          <button id="Profile-Button-Mobile">
+            <span class="icon-wrapper">
+              <img
+                src="https://img.icons8.com/ios-glyphs/30/007BFF/user-male-circle.png"
+                alt="Profile"
+              />
+            </span>
+            View Profile
+          </button>
+        </div>
       </div>
     </nav>
 
@@ -220,13 +330,19 @@
           project come to life, Come back soon!
         </p>
 
-        <button class="back-btn" onclick="window.location.href = 'index.html'">
+        <button
+          class="back-btn"
+          type="button"
+          onclick="window.location.href = 'index.html'"
+        >
           <i class="fa-solid fa-arrow-left"></i> Return to Home Page
         </button>
       </div>
     </main>
 
-    <!-- Scripts for background canvas and navbar functionality -->
+    <!-- Background stars, navbar behaviour, sign-in state -->
+    <script defer src="particles.js"></script>
+    <script defer src="site.js"></script>
     <script type="module" src="index.js"></script>
   </body>
 </html>

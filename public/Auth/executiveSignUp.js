@@ -8,6 +8,7 @@ import {
   runTransaction 
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
+import { withLoading, submitOnEnter } from "./auth-ui.js";
 // MOVE THIS UP HERE
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
@@ -31,7 +32,7 @@ const continueBtn = document.getElementById('continueBtn')
 const signUpScreen = document.getElementById('signUpScreen')
 const successfullAccountCreation = document.getElementById('successfullAccountCreation')
 
-continueBtn.addEventListener('click', async () => {
+continueBtn.addEventListener('click', withLoading(continueBtn, async () => {
 
      const email = document.getElementById('email').value.trim()
      const password = document.getElementById('password').value
@@ -110,4 +111,7 @@ continueBtn.addEventListener('click', async () => {
      } else {
           window.alert("Your password and confirm password did not match!")
      }
-})
+}));
+
+// Enter key submits the form
+submitOnEnter(continueBtn);

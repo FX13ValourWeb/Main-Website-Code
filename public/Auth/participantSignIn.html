@@ -437,27 +437,28 @@
         }
       }
     </style>
+    <link rel="stylesheet" href="auth.css" />
   </head>
   <body>
     <div id="signInScreen">
       <p id="roboticsBrandLogo">FX-13 <span>Valour</span></p>
       <div id="imgContainer">
-        <img src="/Images/Participant SignIn Image.jpeg" alt="Image" />
+        <img src="/Images/Participant SignIn Image.jpeg" alt="Students at a FX-13 Valour event" />
       </div>
       <div id="formContainer">
         <div id="form">
           <p id="signInp">Sign In</p>
           <label for="email">Email: </label>
-          <input type="email" id="email" />
+          <input type="email" id="email" autocomplete="email" />
           <label for="password">Password: </label>
-          <input type="password" id="password" />
-          <button id="signInBtn">Continue</button>
-          <button style="margin-top: 10px" onclick="window.location.href = '/'">
+          <input type="password" id="password" autocomplete="current-password" />
+          <button id="signInBtn" type="button">Continue</button>
+          <button type="button" style="margin-top: 10px" onclick="window.location.href = '/'">
             GO BACK TO HOMEPAGE
           </button>
           <p id="signUp">
             Don't have an account?
-            <span><a href="participantSignUp.html">Sign UP</a></span>
+            <span><a href="participantSignUp.html">Sign Up</a></span>
           </p>
         </div>
       </div>
@@ -467,7 +468,7 @@
     <div id="successSignInParticipant" class="successSignIn">
       <div class="success-box">
         <p id="Congratulations">System Update</p>
-        <p id="AccountStatus">Sucessfully Signed In as Member 🎉</p>
+        <p id="AccountStatus">Successfully Signed In as Member 🎉</p>
         <p id="details">
           Your Member credentials have been verified. You can now access your
           profile and the internal dashboard.
@@ -481,7 +482,7 @@
     <div id="isExecutive" class="successSignIn">
       <div class="success-box">
         <p id="Congratulations">System Update</p>
-        <p id="AccountStatus">Your are an Executive, Not a Participant ❌</p>
+        <p id="AccountStatus">You are an Executive, Not a Participant ❌</p>
         <p id="details">Click the button to go to Executive Sign In</p>
         <!-- REMEMBER TO MAKE IT PUBLIC -->
         <button>

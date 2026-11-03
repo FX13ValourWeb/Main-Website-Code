@@ -442,28 +442,28 @@
         }
       }
     </style>
+    <link rel="stylesheet" href="auth.css" />
   </head>
   <body>
     <div id="signInScreen">
       <p id="roboticsBrandLogo">FX-13 <span>Valour</span></p>
       <div id="imgContainer">
-        <img src="/Images/Executive SignIn.png" alt="Image" />
+        <img src="/Images/Executive SignIn.png" alt="FX-13 Valour executives" />
       </div>
       <div id="formContainer">
-        <form action=""></form>
-        <div id="form">
+                <div id="form">
           <p id="signInp">Sign In</p>
           <label for="email">Email: </label>
-          <input type="email" id="email" />
+          <input type="email" id="email" autocomplete="email" />
           <label for="password">Password: </label>
-          <input type="password" id="password" />
-          <button id="signInBtn">Continue</button>
-          <button style="margin-top: 10px" onclick="window.location.href = '/'">
+          <input type="password" id="password" autocomplete="current-password" />
+          <button id="signInBtn" type="button">Continue</button>
+          <button type="button" style="margin-top: 10px" onclick="window.location.href = '/'">
             GO BACK TO HOMEPAGE
           </button>
           <p id="signUp">
             Don't have an account?
-            <span><a href="executiveSignUp.html">Sign UP</a></span>
+            <span><a href="executiveSignUp.html">Sign Up</a></span>
           </p>
         </div>
       </div>
@@ -473,7 +473,7 @@
     <div id="successSignInExecutive" class="successSignIn">
       <div class="success-box">
         <p id="Congratulations">System Update</p>
-        <p id="AccountStatus">Sucessfully Signed In as Executive 🎉</p>
+        <p id="AccountStatus">Successfully Signed In as Executive 🎉</p>
         <p id="details">
           Your executive credentials have been verified. You can now access your
           profile and the internal dashboard.
@@ -498,8 +498,8 @@
     <div id="notExecutive" class="successSignIn">
       <div class="success-box">
         <p id="Congratulations">System Update</p>
-        <p id="AccountStatus">Your are not an Executive Yet ❌</p>
-        <p id="details">Click the button to go to Particpant Sign In</p>
+        <p id="AccountStatus">You are not an Executive Yet ❌</p>
+        <p id="details">Click the button to go to Participant Sign In</p>
         <!-- REMEMBER TO CHANGE ITS SOURCE TO GLOBAL -->
         <button>
           <a href="/Auth/participantSignIn.html">GO TO PARTICIPANT SIGN IN</a>

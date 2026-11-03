@@ -1,0 +1,197 @@
+/* =====================================================
+   SHARED MOTION + POLISH for the sign-in / sign-up pages
+   (loaded after each page's own <style>)
+   ===================================================== */
+
+:root {
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+@keyframes auth-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes auth-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes auth-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes auth-kenburns {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes auth-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Page entrance ---------- */
+#imgContainer {
+  animation: auth-fade 1s ease both;
+}
+/* The photo settles in with a slow, subtle zoom-out */
+#imgContainer img {
+  animation: auth-kenburns 2.4s var(--ease-out) both;
+}
+
+#roboticsBrandLogo {
+  animation: auth-fade 0.8s ease 0.1s both;
+  /* stays readable on top of bright photos */
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.75);
+}
+
+#form > * {
+  animation: auth-enter 0.7s var(--ease-out) both;
+}
+#form > :nth-child(1) { animation-delay: 0.05s; }
+#form > :nth-child(2),
+#form > :nth-child(3) { animation-delay: 0.1s; }
+#form > :nth-child(4),
+#form > :nth-child(5) { animation-delay: 0.15s; }
+#form > :nth-child(6),
+#form > :nth-child(7) { animation-delay: 0.2s; }
+#form > :nth-child(8),
+#form > :nth-child(9) { animation-delay: 0.25s; }
+#form > :nth-child(10),
+#form > :nth-child(11) { animation-delay: 0.3s; }
+#form > :nth-child(12),
+#form > :nth-child(13) { animation-delay: 0.35s; }
+#form > :nth-child(14),
+#form > :nth-child(15) { animation-delay: 0.4s; }
+#form > :nth-child(16),
+#form > :nth-child(17) { animation-delay: 0.45s; }
+#form > :nth-child(n + 18) { animation-delay: 0.5s; }
+
+/* ---------- Inputs ---------- */
+input,
+select {
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    background-color 0.3s ease;
+}
+
+/* ---------- Buttons ---------- */
+#form button {
+  position: relative;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.35s var(--ease-out);
+}
+#form button:hover {
+  box-shadow: 0 8px 22px rgba(0, 123, 255, 0.3);
+}
+
+/* "Go back to homepage" reads as the secondary action */
+#form button[onclick] {
+  background-color: transparent;
+  color: var(--electric-blue);
+  border: 1px solid rgba(0, 123, 255, 0.5);
+}
+#form button[onclick]:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+  border-color: var(--electric-blue);
+  box-shadow: none;
+}
+
+/* Loading state (set from auth-ui.js) */
+#form button.is-loading {
+  color: transparent !important;
+  pointer-events: none;
+  transform: none;
+}
+#form button.is-loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: auth-spin 0.7s linear infinite;
+}
+
+/* ---------- Result overlays ----------
+   They are switched from display:none to flex by JS, which restarts
+   these animations every time one appears. */
+.successSignIn,
+#successfullAccountCreation {
+  animation: auth-fade 0.45s ease both;
+}
+.success-box {
+  animation: auth-pop 0.7s var(--ease-out) 0.1s both;
+}
+.success-box > * {
+  animation: auth-enter 0.6s var(--ease-out) both;
+}
+.success-box > :nth-child(1) { animation-delay: 0.2s; }
+.success-box > :nth-child(2) { animation-delay: 0.28s; }
+.success-box > :nth-child(3) { animation-delay: 0.36s; }
+.success-box > :nth-child(4) { animation-delay: 0.44s; }
+
+/* ---------- Keyboard focus ---------- */
+:focus-visible {
+  outline: 2px solid #007bff;
+  outline-offset: 3px;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+  }
+  #form button.is-loading::after {
+    animation: auth-spin 1.5s linear infinite !important;
+  }
+}
+
+/* Soft dark fade at the top of the photo so the logo is always legible */
+#imgContainer {
+  position: relative;
+}
+#imgContainer::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 160px;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), transparent);
+  pointer-events: none;
+}

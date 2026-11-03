@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Upcoming Event - FX-13 Valour</title>
     <link rel="icon" type="image/png" href="/Images/Robotics Club Logo.png" />
+    <link rel="stylesheet" href="CSS/motion.css" />
 
     <style>
       /* Interactive Background Canvas */
@@ -26,6 +27,12 @@
         --deep-charcoal: #161616;
         --off-white: #e8e8e8;
         --transition-smooth: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
       }
 
       body {
@@ -52,6 +59,48 @@
         box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
         position: relative;
         overflow: hidden;
+        animation: fx-pop 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+
+      /* Details appear one after another */
+      #container > * {
+        animation: fx-enter 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      #container > :nth-child(2) { animation-delay: 0.12s; }
+      #container > :nth-child(3) { animation-delay: 0.18s; }
+      #container > :nth-child(4) { animation-delay: 0.24s; }
+      #container > :nth-child(5) { animation-delay: 0.3s; }
+      #container > :nth-child(6) { animation-delay: 0.36s; }
+      #container > :nth-child(7) { animation-delay: 0.42s; }
+
+      /* Thin scanning line across the top of the card */
+      #container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 40%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--electric-blue), transparent);
+        animation: scanLine 3.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+      }
+      @keyframes scanLine {
+        from { transform: translateX(-100%); }
+        to { transform: translateX(250%); }
+      }
+
+      @media (max-width: 600px) {
+        #container {
+          padding: 36px 22px;
+        }
+        #eventName span {
+          font-size: 1.7rem;
+        }
+        #eventDate span,
+        #eventTime span,
+        #eventType span {
+          display: inline-block;
+        }
       }
 
       /* --- Event Heading --- */
@@ -132,6 +181,10 @@
       }
 
       /* --- Zoom Link Container (The "Secure" Box) --- */
+      #eventLinkContainer:empty {
+        display: none;
+      }
+
       #eventLinkContainer {
         background: rgba(0, 123, 255, 0.05);
         border: 1px dashed var(--electric-blue);
@@ -174,9 +227,7 @@
       <p id="eventTime">Time: <span>To be released.</span></p>
       <p id="eventType">Type: <span>To be released.</span></p>
 
-      <div id="eventLinkContainer">
- 
-      </div>
+      <div id="eventLinkContainer"></div>
     </div>
 
     <!-- Button to go back to homepage -->
@@ -195,21 +246,27 @@
         border: 1px solid var(--electric-blue);
         border-radius: 4px;
         cursor: pointer;
-        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        font-family: inherit;
+        transition:
+          color 0.4s ease,
+          box-shadow 0.4s ease,
+          transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         overflow: hidden;
         z-index: 1;
         display: inline-block;
+        animation: fx-enter 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s backwards;
       }
 
       #Go-Back-to-Homepage-Button::before {
         content: "";
         position: absolute;
         top: 0;
-        left: -100%;
+        left: 0;
+        transform: translateX(-101%);
         width: 100%;
         height: 100%;
         background: var(--electric-blue);
-        transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         z-index: -1;
       }
 
@@ -220,7 +277,7 @@
       }
 
       #Go-Back-to-Homepage-Button:hover::before {
-        left: 0;
+        transform: translateX(0);
       }
 
       #Go-Back-to-Homepage-Button:active {
@@ -239,15 +296,13 @@
         }
       }
 
-      #Go-Back-to-Homepage-Button:hover {
-        animation: neonPulse 2s infinite ease-in-out;
-      }
+
 
       /* Responsive adjustments for smaller screens */
       @media (max-width: 600px) {
         #Go-Back-to-Homepage-Button {
           display: block;
-          width: calc(100% - 40px);
+          width: 100%;
           max-width: 360px;
           margin: 24px auto 0 auto;
           padding: 12px 20px;
@@ -255,155 +310,19 @@
           letter-spacing: 1px;
         }
 
-        #Go-Back-to-Homepage-Button::before {
-          left: -120%;
-        }
+
       }
     </style>
 
     <button
       id="Go-Back-to-Homepage-Button"
+      type="button"
       onclick="window.location.href = '/'"
     >
       Go Back to Homepage
     </button>
 
     <!-- Interactive Particles Background Script -->
-
-    <script>
-      // --- Interactive Star Particle Background ---
-      const canvas = document.getElementById("bg-canvas");
-      if (canvas) {
-        const ctx = canvas.getContext("2d");
-        let width, height;
-        let particles = [];
-
-        // Mouse interaction W
-        const mouse = { x: null, y: null, radius: 150 };
-
-        window.addEventListener("mousemove", (event) => {
-          mouse.x = event.x;
-          mouse.y = event.y;
-        });
-
-        window.addEventListener("mouseout", () => {
-          mouse.x = null;
-          mouse.y = null;
-        });
-
-        function resize() {
-          width = window.innerWidth;
-          height = window.innerHeight;
-          canvas.width = width;
-          canvas.height = height;
-          initParticles();
-        }
-        window.addEventListener("resize", resize);
-
-        class Particle {
-          constructor(x, y, dx, dy, size) {
-            this.x = x;
-            this.y = y;
-            this.dx = dx;
-            this.dy = dy;
-            this.size = size;
-          }
-          draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-            // Stars are off-white/blue shaded
-            ctx.fillStyle = "rgba(232, 232, 232, 0.8)";
-            ctx.fill();
-          }
-          update() {
-            if (this.x > width || this.x < 0) this.dx = -this.dx;
-            if (this.y > height || this.y < 0) this.dy = -this.dy;
-
-            // Interaction with mouse (repel slightly)
-            if (mouse.x != null && mouse.y != null) {
-              let dx = mouse.x - this.x;
-              let dy = mouse.y - this.y;
-              let distance = Math.sqrt(dx * dx + dy * dy);
-              if (distance < mouse.radius) {
-                const forceDirectionX = dx / distance;
-                const forceDirectionY = dy / distance;
-                const force = (mouse.radius - distance) / mouse.radius;
-                this.x -= forceDirectionX * force * 1.5;
-                this.y -= forceDirectionY * force * 1.5;
-              }
-            }
-
-            this.x += this.dx;
-            this.y += this.dy;
-            this.draw();
-          }
-        }
-
-        function initParticles() {
-          particles = [];
-          // Adjust density: lower divisor = more particles so its better haha
-          let numberOfParticles = (width * height) / 9000;
-          for (let i = 0; i < numberOfParticles; i++) {
-            let size = Math.random() * 1.5 + 0.5; // tiny stars
-            let x = Math.random() * (width - size * 2) + size * 2;
-            let y = Math.random() * (height - size * 2) + size * 2;
-            let dx = (Math.random() - 0.5) * 0.5; // slow drift
-            let dy = (Math.random() - 0.5) * 0.5;
-            particles.push(new Particle(x, y, dx, dy, size));
-          }
-        }
-
-        function animateParticles() {
-          requestAnimationFrame(animateParticles);
-          ctx.clearRect(0, 0, width, height);
-
-          for (let i = 0; i < particles.length; i++) {
-            particles[i].update();
-          }
-          connectParticles();
-        }
-
-        function connectParticles() {
-          let maxDistance = 100;
-          for (let a = 0; a < particles.length; a++) {
-            for (let b = a; b < particles.length; b++) {
-              let dx = particles[a].x - particles[b].x;
-              let dy = particles[a].y - particles[b].y;
-              let distance = dx * dx + dy * dy;
-
-              // Connect particles to each other
-              if (distance < maxDistance * maxDistance) {
-                let opacity = 1 - distance / (maxDistance * maxDistance);
-                ctx.strokeStyle = `rgba(232, 232, 232, ${opacity * 0.15})`; // VERY faint web
-                ctx.lineWidth = 0.5;
-                ctx.beginPath();
-                ctx.moveTo(particles[a].x, particles[a].y);
-                ctx.lineTo(particles[b].x, particles[b].y);
-                ctx.stroke();
-              }
-            }
-            // Mouse connection: "shit appear when u hover over the web"
-            if (mouse.x != null && mouse.y != null) {
-              let dx = particles[a].x - mouse.x;
-              let dy = particles[a].y - mouse.y;
-              let distance = dx * dx + dy * dy;
-              if (distance < mouse.radius * mouse.radius) {
-                let opacity = 1 - distance / (mouse.radius * mouse.radius);
-                // Electric blue lines shoot out to the cursor like Woosh
-                ctx.strokeStyle = `rgba(0, 123, 255, ${opacity * 0.9})`;
-                ctx.lineWidth = 1.2;
-                ctx.beginPath();
-                ctx.moveTo(particles[a].x, particles[a].y);
-                ctx.lineTo(mouse.x, mouse.y);
-                ctx.stroke();
-              }
-            }
-          }
-        }
-
-        resize();
-        animateParticles();
-      }
-    </script>
+    <script defer src="particles.js"></script>
   </body>
 </html>

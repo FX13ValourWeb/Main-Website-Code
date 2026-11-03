@@ -2,6 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/fireba
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
+import { withLoading, submitOnEnter } from "./auth-ui.js";
 // ✅ UPDATED TO NEW PROJECT CONFIG
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
@@ -24,7 +25,7 @@ const signInScreen = document.getElementById('signInScreen')
 const successSignInParticipant = document.getElementById('successSignInParticipant')
 const isExecutive = document.getElementById('isExecutive')
 
-loginBtn.addEventListener('click', async () => {
+loginBtn.addEventListener('click', withLoading(loginBtn, async () => {
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
 
@@ -63,4 +64,7 @@ loginBtn.addEventListener('click', async () => {
             alert("Error: " + error.message);
         }
     }
-});
+}));
+
+// Enter key submits the form
+submitOnEnter(loginBtn);
