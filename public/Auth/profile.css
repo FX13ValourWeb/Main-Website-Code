@@ -1,0 +1,906 @@
+:root {
+  --electric-blue: #007bff;
+  --neon-glow: rgba(0, 123, 255, 0.4);
+  --deep-charcoal: #0d0d0d;
+  --matte-black: #050505;
+  --border-color: rgba(0, 123, 255, 0.35); /* Defined & Sharp */
+  --off-white: #f5f5f5;
+  --text-muted: #888888;
+}
+
+/* Interactive Background Canvas */
+#bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+  /* Allows clicks to pass through */
+}
+
+/* --- Global Reset & Typography --- */
+body {
+  background-color: var(--matte-black);
+  color: var(--off-white);
+  /* Reverted to your usual clean font stack */
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  margin: 0;
+  padding: 20px 60px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* --- 1. Top Center Header (Brand Consistent) --- */
+.main-header {
+  width: 100%;
+  padding: 40px 0;
+  text-align: center;
+}
+
+.logo-text {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: 5px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.logo-text .highlight {
+  color: var(--electric-blue);
+  text-shadow: 0 0 15px var(--neon-glow);
+}
+
+.logo-subtext {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+/* --- 2. Main Profile Section (Spread Out) --- */
+#profile {
+  display: flex;
+  background: linear-gradient(145deg, #0d0d0d, #121212);
+  border: 2px solid var(--border-color); /* More defined border */
+  border-radius: 12px;
+  padding: 50px;
+  margin-bottom: 40px;
+  gap: 60px;
+  align-items: center;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+/* Image Identity Circle */
+#img {
+  width: 240px;
+  height: 240px;
+  background: #080808;
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px;
+  flex-shrink: 0;
+}
+
+#img p {
+  font-size: 0.7rem;
+  color: #444;
+  line-height: 1.4;
+}
+
+/* --- 3. Profile Details Logic --- */
+#profileDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* FULL NAME (Largest Element + Blue Hover) */
+#fullNameDisplay {
+  font-size: 4.5rem; /* Massive impact */
+  font-weight: 900;
+  margin: 0;
+  cursor: default;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  line-height: 0.9;
+}
+
+#fullNameDisplay span {
+  color: var(--electric-blue);
+}
+
+#fullNameDisplay:hover {
+  color: var(--electric-blue);
+  transform: translateX(10px);
+  text-shadow: 0 0 40px var(--neon-glow);
+}
+
+/* Tags (Small Boxes) */
+#tags {
+  display: flex;
+  gap: 8px;
+  margin-top: 15px;
+  margin-bottom: 35px;
+}
+
+.tag {
+  background: rgba(0, 123, 255, 0.05);
+  border: 1px solid #333;
+  padding: 5px 14px;
+  font-size: 0.65rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+.special-position-tag {
+  display: none;
+  /* A stronger background to make it look 'Solid' */
+
+  /* Neon glow effect for the border */
+  border-color: #00d4ff;
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
+
+  /* Text styling */
+  color: #ffffff; /* Brighter text for better contrast */
+
+  /* Optional: A slight transition if you want it to glow more on hover */
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.special-position-tag:hover {
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.6);
+  transform: translateY(-1px);
+}
+
+.executive-tag {
+  border-color: var(--electric-blue);
+  color: var(--electric-blue);
+}
+
+/* --- 4. Information Grid (Properly Spread) --- */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 25px 0;
+  margin-bottom: 30px;
+}
+
+.info-grid p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.info-grid span {
+  display: block;
+  color: var(--off-white);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+/* Contact Details */
+.contact-row {
+  display: flex;
+  gap: 50px;
+  margin-bottom: 40px;
+}
+
+.contact-row p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.contact-row span {
+  color: var(--off-white);
+  margin-left: 10px;
+  font-weight: 500;
+}
+
+/* --- 5. Action Buttons --- */
+#buttonsContainer {
+  display: flex;
+  gap: 15px;
+}
+
+#website,
+#logOut {
+  padding: 12px 28px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+#website {
+  background: var(--electric-blue);
+  color: white;
+  border: 1px solid var(--electric-blue);
+}
+
+#website:hover {
+  box-shadow: 0 0 20px var(--neon-glow);
+  transform: translateY(-2px);
+}
+
+#logOut {
+  background: transparent;
+  color: #ff4d4d;
+  border: 1px solid #ff4d4d;
+}
+
+#logOut:hover {
+  background: #ff4d4d;
+  color: white;
+}
+
+/* --- 6. Lower Dashboard Section --- */
+#contributionsAndAttendance {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  padding-bottom: 50px;
+}
+
+.data-card {
+  background: #0a0a0a;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 35px;
+  min-height: 250px;
+  transition: 0.4s ease;
+}
+
+.data-card h3 {
+  margin: 0 0 20px 0;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--electric-blue);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 15px;
+}
+
+.data-card:hover {
+  border-color: var(--electric-blue);
+  transform: scale(1.01);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================
+   MOBILE STYLES (Screens 768px and smaller)
+   ========================================== */
+@media (max-width: 768px) {
+  /* --- 2. Main Profile Section Overrides --- */
+  #profile {
+    flex-direction: column; /* Stack image and details vertically */
+    padding: 30px 20px; /* Reduce massive desktop padding */
+    gap: 30px; /* Reduce space between image and details */
+    margin-bottom: 25px;
+    text-align: center; /* Center-align profile text elements */
+  }
+
+  /* Image Identity Circle */
+  #img {
+    width: 180px; /* Scale down the image size slightly */
+    height: 180px;
+    padding: 20px;
+  }
+
+  /* --- 3. Profile Details Overrides --- */
+  #profileDetails {
+    width: 100%; /* Force details wrapper to fill full width */
+  }
+
+  /* Scale down the massive font size for phone screens */
+  #fullNameDisplay {
+    font-size: 2.4rem;
+    line-height: 1.1;
+  }
+
+  /* Disable translation effect on mobile touch screens to avoid accidental clipping */
+  #fullNameDisplay:hover {
+    transform: none;
+  }
+
+  /* Center the tags under the name */
+  #tags {
+    justify-content: center;
+    flex-wrap: wrap; /* Let tags wrap to a new line if needed */
+    margin-bottom: 25px;
+  }
+
+  /* --- 4. Information Grid Overrides --- */
+  .info-grid {
+    grid-template-columns: repeat(
+      2,
+      1fr
+    ); /* Switch from 4 columns to a neat 2x2 grid */
+    gap: 20px 10px; /* Add spacing between the grid items */
+    padding: 20px 0;
+    text-align: left; /* Keep data text readable */
+  }
+
+  .info-grid span {
+    font-size: 1.05rem; /* Slightly scale down values */
+  }
+
+  /* Contact Details Stacked */
+  .contact-row {
+    flex-direction: column; /* Stack email/phone lines vertically */
+    gap: 15px; /* Reduce spacing between items */
+    margin-bottom: 30px;
+    text-align: left; /* Align text clean to the left */
+  }
+
+  .contact-row p {
+    margin: 0;
+  }
+
+  .contact-row span {
+    display: block; /* Push actual email/phone values under labels */
+    margin-left: 0; /* Reset desktop left margin */
+    margin-top: 4px;
+  }
+
+  /* --- 5. Action Buttons Overrides --- */
+  #buttonsContainer {
+    flex-direction: column; /* Stack action buttons vertically */
+    gap: 12px;
+  }
+
+  #website,
+  #logOut {
+    width: 100%; /* Make buttons full-width for easier tapping */
+    padding: 14px; /* Better hit target area for mobile fingers */
+  }
+
+  /* --- 6. Lower Dashboard Section Overrides --- */
+  #contributionsAndAttendance {
+    grid-template-columns: 1fr; /* Drop side-by-side cards to a 1-column layout */
+    gap: 20px;
+    padding-bottom: 30px;
+  }
+
+  .data-card {
+    padding: 25px;
+    min-height: auto; /* Allow height to auto-adjust based on content */
+  }
+}
+
+/* Contributions and Achievcements Responsive Fix */
+@media (max-width: 768px) {
+  #contributionsAndAttendance {
+    grid-template-columns: 1fr;
+  }
+}
+
+#main-footer {
+  background-color: transparent;
+  padding: 0 5% 20px 5%;
+  color: #e8e8e8;
+  position: relative;
+}
+
+/* The Blue Separation Line */
+.footer-divider {
+  width: 100%;
+  height: 2px;
+  background: var(--electric-blue);
+  box-shadow: 0 0 15px rgba(0, 123, 255, 0.6);
+  margin-bottom: 50px;
+  margin-top: 100px;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer-section h3 {
+  color: var(--electric-blue);
+  text-transform: uppercase;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+.footer-section p {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+
+/* Developed By Link */
+.dev-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  position: relative;
+  transition: 0.3s;
+}
+
+.dev-link:hover {
+  color: var(--electric-blue);
+  text-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+/* Sponsors Area */
+.sponsors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 15px;
+}
+
+.sponsor-box {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  font-size: 0.7rem;
+  text-align: center;
+  border-radius: 5px;
+  opacity: 0.6;
+  transition: 0.3s;
+}
+
+.sponsor-box:hover {
+  opacity: 1;
+  border-color: var(--electric-blue);
+  background: rgba(0, 123, 255, 0.05);
+}
+
+/* Footer Bottom */
+.footer-bottom {
+  text-align: center;
+  margin-top: 50px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 20px;
+  font-size: 0.8rem;
+  opacity: 0.4;
+}
+
+/* Responsive Fix */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  .sponsors-grid {
+    justify-content: center;
+  }
+}
+
+/* Container for the lists */
+#contributionsList,
+#attendanceList {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Individual Project Items */
+.data-item {
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid var(--electric-blue);
+  padding: 10px 15px;
+  border-radius: 4px;
+}
+
+.item-title {
+  color: var(--off-white);
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.item-detail {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin: 5px 0 0 0;
+}
+
+/* Attendance Rows */
+.attendance-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.date-label {
+  font-size: 0.85rem;
+  color: var(--off-white);
+}
+
+.status-badge {
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 3px;
+}
+
+/* Dynamic Status Colors */
+.present {
+  background: rgba(0, 255, 127, 0.1);
+  color: #00ff7f;
+  border: 1px solid #00ff7f;
+}
+.absent {
+  background: rgba(255, 77, 77, 0.1);
+  color: #ff4d4d;
+  border: 1px solid #ff4d4d;
+}
+.late {
+  background: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+  border: 1px solid #ffc107;
+}
+
+/* Container for the buttons to keep them aligned */
+#buttonsContainer {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+  flex-wrap: wrap;
+}
+
+/* Base style for the Edit Profile button */
+#editProfile {
+  /* Layout & Alignment */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+
+  /* Branding Colors */
+  background: transparent;
+  color: var(--electric-blue);
+  border: 1px solid var(--electric-blue);
+
+  /* Typography */
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  /* Effects & Interaction */
+  border-radius: 4px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover State */
+#editProfile:hover {
+  background: var(--electric-blue);
+  color: var(--matte-black);
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Active/Click State */
+#editProfile:active {
+  transform: translateY(0);
+}
+
+/* Icon Animation on Hover */
+#editProfile:hover i {
+  transform: rotate(-15deg) scale(1.1);
+}
+
+#editProfile i {
+  font-size: 1rem;
+  transition: var(--transition-smooth);
+}
+
+/* Certificate System */
+
+/* Main Container */
+/* Empty State */
+.empty-msg {
+  grid-column: 1 / -1;
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+  padding: 40px;
+}
+/* 1. UPDATED GRID FOR 4 PER ROW */
+#achievementsList {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr); /* Changed from 5 to 4 */
+  gap: 20px; /* Slightly larger gap for 4-column layout */
+  width: 95%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Empty State */
+.empty-msg {
+  grid-column: 1 / -1;
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+  padding: 40px;
+}
+
+/* 2. CARD CSS */
+#pathFinders2Container {
+  background: var(--deep-charcoal);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 2.5rem 1.5rem;
+
+  width: auto;
+  min-width: 0;
+  max-width: 100%;
+
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Hover Animation */
+#pathFinders2Container:hover {
+  border-color: var(--electric-blue);
+  transform: translateY(-10px);
+  box-shadow: 0 35px 60px -15px rgba(0, 123, 255, 0.2);
+}
+
+/* Aesthetic Title Styling */
+#achievementTitle {
+  color: var(--off-white);
+  font-size: 1.3rem; /* Slightly larger since we have more room now */
+  font-weight: 800;
+  margin: 0.5rem 0;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+#achievementTitle span {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--electric-blue);
+  letter-spacing: 3px;
+  margin-top: 5px;
+  font-weight: 500;
+}
+
+#achievementTitle::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: var(--electric-blue);
+  margin: 15px auto;
+  border-radius: 2px;
+}
+
+.awardClass {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+
+#awardClassT {
+  color: var(--off-white);
+  font-weight: 700;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 2px;
+}
+
+.trophy-icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 0 12px var(--neon-glow));
+  transition: transform 0.5s ease;
+}
+
+#pathFinders2Container:hover .trophy-icon {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+/* BUTTON STYLE */
+#pathFinders2CertificateView {
+  position: relative;
+  background: transparent;
+  color: var(--electric-blue);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 14px 20px;
+  border: 1px solid var(--electric-blue);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  overflow: hidden;
+  z-index: 1;
+  display: inline-block;
+  width: 100%;
+  outline: none;
+  animation: neonPulse 2s infinite ease-in-out;
+}
+
+#pathFinders2CertificateView::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--electric-blue);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  z-index: -1;
+}
+
+#pathFinders2CertificateView:hover {
+  color: var(--matte-black);
+  box-shadow: 0 0 25px rgba(0, 123, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+#pathFinders2CertificateView:hover::before {
+  left: 0;
+}
+
+@keyframes neonPulse {
+  0% {
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+  }
+}
+
+.card-bg-glow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 123, 255, 0.1) 0%,
+    transparent 70%
+  );
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ===== Responsive: Certificate System ===== */
+
+/* Large tablets / small desktops */
+@media (max-width: 1200px) {
+  #achievementsList {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Tablets */
+@media (max-width: 900px) {
+  #achievementsList {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    width: 100%;
+    padding: 16px;
+  }
+
+  #pathFinders2Container {
+    padding: 2rem 1.25rem;
+  }
+
+  #achievementTitle {
+    font-size: 1.15rem;
+  }
+
+  .trophy-icon {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+/* Large phones */
+@media (max-width: 600px) {
+  #achievementsList {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 12px;
+  }
+
+  #pathFinders2Container {
+    padding: 1.75rem 1rem;
+    border-radius: 10px;
+  }
+
+  #achievementTitle {
+    font-size: 1rem;
+    letter-spacing: 1px;
+  }
+
+  #achievementTitle span {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+  }
+
+  .awardClass {
+    font-size: 0.7rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .trophy-icon {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 0.75rem;
+  }
+
+  #pathFinders2CertificateView {
+    font-size: 0.7rem;
+    padding: 12px 14px;
+  }
+
+  /* Hover-only transforms don't apply well on touch; keep cards flat */
+  #pathFinders2Container:hover {
+    transform: none;
+  }
+}
+
+/* Small phones */
+@media (max-width: 400px) {
+  #achievementsList {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .empty-msg {
+    padding: 24px;
+  }
+}

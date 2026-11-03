@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us - FX-13 Valour</title>
+    <link rel="stylesheet" href="/CSS/main.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link rel="icon" type="image/png" href="/Images/Robotics Club Logo.png" />
+    <style>
+      /* Essential Canvas Reset */
+      body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        background-color: #050508; /* Fallback deep space dark color */
+      }
+
+      #bg-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none; /* Allows clicks to pass through to elements below */
+      }
+
+      .all-sections {
+        position: relative;
+        z-index: 1; /* Pushes content above canvas layer */
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      .contact-title {
+        margin-bottom: 2rem;
+        color: white;
+        font-family: sans-serif;
+        font-size: 2.5rem;
+        text-align: center;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+      }
+
+      .contact-box {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 15px;
+        padding: 40px 80px;
+        text-align: center;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        cursor: pointer;
+        transition: all 0.4s ease;
+        box-shadow:
+          0 0 10px rgba(255, 255, 255, 0.05),
+          inset 0 0 5px rgba(255, 255, 255, 0.05);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+        text-decoration: none;
+        box-sizing: border-box;
+      }
+
+      .email-box {
+        width: 100%;
+        max-width: 480px;
+        padding: 40px 40px;
+      }
+
+      .back-box {
+        margin-top: 1.5rem;
+        padding: 20px 50px;
+        width: 100%;
+        max-width: 300px;
+      }
+
+      @media (hover: hover) {
+        .contact-box:hover {
+          transform: translateY(-2px);
+          border-color: rgba(255, 255, 255, 0.4);
+          box-shadow:
+            0 0 20px rgba(255, 255, 255, 0.15),
+            inset 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        .contact-box:hover .contact-icon {
+          transform: scale(1.05);
+          color: #fff;
+          text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+      }
+
+      .contact-box:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+      }
+
+      .contact-icon {
+        font-size: 3rem;
+        color: #fff;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+        transition: all 0.4s ease;
+      }
+
+      .back-icon {
+        font-size: 1.8rem;
+      }
+
+      .contact-email {
+        color: white;
+        font-size: 1.0rem;
+        font-weight: bold;
+        font-family: monospace;
+        letter-spacing: 1px;
+        margin: 0;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+        word-break: break-all;
+      }
+
+      .back-text {
+        color: white;
+        font-size: 1.1rem;
+        font-weight: bold;
+        font-family: monospace;
+        letter-spacing: 1px;
+        margin: 0;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+      }
+
+      /* Responsive Breakpoints */
+      @media (max-width: 600px) {
+        .contact-title {
+          font-size: 2rem;
+          margin-bottom: 1.5rem;
+        }
+        .contact-box {
+          padding: 30px 20px;
+          gap: 12px;
+        }
+        .contact-email {
+          font-size: 1.15rem;
+        }
+        .back-box {
+          padding: 15px 30px;
+          margin-top: 1rem;
+        }
+        .back-text {
+          font-size: 1rem;
+        }
+        .contact-icon {
+          font-size: 2.2rem;
+        }
+        .back-icon {
+          font-size: 1.4rem;
+        }
+      }
+
+      @media (max-width: 360px) {
+        .contact-email {
+          font-size: 0.95rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="bg-canvas"></canvas>
+
+    <section class="all-sections">
+      <h1 class="contact-title">Contact Us</h1>
+
+      <a
+        href="https://mail.google.com/mail/?view=cm&to=fxvalourwebsite@gmail.com"
+        target="_blank"
+        class="contact-box email-box"
+      >
+        <i class="fa-solid fa-envelope contact-icon"></i>
+        <p class="contact-email">fx13valourrobotics@gmail.com</p>
+      </a>
+
+      <a href="index.html" class="contact-box back-box">
+        <i class="fa-solid fa-arrow-left contact-icon back-icon"></i>
+        <p class="back-text">Back to Home</p>
+      </a>
+    </section>
+
+    <script>
+      // --- Interactive Star Particle Background ---
+      const canvas = document.getElementById("bg-canvas");
+      if (canvas) {
+        const ctx = canvas.getContext("2d");
+        let width, height;
+        let particles = [];
+
+        // Mouse interaction
+        const mouse = { x: null, y: null, radius: 150 };
+
+        window.addEventListener("mousemove", (event) => {
+          mouse.x = event.clientX; // Changed to clientX for cleaner viewport space tracking
+          mouse.y = event.clientY; // Changed to clientY
+        });
+
+        window.addEventListener("mouseout", () => {
+          mouse.x = null;
+          mouse.y = null;
+        });
+
+        // Touch interaction support for mobile devices
+        window.addEventListener("touchstart", (event) => {
+          if (event.touches.length > 0) {
+            mouse.x = event.touches[0].clientX;
+            mouse.y = event.touches[0].clientY;
+          }
+        });
+
+        window.addEventListener("touchmove", (event) => {
+          if (event.touches.length > 0) {
+            mouse.x = event.touches[0].clientX;
+            mouse.y = event.touches[0].clientY;
+          }
+        });
+
+        window.addEventListener("touchend", () => {
+          mouse.x = null;
+          mouse.y = null;
+        });
+
+        function resize() {
+          width = window.innerWidth;
+          height = window.innerHeight;
+          canvas.width = width;
+          canvas.height = height;
+          initParticles();
+        }
+        window.addEventListener("resize", resize);
+
+        class Particle {
+          constructor(x, y, dx, dy, size) {
+            this.x = x;
+            this.y = y;
+            this.dx = dx;
+            this.dy = dy;
+            this.size = size;
+          }
+          draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+            ctx.fillStyle = "rgba(232, 232, 232, 0.8)";
+            ctx.fill();
+          }
+          update() {
+            if (this.x > width || this.x < 0) this.dx = -this.dx;
+            if (this.y > height || this.y < 0) this.dy = -this.dy;
+
+            // Interaction with mouse (repel slightly)
+            if (mouse.x != null && mouse.y != null) {
+              let dx = mouse.x - this.x;
+              let dy = mouse.y - this.y;
+              let distance = Math.sqrt(dx * dx + dy * dy);
+              if (distance < mouse.radius) {
+                const forceDirectionX = dx / distance;
+                const forceDirectionY = dy / distance;
+                const force = (mouse.radius - distance) / mouse.radius;
+                this.x -= forceDirectionX * force * 1.5;
+                this.y -= forceDirectionY * force * 1.5;
+              }
+            }
+
+            this.x += this.dx;
+            this.y += this.dy;
+            this.draw();
+          }
+        }
+
+        function initParticles() {
+          particles = [];
+          let numberOfParticles = (width * height) / 9000;
+          for (let i = 0; i < numberOfParticles; i++) {
+            let size = Math.random() * 1.5 + 0.5;
+            let x = Math.random() * (width - size * 2) + size * 2;
+            let y = Math.random() * (height - size * 2) + size * 2;
+            let dx = (Math.random() - 0.5) * 0.5;
+            let dy = (Math.random() - 0.5) * 0.5;
+            particles.push(new Particle(x, y, dx, dy, size));
+          }
+        }
+
+        function animateParticles() {
+          requestAnimationFrame(animateParticles);
+          ctx.clearRect(0, 0, width, height);
+
+          for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+          }
+          connectParticles();
+        }
+
+        function connectParticles() {
+          let maxDistance = 100;
+          for (let a = 0; a < particles.length; a++) {
+            for (let b = a; b < particles.length; b++) {
+              let dx = particles[a].x - particles[b].x;
+              let dy = particles[a].y - particles[b].y;
+              let distance = dx * dx + dy * dy;
+
+              if (distance < maxDistance * maxDistance) {
+                let opacity = 1 - distance / (maxDistance * maxDistance);
+                ctx.strokeStyle = `rgba(232, 232, 232, ${opacity * 0.15})`;
+                ctx.lineWidth = 0.5;
+                ctx.beginPath();
+                ctx.moveTo(particles[a].x, particles[a].y);
+                ctx.lineTo(particles[b].x, particles[b].y);
+                ctx.stroke();
+              }
+            }
+
+            if (mouse.x != null && mouse.y != null) {
+              let dx = particles[a].x - mouse.x;
+              let dy = particles[a].y - mouse.y;
+              let distance = dx * dx + dy * dy;
+              if (distance < mouse.radius * mouse.radius) {
+                let opacity = 1 - distance / (mouse.radius * mouse.radius);
+                ctx.strokeStyle = `rgba(0, 123, 255, ${opacity * 0.9})`;
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                ctx.moveTo(particles[a].x, particles[a].y);
+                ctx.lineTo(mouse.x, mouse.y);
+                ctx.stroke();
+              }
+            }
+          }
+        }
+
+        // Run setup smoothly
+        resize();
+        animateParticles();
+      }
+    </script>
+  </body>
+</html>

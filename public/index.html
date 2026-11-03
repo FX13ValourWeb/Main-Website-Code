@@ -1,0 +1,1040 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Welcome to the official website of the FX-13 Valour Robotics Club. Design, Create, and Engineer your journey with us. 
+                    Join us in this adventure to learn, collaborate together and shape the future of innovation in SFX Greenherald International School and beyond."
+    />
+    <title>FX-13 Valour Robotics Club</title>
+
+    <!-- Open Graph / Facebook Previews -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://fx13valour.org" />
+    <meta property="og:title" content="FX-13 Valour Robotics Club" />
+    <meta
+      property="og:description"
+      content="Welcome to the official page of FX-13 Valour Robotics Club."
+    />
+    <meta
+      property="og:image"
+      content="https://fx13valour.org/Images/Robotics%20Club%20Logo.png"
+    />
+
+    <!-- Twitter / X Previews -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://fx13valour.org" />
+    <meta name="twitter:title" content="FX-13 Valour Robotics Club" />
+    <meta
+      name="twitter:description"
+      content="Welcome to the official page of FX-13 Valour Robotics Club."
+    />
+    <meta
+      name="twitter:image"
+      content="https://fx13valour.org/Images/Robotics%20Club%20Logo.png"
+    />
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/12.11.0/firebase-app-compat.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/12.11.0/firebase-auth-compat.js"></script>
+    <script
+      defer
+      src="/__/firebase/12.11.0/firebase-database-compat.js"
+    ></script>
+    <script
+      defer
+      src="/__/firebase/12.11.0/firebase-firestore-compat.js"
+    ></script>
+    <script
+      defer
+      src="/__/firebase/12.11.0/firebase-functions-compat.js"
+    ></script>
+    <script
+      defer
+      src="/__/firebase/12.11.0/firebase-messaging-compat.js"
+    ></script>
+    <script
+      defer
+      src="/__/firebase/12.11.0/firebase-storage-compat.js"
+    ></script>
+    <script
+      defer
+      src="/__/firebase/12.11.0/firebase-analytics-compat.js"
+    ></script>
+    <script
+      defer
+      src="/__/firebase/12.11.0/firebase-remote-config-compat.js"
+    ></script>
+    <script
+      defer
+      src="/__/firebase/12.11.0/firebase-performance-compat.js"
+    ></script>
+    <!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+    <link rel="stylesheet" href="CSS/main.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="48x48"
+      href="/Images/Robotics Club Logo.png"
+    />
+    <link rel="apple-touch-icon" href="/Images/Robotics Club Logo.png" />
+    <!-- in live server: /public/Images/Robotics Club Logo.png -->
+  </head>
+
+  <body>
+    <!-- Interactive Background :DDD -->
+    <canvas id="bg-canvas"></canvas>
+
+    <nav class="main-navigation-bar">
+      <div class="nav-section links-group">
+        <div class="nav-dropdown">
+          <button
+            class="dropdown-trigger new-dropdown-btn menu-icon-btn"
+            aria-label="Menu"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="dropdown-content multi-section-dropdown">
+            <div class="dropdown-section">
+              <h4 class="dropdown-subheader">Posters</h4>
+              <a href="#">Tech in Fiction</a>
+              <a href="#">Tech in Motion</a>
+            </div>
+            <div class="dropdown-section">
+              <h4 class="dropdown-subheader">Additional information</h4>
+              <a href="#">Rules for events</a>
+              <a href="#">Guidelines for Fairness</a>
+            </div>
+          </div>
+        </div>
+        <a href="#home-page-section" class="nav-item-link">Home</a>
+        <a href="#events-page-section" class="nav-item-link">Events</a>
+
+        <div class="nav-dropdown">
+          <button class="dropdown-trigger">
+            Projects <span class="arrow">▾</span>
+          </button>
+          <div class="dropdown-content">
+            <a href="#projects-page-section">AeroSense Drone</a>
+            <a href="#">Coming Soon...</a>
+            <a href="#">Coming Soon...</a>
+          </div>
+        </div>
+
+        <a href="https://fx13valour.org/SenatePage.html" class="nav-item-link"
+          >Executives</a
+        >
+      </div>
+
+      <div class="nav-section logo-container">
+        <h1 class="brand-title">
+          FX-13 <span class="highlight-blue">VALOUR</span>
+        </h1>
+      </div>
+
+      <div class="nav-section button-group">
+        <button
+          id="Contact-Button"
+          onclick="window.location.href = '/contactus.html'"
+        >
+          Contact Us
+        </button>
+        <!-- REMEMBER TO CHANGE IT TO PUBLIC HREF -->
+        <button id="Sign-in-Button">
+          <a href="/Auth/Signin.html">Sign in</a>
+        </button>
+        <button id="Profile-Button">
+          <span class="icon-wrapper">
+            <!-- REMEMBER TO CHANGE IT TO PUBLIC HREF -->
+            <img
+              src="https://img.icons8.com/ios-glyphs/30/007BFF/user-male-circle.png"
+              alt="Profile"
+            />
+          </span>
+          View Profile
+        </button>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button
+        class="mobile-menu-toggle"
+        id="mobileToggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <i class="fa-solid fa-bars" id="mobileIcon"></i>
+      </button>
+
+      <!-- Mobile slide-down menu -->
+      <div class="mobile-menu-overlay" id="mobileMenu" role="navigation">
+        <div class="mobile-nav-links">
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger1">
+              <span
+                >Browse
+                <i
+                  class="fa-solid fa-bars"
+                  style="font-size: 0.85rem; margin-left: 6px"
+                ></i
+              ></span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner1">
+              <h4 class="dropdown-subheader">Posters</h4>
+              <a href="#">Tech in Fiction</a>
+              <a href="#">Tech in Motion</a>
+              <h4 class="dropdown-subheader" style="margin-top: 8px">
+                Additional information
+              </h4>
+              <a href="#">Rules for events</a>
+              <a href="#">Guidelines for Fairness</a>
+            </div>
+          </div>
+          <a href="#home-page-section" class="nav-item-link">Home</a>
+          <a href="#events-page-section" class="nav-item-link">Events</a>
+          <a href="#" class="nav-item-link">AQ-levels</a>
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger2">
+              <span>Projects</span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner2">
+              <a href="#projects-page-section">AeroSense Drone</a>
+              <a href="#">Coming Soon...</a>
+              <a href="#">Coming Soon...</a>
+            </div>
+          </div>
+          <a href="#executives-page-section" class="nav-item-link"
+            >Executives</a
+          >
+        </div>
+        <div class="mobile-buttons">
+          <button id="Contact-Button">
+            <a href="/contactus.html">Contact us</a>
+          </button>
+          <button id="Sign-in-Button">
+            <a href="/Auth/Signin.html">Sign in</a>
+          </button>
+          <button id="Profile-Button">
+            <span class="icon-wrapper">
+              <img
+                src="https://img.icons8.com/ios-glyphs/30/007BFF/user-male-circle.png"
+                alt="Profile"
+              />
+            </span>
+            View Profile
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <section class="all-sections" id="home-page-section">
+      <div id="home-page-container">
+        <div id="home-page-text">
+          <p id="home-page-text1">
+            Where <span id="typewriter-text" class="highlight-blue"></span
+            ><span class="cursor">|</span>
+          </p>
+          <p id="home-page-text2">FX-13 Valour</p>
+          <p id="home-page-text3">ROBOTICS CLUB</p>
+          <p id="home-page-text4">
+            Welcome to the official website of the FX-13 Valour Robotics Club.
+            Design, Create, and Engineer your journey with us. Join us in this
+            adventure to learn, collaborate together and shape the future of
+            innovation in SFX Greenherald International School and beyond.
+          </p>
+          <button
+            class="event-participate-button"
+            id="event-participate-button-home-page"
+          >
+            <i class="fa-solid fa-arrow-right"></i> Participate in upcoming
+            Event
+          </button>
+          <div id="home-page-socials-container">
+            <ul id="home-page-socials">
+              <li
+                class="social-link"
+                data-url="https://www.instagram.com/fx13valourrobotics/"
+              >
+                <i class="fa-brands fa-instagram"></i>
+              </li>
+              <li class="social-link" data-url="https://facebook.com">
+                <i class="fa-brands fa-facebook"></i>
+              </li>
+              <li class="social-link" data-url="https://discord.gg/cw3ZYPXMT">
+                <i class="fa-brands fa-discord"></i>
+              </li>
+            </ul>
+          </div>
+
+          <script>
+            document.querySelectorAll(".social-link").forEach((link) => {
+              link.style.cursor = "pointer";
+              link.addEventListener("click", function () {
+                window.open(this.getAttribute("data-url"), "_blank");
+              });
+            });
+          </script>
+        </div>
+        <div id="home-page-image">
+          <img
+            src="Images/Robotics Club Logo.png"
+            alt="FX-13 Valour Robotics club logo"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Events Section -->
+
+    <section class="all-sections" id="events-page-section">
+      <h1 class="heading">Our Events</h1>
+      <p id="events-page-section-glowing-text"></p>
+      <div id="currentEventContainerWrapper">
+        <div id="currentEventContainer">
+          <!-- CEC = CURRENT EVENT CONTAINER -->
+          <div id="CECcontent" class="is-collapsed">
+            <p id="CECheading"><span>Latest Event</span></p>
+            <p class="CECsubheading">Event Details</p>
+            <p id="CECdatails">
+              FX 13 VALOUR ROBOTICS CLUB presents an exciting competition
+              "ROBOTICS WITHOUT BORDERS" combining Engineering, Robotics, and
+              Presentation for students of Classes 5–6 and Classes 7–8. The
+              event will be conducted in two competitive rounds, with
+              participants competing individually (Solo). In Round 1,
+              participants will take an on-site pen-and-paper examination
+              designed to test their speed, accuracy, and foundational knowledge
+              of Mathematics, Engineering and Physics principles, and Robotics
+              fundamentals. The top 8 participants will advance to Round 2,
+              where they will participate in an online presentation through Zoom
+              and showcase a project or solution based on a designated theme
+              connecting robotics and environmental sustainability, such as
+              automated waste management and global cleanup solutions. Event
+              information, announcements, resources, and Zoom details will be
+              provided through the official club website, while finalists will
+              receive further instructions through email. The competition will
+              recognize the top three participants as Champion, First Runner-Up,
+              and Second Runner-Up, with official certificates awarded in
+              recognition of their achievements.
+            </p>
+            <!-- <img src="/Images/elementor-placeholder-image.png" alt=""> -->
+            <p class="CECsubheading">Category</p>
+            <p class="CECcategories">
+              <span>Category Junior: </span>Class 5 and 6
+            </p>
+            <p class="CECcategories">
+              <span>Category Senior: </span>Class 7 and 8
+            </p>
+            <p class="CECsubheading">Event Format</p>
+            <p id="CECdatails">
+              The event will be conducted in two rounds. Round 1 will be an
+              on-site written examination consisting of 10 MCQs and 1 free
+              response question, covering Mathematics, Engineering & Physics,
+              and Robotics fundamentals, with a total of 25 marks. The top 8
+              participants will advance to Round 2, an online presentation and
+              project display conducted via Zoom. Participants may use any
+              number of slides but must complete their presentation within a
+              strict 8-minute time limit, focusing on a designated theme
+              combining robotics and environmental sustainability.
+            </p>
+            <p class="CECsubheading">Example Questions</p>
+            <p class="CECdetails">
+              <span
+                ><span id="CECspan1">Question 1: </span> A cylindrical water
+                tank has a radius of 7 cm and a height of 20 cm. A robotic
+                system fills the tank to 75% of its capacity. If the robot pumps
+                water at a rate of 11 cm³ per second, approximately how many
+                seconds will it take to fill the tank to that level? <br />
+                (Take π = 22/7) <br />A) 150 s B) 175 s C) 210 s D) 220 s <br />
+                <span id="CECspan1">Answer: </span>B) 175s</span
+              >
+              <span
+                ><span id="CECspan1">Question 2: </span> Which component of a
+                robot is primarily responsible for detecting changes in the
+                robot's surroundings, such as distance, light, temperature, or
+                obstacles? <br />
+
+                A) Actuator B) Sensor C) Motor D) Microcontroller <br />
+                <span id="CECspan1">Answer: </span>B) Sensor</span
+              >
+            </p>
+          </div>
+
+          <button
+            id="CECtoggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="CECcontent"
+          >
+            See full details
+          </button>
+        </div>
+      </div>
+      <div id="events-container-main">
+        <div class="event-container" id="pathFindersEventCard">
+          <img
+            src="/Images/PathFinder Event Logo.jpg"
+            alt="Pathfinders event image"
+          />
+          <div class="events-text">
+            <div id="events-heading-div">
+              <span class="events-heading">PATHFINDERS</span>
+            </div>
+            <div id="events-tags-div">
+              <span>Class 3 & 4</span>
+              <span>Solo</span>
+            </div>
+            <p class="events-text">
+              Designed for students of Classes 3, 4, and 5, Pathfinders is an
+              exciting challenge that blends logic, problem-solving, and the
+              fundamentals of coding into one engaging experience. Participants
+              will be presented with a grid-based puzzle where a robot must
+              navigate from its starting point to its destination avoiding
+              obstacles along the way. Using a sequence of simple commands such
+              as "MOVE FORWARD" and "TURN RIGHT" or "TURN LEFT", students will
+              “program” the robot’s path, just like real world coding. With
+              increasing levels of difficulty across classes larger grids, more
+              obstacles, and limited command spaces students must think
+              critically, plan efficiently, and execute these commands on paper
+              precisely. The Top Three participants who complete the challenge
+              with the most accurate solutions in the shortest time will be
+              crowned winners! Pathfinders is more than just a competition it’s
+              a journey into the world of programmable thinking, where
+              creativity meets logic and every move counts.
+            </p>
+            <button
+              class="event-container-view-leaderboard"
+              onclick="window.location.href = '/LeaderBoardsPathFinders.html'"
+            >
+              View Leaderboard
+            </button>
+            <p class="event-number">1</p>
+          </div>
+        </div>
+
+        <div class="event-container">
+          <img
+            src="/Images/Euphrasi Event Logo.jpg"
+            alt="Euphrasi Event Logo"
+          />
+          <div class="events-text">
+            <div id="events-heading-div">
+              <span class="events-heading">EUPHRAISE DAY </span>
+            </div>
+            <div id="events-tags-div">
+              <span>Classes 5 & 6</span>
+              <span>Solo</span>
+            </div>
+            <p class="events-text">
+              The club hosted its first ever Euphrasie Day activites on January
+              18th, 2026, arranging a series of fun and engaging activities for
+              the students of Classes 3 to 6.
+            </p>
+
+            <p class="event-number">2</p>
+          </div>
+        </div>
+
+        <div class="event-container">
+          <img src="/Images/Workshop.JPG" alt="Pathfinders event image" />
+          <div class="events-text">
+            <div id="events-heading-div">
+              <span class="events-heading">ROBOTICS WORKSHOP</span>
+            </div>
+            <div id="events-tags-div">
+              <span>Classes 3, 4, 5 & 6</span>
+              <span>Workshop</span>
+            </div>
+            <p class="events-text">
+              The first ever Robotics Workshop was held on October 21st, 2025,
+              where students of Classes 3 to 6 were invited to learn about the
+              basics of robotics and how they can be applied in their daily
+              lives.
+            </p>
+
+            <p class="event-number">3</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upcoming Event Details Area -->
+      <div id="up-coming-event-details">
+        <h2>
+          Upcoming Event Status <span id="event-status">INITIALIZING...</span>
+        </h2>
+
+        <p id="upcoming-event-countdown">TO BE DECIDED</p>
+
+        <p id="upcoming-event-date">COMING SOON</p>
+
+        <p id="upcoming-event-description">Stay tuned for updates!</p>
+
+        <button
+          class="event-participate-button"
+          id="event-participate-button-home-page"
+        >
+          <i class="fa-solid fa-arrow-right"></i> Participate in upcoming Event
+        </button>
+      </div>
+    </section>
+
+    <!-- Modal Background -->
+    <div id="modalBackground"></div>
+    <!-- EVENT MODAL TEMPLATE for PathFinders-->
+
+    <div id="pathFinders-modal-conatiner">
+      <button id="closeModal">✖</button>
+      <div id="pathFinders-modal-heading-section">
+        <p id="pathFinders-modal-heading">PathFinders</p>
+        <div id="pathFinders-modal-important-details">
+          <p class="pathFinders-modal-event-info">
+            For Classes: <span>3 & 4</span>
+          </p>
+          <p class="pathFinders-modal-event-info">Type: <span>Solo</span></p>
+          <p class="pathFinders-modal-event-info">
+            Timing: <span>Monthly</span>
+          </p>
+          <p class="pathFinders-modal-event-info">
+            Location: <span>Online & Offline</span>
+          </p>
+          <p class="pathFinders-modal-event-info">
+            Prevoiusly Hosted: <span>2 times</span>
+          </p>
+          <p class="pathFinders-modal-event-info">
+            First Event Hosted In: <span>_/_/____</span>
+          </p>
+        </div>
+      </div>
+
+      <div id="pathFinders-gallery-wrapper">
+        <button class="slider-btn prev-btn">&#10094;</button>
+
+        <div id="pathFinders-gallery-viewport">
+          <img
+            src="/Images/PathFinder Event Logo.jpg"
+            class="gallery-img active"
+            alt="Event 1"
+          />
+          <img
+            src="/Images/PathFinders 1 Event pics 1.png"
+            class="gallery-img"
+            alt="Event 2"
+          />
+          <img
+            src="/Images/PathFinders 1 Event pics 2.png"
+            class="gallery-img"
+            alt="Event 3"
+          />
+          <img
+            src="/Images/PathFinders 1 Event pics 3.png"
+            class="gallery-img"
+            alt="Event 4"
+          />
+          <img
+            src="/Images/PathFinders 2 Event Pics1.jpg"
+            class="gallery-img"
+            alt="Event 5"
+          />
+          <img
+            src="/Images/PathFinders 2 Event pics 2"
+            class="gallery-img"
+            alt="Event 6"
+          />
+          <img
+            src="/Images/PathFinders 2 Event pics 3.png"
+            class="gallery-img"
+            alt="Event 7"
+          />
+        </div>
+
+        <button class="slider-btn next-btn">&#10095;</button>
+      </div>
+
+      <div id="pathFinders-modal-event-description">
+        <h3>Event Description</h3>
+        <p>
+          Designed for students of Classes 3, 4, and 5, Pathfinders is an
+          exciting challenge that blends logic, problem-solving, and the
+          fundamentals of coding into one engaging experience. Participants will
+          be presented with a grid-based puzzle where a robot must navigate from
+          its starting point to its destination avoiding obstacles along the
+          way. Using a sequence of simple commands such as "MOVE FORWARD" and
+          "TURN RIGHT" or "TURN LEFT", students will “program” the robot’s path,
+          just like real world coding. With increasing levels of difficulty
+          across classes larger grids, more obstacles, and limited command
+          spaces students must think critically, plan efficiently, and execute
+          these commands on paper precisely. The Top Three participants who
+          complete the challenge with the most accurate solutions in the
+          shortest time will be crowned winners! Pathfinders is more than just a
+          competition it’s a journey into the world of programmable thinking,
+          where creativity meets logic and every move counts.
+        </p>
+      </div>
+
+      <div id="pathFinders-modal-other-buttons">
+        <button
+          class="pathFindersButton"
+          id="pathFindersLeaderboardsButton"
+          onclick="window.location.href = 'LeaderBoardsPathFinders.html'"
+        >
+          View Leaderboards
+        </button>
+        <button
+          class="pathFindersButton"
+          id="pathFindersPQButton"
+          onclick="window.location.href = 'Past-Papers.html'"
+        >
+          Past Papers
+        </button>
+        <button
+          class="pathFindersButton"
+          id="pathFindersStudyMaterialButton"
+          onclick="window.location.href = 'Study-Material.html'"
+        >
+          Study Material
+        </button>
+      </div>
+    </div>
+
+    <!-- Code for projects section here -->
+    <section class="all-sections" id="projects-page-section">
+      <h1 class="heading">Our Projects</h1>
+
+      <div id="projects-main-container">
+        <div class="project-container" id="project-container1">
+          <img src="/Images/Aerosence Project Image.png" alt="Aerosense" />
+
+          <div id="project-container1-texts-container">
+            <div id="project-container1-heading">
+              <p>AeroSense AQ-1</p>
+            </div>
+            <p id="project-container1-texts">
+              Aerosense AQ-1 is Valour's finest projects. It is a UAV purpose
+              built for collecting air pollution data. Built from cutting edge,
+              high precision technology the Aerosense is able to record the
+              concentration of air pollutants (such as CO2, SO2) in our
+              atmosphere. AQ-1 is Valour's first steps towards real time
+              sensing, navigation and automated aerial vehicles. We, the
+              innovators of GreenHerald Int. School, aim to develop our society
+              and work for the well being of both our planet and our
+              communities.
+            </p>
+          </div>
+
+          <p class="projects-number">1</p>
+        </div>
+
+        <!-- AEROSENSE Modal Structure -->
+        <div id="event-modal" class="modal-overlay">
+          <div class="modal-content">
+            <button class="close-modal" id="close-modal-btn">&times;</button>
+
+            <div id="modal-body-content">
+              <!-- Image Area -->
+              <img
+                src="/Images/Aerosence Project Image.png"
+                id="modal-img"
+                class="modal-main-img"
+                alt="Project Image"
+              />
+
+              <!-- Header Area -->
+              <div class="modal-header-flex">
+                <h2 id="modal-title"></h2>
+                <span class="modal-tag">Featured Project</span>
+              </div>
+
+              <!-- Description Area -->
+              <div class="modal-scroll-area">
+                <p id="modal-description">
+                  Aerosense AQ-1 is Valour's finest projects. It is a UAV
+                  purpose built for collecting air pollution data. Built from
+                  cutting edge, high precision technology the Aerosense is able
+                  to record the concentration of air pollutants (such as CO2,
+                  SO2) in our atmosphere. AQ-1 is Valour's first steps towards
+                  real time sensing, navigation and automated aerial vehicles.
+                  We, the innovators of GreenHerald Int. School, aim to develop
+                  our society and work for the well being of both our planet and
+                  our communities.
+                </p>
+              </div>
+
+              <!-- Action Area -->
+              <div class="modal-action-area">
+                <button
+                  class="view-project-btn"
+                  onclick="window.location.href = 'aerosense.html'"
+                >
+                  View more about this Project
+                  <i class="fa-solid fa-arrow-right-long"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Club Timeline -->
+    <!-- code for clubtimeline hereeee -->
+    <!-- Club History Timeline Section -->
+    <section class="all-sections" id="timeline-section">
+      <h1 class="heading">Club History</h1>
+      <p class="timeline-subtitle">
+        Welcome to the FX-13 Valour. From a small group of enthusiasts to a
+        leading robotics club, here is our journey.
+      </p>
+
+      <div class="horizontal-timeline-wrapper">
+        <div class="timeline-line"></div>
+        <div class="timeline-items">
+          <!-- Milestone 1 -->
+          <div class="timeline-item">
+            <div class="timeline-year">2025</div>
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <p>
+                The Official Founding of the FX-13 Valour Robotics Club in
+                Greenherald.
+              </p>
+            </div>
+          </div>
+
+          <!-- Milestone 2 -->
+          <div class="timeline-item staggered">
+            <div class="timeline-year">2026</div>
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <p>
+                Established a community of members, executives and the time when
+                our first event was held.
+              </p>
+            </div>
+          </div>
+
+          <!-- Milestone 3 -->
+          <div class="timeline-item">
+            <div class="timeline-year">2026</div>
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <p>
+                Started the first project, AeroSense AQ-1, as an innovative
+                attempt to monitor the air pollution problem in Dhaka.
+              </p>
+            </div>
+          </div>
+
+          <!-- Milestone 4 -->
+          <div class="timeline-item staggered">
+            <div class="timeline-year">2026</div>
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <p>
+                Declaration of the first student body of the FX-13 Valour
+                Robotics Club.
+              </p>
+            </div>
+          </div>
+
+          <!-- Milestone 5 -->
+          <div class="timeline-item">
+            <div class="timeline-year">2026</div>
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <p>
+                On 14th of October 2026, FX-13 Valour Robotics Club becomes the
+                first club in Greenherald to have a publicly available website.
+              </p>
+            </div>
+          </div>
+
+          <!-- Milestone 6 -->
+          <div class="timeline-item staggered">
+            <div class="timeline-year">Ongoing</div>
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <p>And much more to come!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- code for executives section here -->
+    <section class="all-sections" id="executives-page-section">
+      <h1 class="heading">Moderators and Executives</h1>
+
+      <div id="executives-carousel-wrapper">
+        <button
+          class="carousel-btn carousel-prev"
+          aria-label="Previous Executive"
+        >
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <div class="carousel-track">
+          <div class="exec-node" id="exec-1">
+            <div class="exec-card-inner">
+              <div class="exec-img-container">
+                <img src="/Executive Images/Ronald Sir .jpg" alt="" />
+              </div>
+              <div class="exec-info">
+                <h3 class="exec-name">Ronald Cruz</h3>
+                <p class="exec-role">Chief Moderator</p>
+              </div>
+            </div>
+          </div>
+          <div class="exec-node" id="exec-2">
+            <div class="exec-card-inner">
+              <div class="exec-img-container">
+                <img
+                  src="/Executive Images/Afanan- second moderator.jpg"
+                  alt=""
+                />
+              </div>
+              <div class="exec-info">
+                <h3 class="exec-name">Afnan Shah Qureshi</h3>
+                <p class="exec-role">Moderator</p>
+              </div>
+            </div>
+          </div>
+          <div class="exec-node" id="exec-3">
+            <div class="exec-card-inner">
+              <div class="exec-img-container">
+                <img
+                  src="/Executive Images/Amlan Halde - President.JPG"
+                  alt=""
+                />
+              </div>
+              <div class="exec-info">
+                <h3 class="exec-name">Amlan Halder</h3>
+                <p class="exec-role">President</p>
+              </div>
+            </div>
+          </div>
+          <div class="exec-node" id="exec-4">
+            <div class="exec-card-inner">
+              <div class="exec-img-container">
+                <img
+                  src="/Executive Images/Ariq Ahmed - Vice President.JPG"
+                  alt=""
+                />
+              </div>
+              <div class="exec-info">
+                <h3 class="exec-name">Ariq Ahmed</h3>
+                <p class="exec-role">Vice President</p>
+              </div>
+            </div>
+          </div>
+          <div class="exec-node" id="exec-5">
+            <div class="exec-card-inner">
+              <div class="exec-img-container">
+                <img
+                  src="/Executive Images/Shehreen Tasnim Titir - General Secretary.JPG"
+                  alt=""
+                />
+              </div>
+              <div class="exec-info">
+                <h3 class="exec-name">Shehreen Tasnim Titir</h3>
+                <p class="exec-role">General Secretary</p>
+              </div>
+            </div>
+          </div>
+          <div class="exec-node" id="exec-6">
+            <div class="exec-card-inner">
+              <div class="exec-img-container">
+                <img src="/Executive Images/Avaranil bhaiya.jpg" alt="" />
+              </div>
+              <div class="exec-info">
+                <h3 class="exec-name">Avranil Saha</h3>
+                <p class="exec-role">Treasurer</p>
+              </div>
+            </div>
+          </div>
+          <div class="exec-node" id="exec-7">
+            <div class="exec-card-inner">
+              <div class="exec-img-container">
+                <img
+                  src="/Executive Images/Neer Barua - Head of Technology.JPG"
+                  alt=""
+                />
+              </div>
+              <div class="exec-info">
+                <h3 class="exec-name">Neer Barua</h3>
+                <p class="exec-role">Head of Technology</p>
+              </div>
+            </div>
+          </div>
+          <div class="exec-node" id="exec-8">
+            <div class="exec-card-inner">
+              <div class="exec-img-container">
+                <img
+                  src="/Executive Images/Sheik Fateema Mehnaz- Lead Graphics Designer.JPG"
+                  alt=""
+                />
+              </div>
+              <div class="exec-info">
+                <h3 class="exec-name">Sheikh Fateema Mehnaz</h3>
+                <p class="exec-role">Lead Graphics Designer</p>
+              </div>
+            </div>
+          </div>
+          <div class="exec-node" id="exec-9">
+            <div class="exec-card-inner">
+              <div class="exec-img-container">
+                <img src="/Executive Images/Bipul Saha.jpg" alt="" />
+              </div>
+              <div class="exec-info">
+                <h3 class="exec-name">Bipul Saha</h3>
+                <p class="exec-role">Head Of Olympiad</p>
+              </div>
+            </div>
+          </div>
+          <div class="exec-node" id="exec-10">
+            <div class="exec-card-inner">
+              <div class="exec-img-container">
+                <img
+                  src="/Executive Images/Debarya Panday - Head of Reasearch and Development.JPG"
+                  alt=""
+                />
+              </div>
+              <div class="exec-info">
+                <h3 class="exec-name">Debarya Panday</h3>
+                <p class="exec-role">Head of Research and Development</p>
+              </div>
+            </div>
+          </div>
+          <div class="exec-node" id="exec-2">
+            <div class="exec-card-inner">
+              <div class="exec-img-container">
+                <img src="/Executive Images/Fahim bhiaya.jpg" alt="" />
+              </div>
+              <div class="exec-info">
+                <h3 class="exec-name">Khondoker Fahim Mahmud</h3>
+                <p class="exec-role">Head of Event Management</p>
+              </div>
+            </div>
+          </div>
+          <div class="exec-node" id="exec-2">
+            <div class="exec-card-inner">
+              <div class="exec-img-container">
+                <img src="/Executive Images/Azmain Bhaiya.jpg" alt="" />
+              </div>
+              <div class="exec-info">
+                <h3 class="exec-name">Md. Azmain Abrar Zaman</h3>
+                <p class="exec-role">Head of Public Relations</p>
+              </div>
+            </div>
+          </div>
+          <div class="exec-node" id="exec-2">
+            <div class="exec-card-inner">
+              <div class="exec-img-container">
+                <img src="/Executive Images/Sakib Ahmed.jpg" alt="" />
+              </div>
+              <div class="exec-info">
+                <h3 class="exec-name">Sakib Ahmed</h3>
+                <p class="exec-role">Head of Human Resources</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="carousel-btn carousel-next" aria-label="Next Executive">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <div id="viewAllExecutivesButton-Wrapper">
+        <button id="viewAllExecutivesButton">
+          <i class="fa-solid fa-arrow-right"></i> VIEW OUR CABINET
+        </button>
+      </div>
+    </section>
+
+    <footer id="main-footer">
+      <div class="footer-divider"></div>
+
+      <div class="footer-container">
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <p>
+            <i class="fa-regular fa-envelope"></i> fx13valourrobotics@gmail.com
+          </p>
+          <p>
+            <i class="fa-solid fa-location-dot"></i> 24 Asad Avenue,
+            Mohammadpur, Dhaka – 1207, Bangladesh
+          </p>
+        </div>
+
+        <div class="footer-section">
+          <h3>Development</h3>
+          <p>Built for FX-13 Valour Robotics Club</p>
+          <p>
+            Developed by
+            <a href="your-portfolio-link.html" class="dev-link"
+              >Nuban Sami Alam</a
+            >, <a href="" class="dev-link">Shreyan Ahmed</a> &
+            <a href="" class="dev-link">Amlan Halder</a>
+          </p>
+        </div>
+
+        <div class="footer-section">
+          <h3>Patrons</h3>
+          <div class="sponsors-grid">
+            <div href="https://www.facebook.com/SFXGH" class="sponsor-box">
+              SFX Greenherald International School
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 FX-13 Valour Robotics Club. All Systems Operational.</p>
+      </div>
+    </footer>
+
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-analytics.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyC0fYgeJM4CDQCgFCv9jK1lObbtSQ8VyqA",
+        authDomain: "fx-13-valour-robotics-club-web.firebaseapp.com",
+        projectId: "fx-13-valour-robotics-club-web",
+        storageBucket: "fx-13-valour-robotics-club-web.firebasestorage.app",
+        messagingSenderId: "720455152690",
+        appId: "1:720455152690:web:d19e18da770a2eb970782b",
+        measurementId: "G-GCS4EENQ9R",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+    </script>
+
+    <script type="module" src="index.js"></script>
+
+    <script type="module" src="index.js"></script>
+  </body>
+</html>

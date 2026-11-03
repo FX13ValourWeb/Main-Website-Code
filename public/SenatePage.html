@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FX-13 Valour Cabinet</title>
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/12.11.0/firebase-app-compat.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/12.11.0/firebase-auth-compat.js"></script>
+    <script
+      defer
+      src="/__/firebase/12.11.0/firebase-database-compat.js"
+    ></script>
+    <script
+      defer
+      src="/__/firebase/12.11.0/firebase-firestore-compat.js"
+    ></script>
+    <script
+      defer
+      src="/__/firebase/12.11.0/firebase-functions-compat.js"
+    ></script>
+    <script
+      defer
+      src="/__/firebase/12.11.0/firebase-messaging-compat.js"
+    ></script>
+    <script
+      defer
+      src="/__/firebase/12.11.0/firebase-storage-compat.js"
+    ></script>
+    <script
+      defer
+      src="/__/firebase/12.11.0/firebase-analytics-compat.js"
+    ></script>
+    <script
+      defer
+      src="/__/firebase/12.11.0/firebase-remote-config-compat.js"
+    ></script>
+    <script
+      defer
+      src="/__/firebase/12.11.0/firebase-performance-compat.js"
+    ></script>
+    <!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+    <link rel="stylesheet" href="CSS/SenatePage.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/Images/Robotics Club Logo FOR GOOGLE SEARCH.png"
+    />
+    <!-- in live server: /public/Images/Robotics Club Logo.png -->
+  </head>
+  <body>
+    <canvas id="bg-canvas"></canvas>
+
+    <nav class="main-navigation-bar">
+      <div class="nav-section links-group">
+        <div class="nav-dropdown">
+          <button
+            class="dropdown-trigger new-dropdown-btn menu-icon-btn"
+            aria-label="Menu"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="dropdown-content multi-section-dropdown">
+            <div class="dropdown-section">
+              <h4 class="dropdown-subheader">Posters</h4>
+              <a href="#">Tech in Fiction</a>
+              <a href="#">Tech in Motion</a>
+            </div>
+            <div class="dropdown-section">
+              <h4 class="dropdown-subheader">Additional information</h4>
+              <a href="#">Rules for events</a>
+              <a href="#">Guidelines for Fairness</a>
+            </div>
+          </div>
+        </div>
+        <a href="https://fx13valour.org/" class="nav-item-link">Home</a>
+        <a href="#events-page-section" class="nav-item-link">Events</a>
+
+        <div class="nav-dropdown">
+          <button class="dropdown-trigger">
+            Projects <span class="arrow">▾</span>
+          </button>
+          <div class="dropdown-content">
+            <a href="#projects-page-section">AeroSense Drone</a>
+            <a href="#">Coming Soon...</a>
+            <a href="#">Coming Soon...</a>
+          </div>
+        </div>
+
+        <a href="#executives-page-section" class="nav-item-link">Executives</a>
+      </div>
+
+      <div class="nav-section logo-container">
+        <h1 class="brand-title">
+          FX-13 <span class="highlight-blue">VALOUR</span>
+        </h1>
+      </div>
+
+      <div class="nav-section button-group">
+        <button id="Contact-Button">
+          <a href="/contactus.html">Contact us</a>
+        </button>
+        <!-- REMEMBER TO CHANGE IT TO PUBLIC HREF -->
+        <button id="Sign-in-Button">
+          <a href="/Auth/Signin.html">Sign in</a>
+        </button>
+        <button id="Profile-Button">
+          <span class="icon-wrapper">
+            <!-- REMEMBER TO CHANGE IT TO PUBLIC HREF -->
+            <img
+              src="https://img.icons8.com/ios-glyphs/30/007BFF/user-male-circle.png"
+              alt="Profile"
+            />
+          </span>
+          View Profile
+        </button>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button
+        class="mobile-menu-toggle"
+        id="mobileToggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <i class="fa-solid fa-bars" id="mobileIcon"></i>
+      </button>
+
+      <!-- Mobile slide-down menu -->
+      <div class="mobile-menu-overlay" id="mobileMenu" role="navigation">
+        <div class="mobile-nav-links">
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger1">
+              <span
+                >Browse
+                <i
+                  class="fa-solid fa-bars"
+                  style="font-size: 0.85rem; margin-left: 6px"
+                ></i
+              ></span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner1">
+              <h4 class="dropdown-subheader">Posters</h4>
+              <a href="#">Tech in Fiction</a>
+              <a href="#">Tech in Motion</a>
+              <h4 class="dropdown-subheader" style="margin-top: 8px">
+                Additional information
+              </h4>
+              <a href="#">Rules for events</a>
+              <a href="#">Guidelines for Fairness</a>
+            </div>
+          </div>
+          <a href="#home-page-section" class="nav-item-link">Home</a>
+          <a href="#events-page-section" class="nav-item-link">Events</a>
+          <a href="#" class="nav-item-link">AQ-levels</a>
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger2">
+              <span>Projects</span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner2">
+              <a href="#projects-page-section">AeroSense Drone</a>
+              <a href="#">Coming Soon...</a>
+              <a href="#">Coming Soon...</a>
+            </div>
+          </div>
+          <a href="#executives-page-section" class="nav-item-link"
+            >Executives</a
+          >
+        </div>
+        <div class="mobile-buttons">
+          <button id="Contact-Button">
+            <a href="/contactus.html">Contact us</a>
+          </button>
+          <button id="Sign-in-Button">
+            <a href="/Auth/Signin.html">Sign in</a>
+          </button>
+          <button id="Profile-Button">
+            <span class="icon-wrapper">
+              <img
+                src="https://img.icons8.com/ios-glyphs/30/007BFF/user-male-circle.png"
+                alt="Profile"
+              />
+            </span>
+            View Profile
+          </button>
+        </div>
+      </div>
+    </nav>
+
+<dix id="page-Wrapper">
+<h1>OUR SENATE</h1>
+    <p id="SenateDef">
+      In FX-13 Valour we use the term "Senate" to refer to our Cabinet. Senate
+      reffers to the upper house or chamber of a bicameral legislature in many
+      governments
+    </p>
+
+    <p id="ModHeading">Our Moderators</p>
+    <div id="ModeratorsWrapper">
+      <div class="ModProfile">
+        <img src="/Executive Images/Ronald Sir .jpg" alt="Roland Crus" />
+        <h1>Ronald Cruz</h1>
+        <p>Chief Moderator</p>
+      </div>
+      <div class="ModProfile">
+        <img src="/Executive Images/Afanan- second moderator.jpg" alt="Afanan Shah Qureshi" />
+        <h1>Afnan Shah Qureshi</h1>
+        <p>Moderator</p>
+      </div>
+    </div>
+    <p id="FoundingCabH">Our Founding Cabinet</p>
+    <div class="Top3Profiles">
+      <div class="Pres">
+        <img src="/Executive Images/Amlan Halde - President.JPG" alt="Amlan Halder" />
+        <h1>Amlan Halder</h1>
+        <p>Founding President</p>
+      </div>
+      <div class="VicePres">
+        <img src="/Executive Images/Ariq Ahmed - Vice President.JPG" alt="Ariq Ahmed" />
+        <h1>Ariq Ahmed</h1>
+        <p>Vice President</p>
+      </div>
+      <div class="Genral Sectretary">
+        <img src="/Executive Images/Shehreen Tasnim Titir - General Secretary.JPG" alt="Shehreen Tasnim Titir" />
+        <h1>Shehreen Tasnim Titir</h1>
+        <p>General Secretary</p>
+      </div>
+    </div>
+
+    <div class="CabinetCardsWrapper">
+        <div class="cabinetCard">
+            <img src="/Executive Images/Avaranil bhaiya.jpg" alt="">
+            <h1>Avranil Saha</h1>
+            <p>Treasurer</p>
+        </div>
+        <div class="cabinetCard">
+            <img src="/Executive Images/Neer Barua - Head of Technology.JPG" alt="">
+            <h1>Neer Barua</h1>
+            <p>Head of Technology</p>
+        </div>
+        <div class="cabinetCard">
+            <img src="/Executive Images/Sheik Fateema Mehnaz- Lead Graphics Designer.JPG" alt="">
+            <h1>Sheikh Fateema Mehnaz</h1>
+            <p>Lead Graphics Designer</p>
+        </div>
+        <div class="cabinetCard">
+            <img src="/Executive Images/Bipul Saha.jpg" alt="">
+            <h1>Bipul Saha</h1>
+            <p>Head Of Olympiad</p>
+        </div>
+        <div class="cabinetCard">
+            <img src="/Executive Images/Debarya Panday - Head of Reasearch and Development.JPG" alt="">
+            <h1>Debarya Panday</h1>
+            <p>Head of Research and Development</p>
+        </div>
+        <div class="cabinetCard">
+            <img src="/Executive Images/Fahim bhiaya.jpg" alt="">
+            <h1>Khondoker Fahim Mahmud</h1>
+            <p>Head of Event Management</p>
+        </div>
+        <div class="cabinetCard">
+            <img src="/Executive Images/Azmain Bhaiya.jpg" alt="">
+            <h1>Md. Azmain Abrar Zaman</h1>
+            <p>Head of Public Relations</p>
+        </div>
+        <div class="cabinetCard">
+            <img src="/Executive Images/Sakib Ahmed.jpg" alt="">
+            <h1>Sakib Ahme</h1>
+            <p>Head of Human Resources</p>
+        </div>
+    </div>
+
+    </div>
+    <!-- <p id="CurrentCabH">Our Executives</p> -->
+    <!-- <div class="Top3Profiles">
+      <div class="Pres">
+        <img src="/Executive Images/Amlan Halde - President.JPG" alt="Amlan Halder" />
+        <h1>Amlan Halder</h1>
+        <p>Founding President</p>
+      </div>
+      <div class="VicePres">
+        <img src="/Executive Images/Amlan Halde - President.JPG" alt="Amlan Halder" />
+        <h1>Amlan Halder</h1>
+        <p>Founding President</p>
+      </div>
+      <div class="Genral Sectretary">
+        <img src="/Executive Images/Amlan Halde - President.JPG" alt="Amlan Halder" />
+        <h1>Amlan Halder</h1>
+        <p>Founding President</p>
+      </div>
+    </div> -->
+
+    <!-- <div class="CabinetCardsWrapper">
+        <div class="cabinetCard">
+            <img src="/Executive Images/Avaranil bhaiya.jpg" alt="">
+            <h1>Executive 1</h1>
+            <p>Treasurer</p>
+        </div>
+        <div class="cabinetCard">
+            <img src="/Executive Images/Avaranil bhaiya.jpg" alt="">
+            <h1>Executive 1</h1>
+            <p>Treasurer</p>
+        </div>
+        <div class="cabinetCard">
+            <img src="/Executive Images/Avaranil bhaiya.jpg" alt="">
+            <h1>Executive 1</h1>
+            <p>Treasurer</p>
+        </div>
+        <div class="cabinetCard">
+            <img src="/Executive Images/Avaranil bhaiya.jpg" alt="">
+            <h1>Executive 1</h1>
+            <p>Treasurer</p>
+        </div>
+        <div class="cabinetCard">
+            <img src="/Executive Images/Avaranil bhaiya.jpg" alt="">
+            <h1>Executive 1</h1>
+            <p>Treasurer</p>
+        </div>
+        <div class="cabinetCard">
+            <img src="/Executive Images/Avaranil bhaiya.jpg" alt="">
+            <h1>Executive 1</h1>
+            <p>Treasurer</p>
+        </div>
+        <div class="cabinetCard">
+            <img src="/Executive Images/Avaranil bhaiya.jpg" alt="">
+            <h1>Executive 1</h1>
+            <p>Treasurer</p>
+        </div>
+        <div class="cabinetCard">
+            <img src="/Executive Images/Avaranil bhaiya.jpg" alt="">
+            <h1>Executive 1</h1>
+            <p>Treasurer</p>
+        </div> -->
+    </div>
+
+    <button id="goBackHomeBtn" onclick="window.location.href='fx13valour.org'">GO BACK HOME</button>
+
+</dix>
+
+    <!-- FOOTER FOOTER FOOTER -->
+     <footer id="main-footer">
+    <div class="footer-divider"></div>
+
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>Contact Us</h3>
+            <p><i class="fa-regular fa-envelope"></i> fx13valourrobotics@gmail.com</p>
+            <p><i class="fa-solid fa-location-dot"></i> 24 Asad Avenue, Mohammadpur, Dhaka – 1207, Bangladesh</p>
+        </div>
+
+        <div class="footer-section">
+            <h3>Development</h3>
+            <p>Built for FX-13 Valour Robotics Club</p>
+            <p>Developed by <a href="your-portfolio-link.html" class="dev-link">Nuban Sami Alam</a>, <a href="" class="dev-link">Shreyan Ahmed</a> & <a href="" class="dev-link">Amlan Halder</a></p>
+        </div>
+
+        <div class="footer-section">
+            <h3>Patrons</h3>
+            <div class="sponsors-grid">
+                <div href="https://www.facebook.com/SFXGH" class="sponsor-box">SFX Greenherald International School</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 FX-13 Valour Robotics Club. All Systems Operational.</p>
+    </div>
+</footer>
+    
+    <script type="module">
+      /* ---------------------------
+   Firebase 
+---------------------------- */
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyC0fYgeJM4CDQCgFCv9jK1lObbtSQ8VyqA",
+        authDomain: "fx-13-valour-robotics-club-web.firebaseapp.com",
+        projectId: "fx-13-valour-robotics-club-web",
+        storageBucket: "fx-13-valour-robotics-club-web.firebasestorage.app",
+        messagingSenderId: "720455152690",
+        appId: "1:720455152690:web:d19e18da770a2eb970782b",
+        measurementId: "G-GCS4EENQ9R",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      /* ---------------------------
+   DEVICE FLAGS
+---------------------------- */
+      const isMobile = window.matchMedia("(max-width: 768px)").matches;
+      const isSmallPhone = window.matchMedia("(max-width: 480px)").matches;
+      /* ---------------------------
+   SAFE DOM HELPERS 
+---------------------------- */
+      const $ = (id) => document.getElementById(id);
+      /* =====================================================
+   AUTH UI 
+===================================================== */
+      const signInBtns = document.querySelectorAll('[id="Sign-in-Button"]');
+      const profileBtns = document.querySelectorAll('[id="Profile-Button"]');
+
+      // Authentication may not be loaded on this page; only subscribe when available.
+      if (
+        signInBtns.length &&
+        profileBtns.length &&
+        typeof onAuthStateChanged === "function" &&
+        typeof auth !== "undefined"
+      ) {
+        onAuthStateChanged(auth, (user) => {
+          signInBtns.forEach((button) => {
+            button.style.display = user ? "none" : "flex";
+          });
+          profileBtns.forEach((button) => {
+            button.style.display = user ? "flex" : "none";
+          });
+        });
+      }
+
+      profileBtns.forEach((button) => {
+        button.addEventListener("click", () => {
+          window.location.href = "Auth/profile.html";
+        });
+      });
+
+      /* =====================================================
+   MOBILE MENU 
+===================================================== */
+      const toggle = $("mobileToggle");
+      const menu = $("mobileMenu");
+      const icon = $("mobileIcon");
+
+      if (toggle && menu && icon) {
+        let menuOpen = false;
+
+        toggle.addEventListener("click", () => {
+          menuOpen = !menuOpen;
+          menu.classList.toggle("open", menuOpen);
+          toggle.setAttribute("aria-expanded", menuOpen);
+          icon.className = menuOpen ? "fa-solid fa-xmark" : "fa-solid fa-bars";
+        });
+      }
+      /* =====================================================
+   PARTICLE SYSTEM (
+==================================================== */
+      // --- Interactive Star Particle Background ---
+      const canvas = document.getElementById("bg-canvas");
+      if (canvas) {
+        const ctx = canvas.getContext("2d");
+        let width, height;
+        let particles = [];
+
+        // Mouse interaction
+        const mouse = { x: null, y: null, radius: 150 };
+
+        window.addEventListener("mousemove", (event) => {
+          mouse.x = event.clientX; // Changed to clientX for cleaner viewport space tracking
+          mouse.y = event.clientY; // Changed to clientY
+        });
+
+        window.addEventListener("mouseout", () => {
+          mouse.x = null;
+          mouse.y = null;
+        });
+
+        // Touch interaction support for mobile devices
+        window.addEventListener("touchstart", (event) => {
+          if (event.touches.length > 0) {
+            mouse.x = event.touches[0].clientX;
+            mouse.y = event.touches[0].clientY;
+          }
+        });
+
+        window.addEventListener("touchmove", (event) => {
+          if (event.touches.length > 0) {
+            mouse.x = event.touches[0].clientX;
+            mouse.y = event.touches[0].clientY;
+          }
+        });
+
+        window.addEventListener("touchend", () => {
+          mouse.x = null;
+          mouse.y = null;
+        });
+
+        function resize() {
+          width = window.innerWidth;
+          height = window.innerHeight;
+          canvas.width = width;
+          canvas.height = height;
+          initParticles();
+        }
+        window.addEventListener("resize", resize);
+
+        class Particle {
+          constructor(x, y, dx, dy, size) {
+            this.x = x;
+            this.y = y;
+            this.dx = dx;
+            this.dy = dy;
+            this.size = size;
+          }
+          draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+            ctx.fillStyle = "rgba(232, 232, 232, 0.8)";
+            ctx.fill();
+          }
+          update() {
+            if (this.x > width || this.x < 0) this.dx = -this.dx;
+            if (this.y > height || this.y < 0) this.dy = -this.dy;
+
+            // Interaction with mouse (repel slightly)
+            if (mouse.x != null && mouse.y != null) {
+              let dx = mouse.x - this.x;
+              let dy = mouse.y - this.y;
+              let distance = Math.sqrt(dx * dx + dy * dy);
+              if (distance < mouse.radius) {
+                const forceDirectionX = dx / distance;
+                const forceDirectionY = dy / distance;
+                const force = (mouse.radius - distance) / mouse.radius;
+                this.x -= forceDirectionX * force * 1.5;
+                this.y -= forceDirectionY * force * 1.5;
+              }
+            }
+
+            this.x += this.dx;
+            this.y += this.dy;
+            this.draw();
+          }
+        }
+
+        function initParticles() {
+          particles = [];
+          let numberOfParticles = (width * height) / 9000;
+          for (let i = 0; i < numberOfParticles; i++) {
+            let size = Math.random() * 1.5 + 0.5;
+            let x = Math.random() * (width - size * 2) + size * 2;
+            let y = Math.random() * (height - size * 2) + size * 2;
+            let dx = (Math.random() - 0.5) * 0.5;
+            let dy = (Math.random() - 0.5) * 0.5;
+            particles.push(new Particle(x, y, dx, dy, size));
+          }
+        }
+
+        function animateParticles() {
+          requestAnimationFrame(animateParticles);
+          ctx.clearRect(0, 0, width, height);
+
+          for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+          }
+          connectParticles();
+        }
+
+        function connectParticles() {
+          let maxDistance = 100;
+          for (let a = 0; a < particles.length; a++) {
+            for (let b = a; b < particles.length; b++) {
+              let dx = particles[a].x - particles[b].x;
+              let dy = particles[a].y - particles[b].y;
+              let distance = dx * dx + dy * dy;
+
+              if (distance < maxDistance * maxDistance) {
+                let opacity = 1 - distance / (maxDistance * maxDistance);
+                ctx.strokeStyle = `rgba(232, 232, 232, ${opacity * 0.15})`;
+                ctx.lineWidth = 0.5;
+                ctx.beginPath();
+                ctx.moveTo(particles[a].x, particles[a].y);
+                ctx.lineTo(particles[b].x, particles[b].y);
+                ctx.stroke();
+              }
+            }
+
+            if (mouse.x != null && mouse.y != null) {
+              let dx = particles[a].x - mouse.x;
+              let dy = particles[a].y - mouse.y;
+              let distance = dx * dx + dy * dy;
+              if (distance < mouse.radius * mouse.radius) {
+                let opacity = 1 - distance / (mouse.radius * mouse.radius);
+                ctx.strokeStyle = `rgba(0, 123, 255, ${opacity * 0.9})`;
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                ctx.moveTo(particles[a].x, particles[a].y);
+                ctx.lineTo(mouse.x, mouse.y);
+                ctx.stroke();
+              }
+            }
+          }
+        }
+
+        // Run setup smoothly
+        resize();
+        animateParticles();
+      }
+    </script>
+  </body>
+</html>
