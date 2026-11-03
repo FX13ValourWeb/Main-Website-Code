@@ -2,9 +2,17 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0d0d0d" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/Images/icons/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/Images/icons/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/Images/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <title>Contact Us - FX-13 Valour</title>
+    <script>document.documentElement.classList.add("js");</script>
     <link rel="stylesheet" href="/CSS/main.css" />
+    <link rel="stylesheet" href="/CSS/motion.css" />
 
     <link
       rel="stylesheet"
@@ -14,7 +22,6 @@
       referrerpolicy="no-referrer"
     />
 
-    <link rel="icon" type="image/png" href="/Images/Robotics Club Logo.png" />
     <style>
       /* Essential Canvas Reset */
       body {
@@ -37,7 +44,8 @@
       .all-sections {
         position: relative;
         z-index: 1; /* Pushes content above canvas layer */
-        min-height: 100vh;
+        min-height: calc(100vh - var(--nav-h, 80px));
+        min-height: calc(100svh - var(--nav-h, 80px));
         display: flex;
         justify-content: center;
         align-items: center;
@@ -49,7 +57,7 @@
       .contact-title {
         margin-bottom: 2rem;
         color: white;
-        font-family: sans-serif;
+        font-family: "Inter", "Segoe UI", sans-serif;
         font-size: 2.5rem;
         text-align: center;
         text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
@@ -64,7 +72,11 @@
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
         cursor: pointer;
-        transition: all 0.4s ease;
+        transition:
+          transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+          border-color 0.4s ease,
+          box-shadow 0.5s ease;
+        animation: fx-enter 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
         box-shadow:
           0 0 10px rgba(255, 255, 255, 0.05),
           inset 0 0 5px rgba(255, 255, 255, 0.05);
@@ -76,13 +88,19 @@
         box-sizing: border-box;
       }
 
+      .contact-title {
+        animation: fx-enter 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+
       .email-box {
+        animation-delay: 0.1s;
         width: 100%;
         max-width: 480px;
         padding: 40px 40px;
       }
 
       .back-box {
+        animation-delay: 0.2s;
         margin-top: 1.5rem;
         padding: 20px 50px;
         width: 100%;
@@ -91,14 +109,14 @@
 
       @media (hover: hover) {
         .contact-box:hover {
-          transform: translateY(-2px);
+          transform: translateY(-4px);
           border-color: rgba(255, 255, 255, 0.4);
           box-shadow:
             0 0 20px rgba(255, 255, 255, 0.15),
             inset 0 0 10px rgba(255, 255, 255, 0.1);
         }
-        .contact-box:hover .contact-icon {
-          transform: scale(1.05);
+        .email-box:hover .contact-icon {
+          transform: scale(1.08) rotate(-6deg);
           color: #fff;
           text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
@@ -113,7 +131,16 @@
         font-size: 3rem;
         color: #fff;
         text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
-        transition: all 0.4s ease;
+        transition:
+          transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1),
+          color 0.4s ease,
+          text-shadow 0.4s ease;
+      }
+
+      @media (hover: hover) {
+        .back-box:hover .back-icon {
+          transform: translateX(-4px);
+        }
       }
 
       .back-icon {
@@ -152,7 +179,7 @@
           gap: 12px;
         }
         .contact-email {
-          font-size: 1.15rem;
+          font-size: 1rem;
         }
         .back-box {
           padding: 15px 30px;
@@ -180,12 +207,148 @@
   <body>
     <canvas id="bg-canvas"></canvas>
 
+    <nav class="main-navigation-bar">
+      <div class="nav-section links-group">
+        <div class="nav-dropdown">
+          <button
+            class="dropdown-trigger new-dropdown-btn menu-icon-btn"
+            aria-label="Menu"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="dropdown-content multi-section-dropdown">
+            <div class="dropdown-section">
+              <h4 class="dropdown-subheader">Posters</h4>
+              <a href="#">Tech in Fiction</a>
+              <a href="#">Tech in Motion</a>
+            </div>
+            <div class="dropdown-section">
+              <h4 class="dropdown-subheader">Additional information</h4>
+              <a href="#">Rules for events</a>
+              <a href="#">Guidelines for Fairness</a>
+            </div>
+          </div>
+        </div>
+        <a href="index.html#home-page-section" class="nav-item-link">Home</a>
+        <a href="index.html#events-page-section" class="nav-item-link">Events</a>
+
+        <div class="nav-dropdown">
+          <button class="dropdown-trigger">
+            Projects <span class="arrow">▾</span>
+          </button>
+          <div class="dropdown-content">
+            <a href="index.html#projects-page-section">AeroSense Drone</a>
+          </div>
+        </div>
+
+        <a href="SenatePage.html" class="nav-item-link">Executives</a>
+      </div>
+
+      <div class="nav-section logo-container">
+        <h1 class="brand-title">
+          FX-13 <span class="highlight-blue">VALOUR</span>
+        </h1>
+      </div>
+
+      <div class="nav-section button-group">
+        <button
+          id="Contact-Button"
+          onclick="window.location.href = '/contactus.html'"
+        >
+          Contact Us
+        </button>
+        <!-- REMEMBER TO CHANGE IT TO PUBLIC HREF -->
+        <button id="Sign-in-Button">
+          <a href="/Auth/Signin.html">Sign in</a>
+        </button>
+        <button id="Profile-Button">
+          <span class="icon-wrapper">
+            <!-- REMEMBER TO CHANGE IT TO PUBLIC HREF -->
+            <img
+              src="https://img.icons8.com/ios-glyphs/30/007BFF/user-male-circle.png"
+              alt="Profile"
+            />
+          </span>
+          View Profile
+        </button>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button
+        class="mobile-menu-toggle"
+        id="mobileToggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <i class="fa-solid fa-bars" id="mobileIcon"></i>
+      </button>
+
+      <!-- Mobile slide-down menu -->
+      <div class="mobile-menu-overlay" id="mobileMenu" role="navigation">
+        <div class="mobile-nav-links">
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger1">
+              <span
+                >Browse
+                <i
+                  class="fa-solid fa-bars"
+                  style="font-size: 0.85rem; margin-left: 6px"
+                ></i
+              ></span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner1">
+              <h4 class="dropdown-subheader">Posters</h4>
+              <a href="#">Tech in Fiction</a>
+              <a href="#">Tech in Motion</a>
+              <h4 class="dropdown-subheader" style="margin-top: 8px">
+                Additional information
+              </h4>
+              <a href="#">Rules for events</a>
+              <a href="#">Guidelines for Fairness</a>
+            </div>
+          </div>
+          <a href="index.html#home-page-section" class="nav-item-link">Home</a>
+          <a href="index.html#events-page-section" class="nav-item-link">Events</a>
+          <a href="aerosense.html" class="nav-item-link">AQ-levels</a>
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger2">
+              <span>Projects</span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner2">
+              <a href="index.html#projects-page-section">AeroSense Drone</a>
+            </div>
+          </div>
+          <a href="SenatePage.html" class="nav-item-link">Executives</a>
+        </div>
+        <div class="mobile-buttons">
+          <button id="Contact-Button-Mobile">
+            <a href="/contactus.html">Contact us</a>
+          </button>
+          <button id="Sign-in-Button-Mobile">
+            <a href="/Auth/Signin.html">Sign in</a>
+          </button>
+          <button id="Profile-Button-Mobile">
+            <span class="icon-wrapper">
+              <img
+                src="https://img.icons8.com/ios-glyphs/30/007BFF/user-male-circle.png"
+                alt="Profile"
+              />
+            </span>
+            View Profile
+          </button>
+        </div>
+      </div>
+    </nav>
+
     <section class="all-sections">
       <h1 class="contact-title">Contact Us</h1>
 
       <a
         href="https://mail.google.com/mail/?view=cm&to=fxvalourwebsite@gmail.com"
         target="_blank"
+        rel="noopener noreferrer"
         class="contact-box email-box"
       >
         <i class="fa-solid fa-envelope contact-icon"></i>
@@ -198,157 +361,8 @@
       </a>
     </section>
 
-    <script>
-      // --- Interactive Star Particle Background ---
-      const canvas = document.getElementById("bg-canvas");
-      if (canvas) {
-        const ctx = canvas.getContext("2d");
-        let width, height;
-        let particles = [];
-
-        // Mouse interaction
-        const mouse = { x: null, y: null, radius: 150 };
-
-        window.addEventListener("mousemove", (event) => {
-          mouse.x = event.clientX; // Changed to clientX for cleaner viewport space tracking
-          mouse.y = event.clientY; // Changed to clientY
-        });
-
-        window.addEventListener("mouseout", () => {
-          mouse.x = null;
-          mouse.y = null;
-        });
-
-        // Touch interaction support for mobile devices
-        window.addEventListener("touchstart", (event) => {
-          if (event.touches.length > 0) {
-            mouse.x = event.touches[0].clientX;
-            mouse.y = event.touches[0].clientY;
-          }
-        });
-
-        window.addEventListener("touchmove", (event) => {
-          if (event.touches.length > 0) {
-            mouse.x = event.touches[0].clientX;
-            mouse.y = event.touches[0].clientY;
-          }
-        });
-
-        window.addEventListener("touchend", () => {
-          mouse.x = null;
-          mouse.y = null;
-        });
-
-        function resize() {
-          width = window.innerWidth;
-          height = window.innerHeight;
-          canvas.width = width;
-          canvas.height = height;
-          initParticles();
-        }
-        window.addEventListener("resize", resize);
-
-        class Particle {
-          constructor(x, y, dx, dy, size) {
-            this.x = x;
-            this.y = y;
-            this.dx = dx;
-            this.dy = dy;
-            this.size = size;
-          }
-          draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-            ctx.fillStyle = "rgba(232, 232, 232, 0.8)";
-            ctx.fill();
-          }
-          update() {
-            if (this.x > width || this.x < 0) this.dx = -this.dx;
-            if (this.y > height || this.y < 0) this.dy = -this.dy;
-
-            // Interaction with mouse (repel slightly)
-            if (mouse.x != null && mouse.y != null) {
-              let dx = mouse.x - this.x;
-              let dy = mouse.y - this.y;
-              let distance = Math.sqrt(dx * dx + dy * dy);
-              if (distance < mouse.radius) {
-                const forceDirectionX = dx / distance;
-                const forceDirectionY = dy / distance;
-                const force = (mouse.radius - distance) / mouse.radius;
-                this.x -= forceDirectionX * force * 1.5;
-                this.y -= forceDirectionY * force * 1.5;
-              }
-            }
-
-            this.x += this.dx;
-            this.y += this.dy;
-            this.draw();
-          }
-        }
-
-        function initParticles() {
-          particles = [];
-          let numberOfParticles = (width * height) / 9000;
-          for (let i = 0; i < numberOfParticles; i++) {
-            let size = Math.random() * 1.5 + 0.5;
-            let x = Math.random() * (width - size * 2) + size * 2;
-            let y = Math.random() * (height - size * 2) + size * 2;
-            let dx = (Math.random() - 0.5) * 0.5;
-            let dy = (Math.random() - 0.5) * 0.5;
-            particles.push(new Particle(x, y, dx, dy, size));
-          }
-        }
-
-        function animateParticles() {
-          requestAnimationFrame(animateParticles);
-          ctx.clearRect(0, 0, width, height);
-
-          for (let i = 0; i < particles.length; i++) {
-            particles[i].update();
-          }
-          connectParticles();
-        }
-
-        function connectParticles() {
-          let maxDistance = 100;
-          for (let a = 0; a < particles.length; a++) {
-            for (let b = a; b < particles.length; b++) {
-              let dx = particles[a].x - particles[b].x;
-              let dy = particles[a].y - particles[b].y;
-              let distance = dx * dx + dy * dy;
-
-              if (distance < maxDistance * maxDistance) {
-                let opacity = 1 - distance / (maxDistance * maxDistance);
-                ctx.strokeStyle = `rgba(232, 232, 232, ${opacity * 0.15})`;
-                ctx.lineWidth = 0.5;
-                ctx.beginPath();
-                ctx.moveTo(particles[a].x, particles[a].y);
-                ctx.lineTo(particles[b].x, particles[b].y);
-                ctx.stroke();
-              }
-            }
-
-            if (mouse.x != null && mouse.y != null) {
-              let dx = particles[a].x - mouse.x;
-              let dy = particles[a].y - mouse.y;
-              let distance = dx * dx + dy * dy;
-              if (distance < mouse.radius * mouse.radius) {
-                let opacity = 1 - distance / (mouse.radius * mouse.radius);
-                ctx.strokeStyle = `rgba(0, 123, 255, ${opacity * 0.9})`;
-                ctx.lineWidth = 1.2;
-                ctx.beginPath();
-                ctx.moveTo(particles[a].x, particles[a].y);
-                ctx.lineTo(mouse.x, mouse.y);
-                ctx.stroke();
-              }
-            }
-          }
-        }
-
-        // Run setup smoothly
-        resize();
-        animateParticles();
-      }
-    </script>
+    <script defer src="particles.js"></script>
+    <script defer src="site.js"></script>
+    <script type="module" src="index.js"></script>
   </body>
 </html>

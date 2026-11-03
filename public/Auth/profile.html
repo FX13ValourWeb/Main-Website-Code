@@ -2,14 +2,21 @@
 <html lang="en">
 <head>
      <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0d0d0d" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/Images/icons/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/Images/icons/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/Images/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
      <title>Executive Profile - FX-13 Valour</title>
+     <script>document.documentElement.classList.add("js");</script>
      <link rel="stylesheet" href="profile.css">
+     <link rel="stylesheet" href="../CSS/motion.css">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-     <link rel="icon" type="image/png" href="/Images/Robotics Club Logo.png"> 
 </head>
 <body>
-    <header class="main-header">
+    <header class="main-header fx-enter">
          <div class="logo-container">
               <h1 class="logo-text">FX-13 <span class="highlight">VALOUR</span></h1>
               <p class="logo-subtext">Robotics Club</p>
@@ -20,7 +27,7 @@
          <!-- Interactive Background :DDD -->
     <canvas id="bg-canvas"></canvas>
 
-    <div id="profile">
+    <div id="profile" class="fx-enter" style="--d: 0.1s">
           <div id="profileImageContainer">
                <div id="img">
                     <p>Development underway: Profile Image Upload</p>
@@ -38,6 +45,7 @@
                          <span class="tag" id="specialTag2" style="display:none;"></span>
                          <span class="tag" id="specialTag3" style="display:none;"></span>
                          <span class="tag" id="specialTag4" style="display:none;"></span>
+                         <span class="tag" id="specialTag5" style="display:none;"></span>
                          <span class="tag" id="specialTag6" style="display:none;"></span>
                          <span class="tag" id="specialTag7" style="display:none;"></span>
                          <span class="tag" id="specialTag8" style="display:none;"></span>
@@ -67,18 +75,18 @@
           </div>
      </div>
 
-     <div id="contributionsAndAttendance">
-          <div id="Contributions" class="data-card">
+     <div id="contributionsAndAttendance" data-reveal-stagger="0.1">
+          <div id="Contributions" class="data-card" data-reveal>
                <h3>Project Contributions</h3>
                <div id="contributionsList">No data yet.</div>
           </div>
-          <div id="attendance" class="data-card">
+          <div id="attendance" class="data-card" data-reveal>
                <h3>Attendance Log</h3>
                <div id="attendanceList">No data yet.</div>
           </div>
      </div>
 
-     <div id="participantAchievements" class="data-card">
+     <div id="participantAchievements" class="data-card" data-reveal>
           <h3>Achievements</h3>
           <div id="noAchievementsList"><p class="empty-msg">You will be able to see Your Achievement Certificates here!</p></div>
                <!-- Pathfinders2 Certificate View Box-->
@@ -114,20 +122,22 @@
             <div class="footer-section">
                 <h3>Development</h3>
                 <p>Built for FX-13 Valour Robotics Club</p>
-                <p>Developed by <a href="#" class="dev-link">Nuban Sami Alam</a> & <a href="#" class="dev-link">Shreyan Ahmed</a></p>
+                <p>Developed by <span class="dev-link">Nuban Sami Alam</span>, <span class="dev-link">Shreyan Ahmed</span> &amp; <span class="dev-link">Amlan Halder</span></p>
             </div>
             <div class="footer-section">
-                <h3>Sponsors</h3>
+                <h3>Patrons</h3>
                 <div class="sponsors-grid">
                     <div class="sponsor-box">SFX Greenherald International School</div>
                 </div>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 Robotics Club. All Systems Operational.</p>
+            <p>&copy; 2026 FX-13 Valour Robotics Club. All Systems Operational.</p>
         </div>
     </footer>
 
+    <script defer src="../particles.js"></script>
+    <script defer src="../site.js"></script>
     <script type="module" src="profile.js"></script>
 </body>
 </html>

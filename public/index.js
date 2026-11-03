@@ -1,15 +1,21 @@
 /* =====================================================
-   HOME PAGE JS — MOBILE OPTIMIZED 
+   HOME PAGE JS
+   (Navbar / mobile menu / scroll reveal live in site.js,
+    the star background lives in particles.js)
    ===================================================== */
 
 /* ---------------------------
-   Firebase 
+   Firebase
 ---------------------------- */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
 import {
   getAuth,
   onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+import {
+  getAnalytics,
+  isSupported as analyticsSupported,
+} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-analytics.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC0fYgeJM4CDQCgFCv9jK1lObbtSQ8VyqA",
@@ -24,78 +30,57 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-/* ---------------------------
-   DEVICE FLAGS
----------------------------- */
-const isMobile = window.matchMedia("(max-width: 768px)").matches;
-const isSmallPhone = window.matchMedia("(max-width: 480px)").matches;
+analyticsSupported()
+  .then((ok) => ok && getAnalytics(app))
+  .catch(() => {});
 
 /* ---------------------------
-   SAFE DOM HELPERS 
+   HELPERS
 ---------------------------- */
 const $ = (id) => document.getElementById(id);
+const reduceMotion = window.matchMedia(
+  "(prefers-reduced-motion: reduce)",
+).matches;
+const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)")
+  .matches;
 
 /* =====================================================
-   AUTH UI 
+   AUTH UI (desktop + mobile buttons)
 ===================================================== */
-const signInBtn = $("Sign-in-Button");
-const profileBtn = $("Profile-Button");
+const signInBtns = ["Sign-in-Button", "Sign-in-Button-Mobile"]
+  .map($)
+  .filter(Boolean);
+const profileBtns = ["Profile-Button", "Profile-Button-Mobile"]
+  .map($)
+  .filter(Boolean);
 
-if (signInBtn && profileBtn) {
+if (signInBtns.length || profileBtns.length) {
   onAuthStateChanged(auth, (user) => {
-    if (user) {
-      signInBtn.style.display = "none";
-      profileBtn.style.display = "flex";
-    } else {
-      signInBtn.style.display = "flex";
-      profileBtn.style.display = "none";
-    }
+    signInBtns.forEach((b) => (b.style.display = user ? "none" : "flex"));
+    profileBtns.forEach((b) => (b.style.display = user ? "flex" : "none"));
   });
 
-  profileBtn.addEventListener("click", () => {
-    window.location.href = "Auth/profile.html";
+  profileBtns.forEach((b) =>
+    b.addEventListener("click", () => {
+      window.location.href = "Auth/profile.html";
+    }),
+  );
+}
+
+const contactBtn = $("Contact-Button");
+if (contactBtn) {
+  contactBtn.addEventListener("click", () => {
+    window.location.href = "/contactus.html";
   });
 }
 
 /* =====================================================
-   MOBILE MENU 
-===================================================== */
-const toggle = $("mobileToggle");
-const menu = $("mobileMenu");
-const icon = $("mobileIcon");
-
-if (toggle && menu && icon) {
-  let menuOpen = false;
-
-  toggle.addEventListener("click", () => {
-    menuOpen = !menuOpen;
-    menu.classList.toggle("open", menuOpen);
-    toggle.setAttribute("aria-expanded", menuOpen);
-    icon.className = menuOpen ? "fa-solid fa-xmark" : "fa-solid fa-bars";
-  });
-}
-
-/* =====================================================
-   ACCORDIONS (basically UI)
-===================================================== */
-function setupAccordion(triggerId, innerId) {
-  const t = $(triggerId);
-  const i = $(innerId);
-  if (!t || !i) return;
-
-  t.addEventListener("click", () => {
-    const open = i.classList.toggle("open");
-    t.classList.toggle("active", open);
-  });
-}
-
-setupAccordion("mdTrigger1", "mdInner1");
-setupAccordion("mdTrigger2", "mdInner2");
-
-/* =====================================================
-   TYPEWRITER 
+   TYPEWRITER
+   Slightly varied key timing feels like real typing;
+   the cursor stays solid while typing and blinks when idle.
 ===================================================== */
 const textElement = $("typewriter-text");
+const cursorEl = document.querySelector("#home-page-text1 .cursor");
 
 if (textElement) {
   const phrases = [
@@ -103,168 +88,247 @@ if (textElement) {
     "we are learning robotics in a new way",
   ];
 
-  let phraseIndex = 0;
-  let charIndex = 0;
-  let isDeleting = false;
-  let typeSpeed = 100;
+  if (reduceMotion) {
+    textElement.textContent = phrases[0];
+  } else {
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
 
-  function typeEffect() {
-    const currentPhrase = phrases[phraseIndex];
+    const typeEffect = () => {
+      const currentPhrase = phrases[phraseIndex];
+      let delay;
 
-    if (isDeleting) {
-      textElement.textContent = currentPhrase.substring(0, charIndex - 1);
-      charIndex--;
-      typeSpeed = 50;
-    } else {
-      textElement.textContent = currentPhrase.substring(0, charIndex + 1);
-      charIndex++;
-      typeSpeed = 100;
-    }
+      if (isDeleting) {
+        charIndex--;
+        delay = 28 + Math.random() * 22;
+      } else {
+        charIndex++;
+        delay = 55 + Math.random() * 70;
+      }
+      textElement.textContent = currentPhrase.substring(0, charIndex);
+      if (cursorEl) cursorEl.classList.add("is-typing");
 
-    if (!isDeleting && charIndex === currentPhrase.length) {
-      isDeleting = true;
-      typeSpeed = 2000;
-    } else if (isDeleting && charIndex === 0) {
-      isDeleting = false;
-      phraseIndex = (phraseIndex + 1) % phrases.length;
-      typeSpeed = 500;
-    }
+      if (!isDeleting && charIndex === currentPhrase.length) {
+        isDeleting = true;
+        delay = 2200;
+        if (cursorEl) cursorEl.classList.remove("is-typing");
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+        delay = 450;
+        if (cursorEl) cursorEl.classList.remove("is-typing");
+      }
 
-    setTimeout(typeEffect, typeSpeed);
+      setTimeout(typeEffect, delay);
+    };
+
+    // Start once the hero entrance animation has played
+    setTimeout(typeEffect, 900);
+  }
+}
+
+/* =====================================================
+   MODAL HELPER
+   Animated open/close, Escape to close, backdrop click,
+   page scroll lock, focus moved in and restored on close.
+===================================================== */
+let openModals = 0;
+function lockScroll(lock) {
+  openModals += lock ? 1 : -1;
+  const shouldLock = openModals > 0;
+  const sbw = window.innerWidth - document.documentElement.clientWidth;
+  document.body.style.paddingRight = shouldLock && sbw > 0 ? sbw + "px" : "";
+  document.body.classList.toggle("modal-open", shouldLock);
+}
+
+function createModal({ panel, backdrop, closeBtn, duration = 380 }) {
+  let isOpen = false;
+  let lastFocus = null;
+  let hideTimer = 0;
+  const parts = [panel, backdrop].filter(Boolean);
+
+  function open() {
+    if (isOpen) return;
+    isOpen = true;
+    clearTimeout(hideTimer);
+    lastFocus = document.activeElement;
+    parts.forEach((el) => {
+      el.classList.remove("is-closing");
+      el.style.display = "flex";
+    });
+    // next frame → let the browser paint the start state, then animate
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() =>
+        parts.forEach((el) => el.classList.add("is-open")),
+      ),
+    );
+    lockScroll(true);
+    if (closeBtn) setTimeout(() => closeBtn.focus({ preventScroll: true }), 50);
   }
 
-  document.addEventListener("DOMContentLoaded", typeEffect);
+  function close() {
+    if (!isOpen) return;
+    isOpen = false;
+    parts.forEach((el) => {
+      el.classList.remove("is-open");
+      el.classList.add("is-closing");
+    });
+    hideTimer = setTimeout(
+      () => {
+        parts.forEach((el) => {
+          el.style.display = "none";
+          el.classList.remove("is-closing");
+        });
+      },
+      reduceMotion ? 0 : duration,
+    );
+    lockScroll(false);
+    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+  }
+
+  if (closeBtn) closeBtn.addEventListener("click", close);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && isOpen) close();
+  });
+
+  return {
+    open,
+    close,
+    get isOpen() {
+      return isOpen;
+    },
+  };
 }
 
-/* =====================================================
-   PATHFINDERS MODAL 
-===================================================== */
-const pathFindersCards = $("pathFindersEventCard");
-const pathFindersModal = $("pathFinders-modal-conatiner");
-const modalBackground = $("modalBackground");
-const closeModal = $("closeModal");
-
-if (pathFindersCards && pathFindersModal && modalBackground && closeModal) {
-  // Open Modal
-  pathFindersCards.addEventListener("click", () => {
-    pathFindersModal.style.display = "flex";
-    modalBackground.style.display = "flex";
+// Open on click or Enter/Space (cards are role="button")
+function onActivate(el, fn) {
+  if (!el) return;
+  el.addEventListener("click", (e) => {
+    // Let real buttons/links inside the card do their own thing
+    if (e.target.closest("button, a") && e.target.closest("button, a") !== el)
+      return;
+    fn();
   });
-
-  // Close Modal via Close Button
-  closeModal.addEventListener("click", () => {
-    pathFindersModal.style.display = "none";
-    modalBackground.style.display = "none";
-  });
-
-  // Close Modal when clicking the background backdrop
-  modalBackground.addEventListener("click", (event) => {
-    if (event.target === modalBackground) {
-      pathFindersModal.style.display = "none";
-      modalBackground.style.display = "none";
+  el.addEventListener("keydown", (e) => {
+    if ((e.key === "Enter" || e.key === " ") && e.target === el) {
+      e.preventDefault();
+      fn();
     }
   });
 }
 
 /* =====================================================
-   GALLERY 
+   PATHFINDERS MODAL + GALLERY
 ===================================================== */
-const galleryImages = document.querySelectorAll(".gallery-img");
+const pathFindersCard = $("pathFindersEventCard");
+const pathFindersPanel = $("pathFinders-modal-conatiner");
+const modalBackground = $("modalBackground");
+const closeModalBtn = $("closeModal");
+
+let pathFindersModal = null;
+if (pathFindersCard && pathFindersPanel && modalBackground) {
+  pathFindersModal = createModal({
+    panel: pathFindersPanel,
+    backdrop: modalBackground,
+    closeBtn: closeModalBtn,
+  });
+  onActivate(pathFindersCard, pathFindersModal.open);
+  modalBackground.addEventListener("click", pathFindersModal.close);
+}
+
+const galleryImages = Array.from(document.querySelectorAll(".gallery-img"));
+const galleryViewport = $("pathFinders-gallery-viewport");
+const dotsWrap = document.querySelector(".gallery-dots");
 const nextBtn = document.querySelector(".next-btn");
 const prevBtn = document.querySelector(".prev-btn");
-
 let currentImageIndex = 0;
 
-function updateGallery() {
-  galleryImages.forEach((img) => img.classList.remove("active"));
-  if (galleryImages[currentImageIndex]) {
-    galleryImages[currentImageIndex].classList.add("active");
+if (galleryImages.length && nextBtn && prevBtn) {
+  const dots = galleryImages.map((_, i) => {
+    if (!dotsWrap) return null;
+    const d = document.createElement("span");
+    d.className = "gallery-dot" + (i === 0 ? " active" : "");
+    dotsWrap.appendChild(d);
+    return d;
+  });
+
+  function showImage(index, dir) {
+    const prev = galleryImages[currentImageIndex];
+    currentImageIndex = (index + galleryImages.length) % galleryImages.length;
+    const next = galleryImages[currentImageIndex];
+    if (prev === next) return;
+
+    // Direction-aware slide + crossfade
+    galleryImages.forEach((img) =>
+      img.classList.remove("from-left", "from-right", "leaving-left", "leaving-right"),
+    );
+    prev.classList.remove("active");
+    prev.classList.add(dir > 0 ? "leaving-left" : "leaving-right");
+    next.classList.add(dir > 0 ? "from-right" : "from-left");
+    // force a reflow so the "from" position is applied before animating
+    void next.offsetWidth;
+    next.classList.add("active");
+    next.classList.remove("from-left", "from-right");
+
+    dots.forEach((d, i) => d && d.classList.toggle("active", i === currentImageIndex));
+  }
+
+  nextBtn.addEventListener("click", () => showImage(currentImageIndex + 1, 1));
+  prevBtn.addEventListener("click", () => showImage(currentImageIndex - 1, -1));
+
+  document.addEventListener("keydown", (e) => {
+    if (!pathFindersModal || !pathFindersModal.isOpen) return;
+    if (e.key === "ArrowRight") showImage(currentImageIndex + 1, 1);
+    if (e.key === "ArrowLeft") showImage(currentImageIndex - 1, -1);
+  });
+
+  // Swipe on touch screens
+  if (galleryViewport) {
+    let startX = 0;
+    let startY = 0;
+    galleryViewport.addEventListener(
+      "touchstart",
+      (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      },
+      { passive: true },
+    );
+    galleryViewport.addEventListener(
+      "touchend",
+      (e) => {
+        const dx = e.changedTouches[0].clientX - startX;
+        const dy = e.changedTouches[0].clientY - startY;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+          showImage(currentImageIndex + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+        }
+      },
+      { passive: true },
+    );
   }
 }
 
-if (nextBtn && prevBtn && galleryImages.length) {
-  nextBtn.addEventListener("click", () => {
-    currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
-    updateGallery();
-  });
+/* =====================================================
+   PROJECT MODAL (AeroSense)
+===================================================== */
+const eventModal = $("event-modal");
+const projectContainer1 = $("project-container1");
 
-  prevBtn.addEventListener("click", () => {
-    currentImageIndex =
-      (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
-    updateGallery();
+if (eventModal) {
+  const projectModal = createModal({
+    panel: eventModal,
+    closeBtn: $("close-modal-btn"),
+    duration: 350,
+  });
+  onActivate(projectContainer1, projectModal.open);
+  eventModal.addEventListener("click", (e) => {
+    if (e.target === eventModal) projectModal.close();
   });
 }
 
 /* =====================================================
-   SMOOTH SCROLL 
-===================================================== */
-document.querySelectorAll(".nav-item-link").forEach((link) => {
-  link.addEventListener("click", (e) => {
-    const targetId = link.getAttribute("href");
-    if (!targetId || targetId[0] !== "#") return;
-
-    const targetSection = document.querySelector(targetId);
-    if (!targetSection) return;
-
-    e.preventDefault();
-
-    window.scrollTo({
-      top: targetSection.offsetTop - 120,
-      behavior: "smooth",
-    });
-  });
-});
-
-/* =====================================================
-   LENIS (MOBILE ONLY OPTIMIZATION - NO CHANGE ELSE)
-===================================================== */
-if (typeof Lenis !== "undefined" && !isMobile) {
-  const lenis = new Lenis({
-    duration: 1.2,
-    smooth: true,
-  });
-
-  function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-  }
-
-  requestAnimationFrame(raf);
-}
-
-/* =====================================================
-   COUNTDOWN (SAFE ONLY)
-===================================================== */
-// const countdownElement = $("upcoming-event-countdown");
-// const statusElement = $("event-status");
-
-// // PLEASE US 24 HOUR CLOCK FORMAT FOR RELIABILITY ACROSS TIMEZONES
-// const targetDate = new Date("June 13, 2026 21:45:00").getTime();
-
-// if (countdownElement && statusElement) {
-//   setInterval(() => {
-//     const now = Date.now();
-//     const distance = targetDate - now;
-
-//     if (distance < 0) {
-//       countdownElement.textContent = "EVENT STARTED";
-//       statusElement.textContent = "ONGOING";
-//       statusElement.style.color = "#3b604b";
-//       return;
-//     }
-
-//     const days = Math.floor(distance / 86400000);
-//     const hours = Math.floor((distance % 86400000) / 3600000);
-//     const minutes = Math.floor((distance % 3600000) / 60000);
-//     const seconds = Math.floor((distance % 60000) / 1000);
-
-//     countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-//     statusElement.textContent = "TIME LEFT";
-//   }, 1000);
-// }
-
-/* =====================================================
-   EVENT BUTTONS (UNCHANGED)
+   EVENT BUTTONS
 ===================================================== */
 document.querySelectorAll(".event-participate-button").forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -273,313 +337,260 @@ document.querySelectorAll(".event-participate-button").forEach((btn) => {
 });
 
 /* =====================================================
-   PARTICLE SYSTEM (
-==================================================== */
-// --- Interactive Star Particle Background ---
-const canvas = document.getElementById("bg-canvas");
-if (canvas) {
-  const ctx = canvas.getContext("2d");
-  let width, height;
-  let particles = [];
-
-  // Mouse interaction
-  const mouse = { x: null, y: null, radius: 150 };
-
-  window.addEventListener("mousemove", (event) => {
-    mouse.x = event.clientX; // Changed to clientX for cleaner viewport space tracking
-    mouse.y = event.clientY; // Changed to clientY
-  });
-
-  window.addEventListener("mouseout", () => {
-    mouse.x = null;
-    mouse.y = null;
-  });
-
-  // Touch interaction support for mobile devices
-  window.addEventListener("touchstart", (event) => {
-    if (event.touches.length > 0) {
-      mouse.x = event.touches[0].clientX;
-      mouse.y = event.touches[0].clientY;
-    }
-  });
-
-  window.addEventListener("touchmove", (event) => {
-    if (event.touches.length > 0) {
-      mouse.x = event.touches[0].clientX;
-      mouse.y = event.touches[0].clientY;
-    }
-  });
-
-  window.addEventListener("touchend", () => {
-    mouse.x = null;
-    mouse.y = null;
-  });
-
-  function resize() {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-    initParticles();
-  }
-  window.addEventListener("resize", resize);
-
-  class Particle {
-    constructor(x, y, dx, dy, size) {
-      this.x = x;
-      this.y = y;
-      this.dx = dx;
-      this.dy = dy;
-      this.size = size;
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-      ctx.fillStyle = "rgba(232, 232, 232, 0.8)";
-      ctx.fill();
-    }
-    update() {
-      if (this.x > width || this.x < 0) this.dx = -this.dx;
-      if (this.y > height || this.y < 0) this.dy = -this.dy;
-
-      // Interaction with mouse (repel slightly)
-      if (mouse.x != null && mouse.y != null) {
-        let dx = mouse.x - this.x;
-        let dy = mouse.y - this.y;
-        let distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < mouse.radius) {
-          const forceDirectionX = dx / distance;
-          const forceDirectionY = dy / distance;
-          const force = (mouse.radius - distance) / mouse.radius;
-          this.x -= forceDirectionX * force * 1.5;
-          this.y -= forceDirectionY * force * 1.5;
-        }
-      }
-
-      this.x += this.dx;
-      this.y += this.dy;
-      this.draw();
-    }
-  }
-
-  function initParticles() {
-    particles = [];
-    let numberOfParticles = (width * height) / 9000;
-    for (let i = 0; i < numberOfParticles; i++) {
-      let size = Math.random() * 1.5 + 0.5;
-      let x = Math.random() * (width - size * 2) + size * 2;
-      let y = Math.random() * (height - size * 2) + size * 2;
-      let dx = (Math.random() - 0.5) * 0.5;
-      let dy = (Math.random() - 0.5) * 0.5;
-      particles.push(new Particle(x, y, dx, dy, size));
-    }
-  }
-
-  function animateParticles() {
-    requestAnimationFrame(animateParticles);
-    ctx.clearRect(0, 0, width, height);
-
-    for (let i = 0; i < particles.length; i++) {
-      particles[i].update();
-    }
-    connectParticles();
-  }
-
-  function connectParticles() {
-    let maxDistance = 100;
-    for (let a = 0; a < particles.length; a++) {
-      for (let b = a; b < particles.length; b++) {
-        let dx = particles[a].x - particles[b].x;
-        let dy = particles[a].y - particles[b].y;
-        let distance = dx * dx + dy * dy;
-
-        if (distance < maxDistance * maxDistance) {
-          let opacity = 1 - distance / (maxDistance * maxDistance);
-          ctx.strokeStyle = `rgba(232, 232, 232, ${opacity * 0.15})`;
-          ctx.lineWidth = 0.5;
-          ctx.beginPath();
-          ctx.moveTo(particles[a].x, particles[a].y);
-          ctx.lineTo(particles[b].x, particles[b].y);
-          ctx.stroke();
-        }
-      }
-
-      if (mouse.x != null && mouse.y != null) {
-        let dx = particles[a].x - mouse.x;
-        let dy = particles[a].y - mouse.y;
-        let distance = dx * dx + dy * dy;
-        if (distance < mouse.radius * mouse.radius) {
-          let opacity = 1 - distance / (mouse.radius * mouse.radius);
-          ctx.strokeStyle = `rgba(0, 123, 255, ${opacity * 0.9})`;
-          ctx.lineWidth = 1.2;
-          ctx.beginPath();
-          ctx.moveTo(particles[a].x, particles[a].y);
-          ctx.lineTo(mouse.x, mouse.y);
-          ctx.stroke();
-        }
-      }
-    }
-  }
-
-  // Run setup smoothly
-  resize();
-  animateParticles();
-}
-
-//EXECUTIVES CAROUSEL (UNCHANGED)
-
+   EXECUTIVES 3D CAROUSEL
+   Buttons, click on side cards, arrow keys, swipe, and a gentle
+   autoplay that pauses on hover/focus/touch and when off-screen.
+===================================================== */
+const carouselWrap = $("executives-carousel-wrapper");
 const nodes = document.querySelectorAll(".exec-node");
 const btnPrev = document.querySelector(".carousel-prev");
 const btnNext = document.querySelector(".carousel-next");
-
 let currentIndex = 0;
+let restartCarousel = () => {};
 
 function updateCoverflow() {
+  const n = nodes.length;
   nodes.forEach((node, i) => {
     node.classList.remove("active", "prev", "prev-2", "next", "next-2");
-
-    if (i === currentIndex) node.classList.add("active");
-    else if (i === (currentIndex - 1 + nodes.length) % nodes.length)
-      node.classList.add("prev");
-    else if (i === (currentIndex - 2 + nodes.length) % nodes.length)
-      node.classList.add("prev-2");
-    else if (i === (currentIndex + 1) % nodes.length)
-      node.classList.add("next");
-    else if (i === (currentIndex + 2) % nodes.length)
-      node.classList.add("next-2");
+    const offset = (i - currentIndex + n) % n;
+    if (offset === 0) node.classList.add("active");
+    else if (offset === n - 1) node.classList.add("prev");
+    else if (offset === n - 2) node.classList.add("prev-2");
+    else if (offset === 1) node.classList.add("next");
+    else if (offset === 2) node.classList.add("next-2");
+    node.setAttribute("aria-hidden", offset === 0 ? "false" : "true");
+  });
+  carouselDots.forEach((d, i) => {
+    d.classList.toggle("active", i === currentIndex);
+    d.setAttribute("aria-current", i === currentIndex ? "true" : "false");
   });
 }
 
-if (nodes.length && btnNext && btnPrev) {
-  btnNext.addEventListener("click", () => {
-    currentIndex = (currentIndex + 1) % nodes.length;
-    updateCoverflow();
+// Position dots under the carousel (also clickable)
+const carouselDots = [];
+if (carouselWrap && nodes.length) {
+  const dotsWrap = document.createElement("div");
+  dotsWrap.className = "carousel-dots";
+  nodes.forEach((node, i) => {
+    const dot = document.createElement("button");
+    dot.type = "button";
+    dot.className = "carousel-dot";
+    const name = node.querySelector(".exec-name");
+    dot.setAttribute("aria-label", "Show " + (name ? name.textContent : "executive " + (i + 1)));
+    dot.addEventListener("click", () => {
+      currentIndex = i;
+      updateCoverflow();
+      restartCarousel();
+    });
+    dotsWrap.appendChild(dot);
+    carouselDots.push(dot);
   });
+  carouselWrap.insertAdjacentElement("afterend", dotsWrap);
+}
 
-  btnPrev.addEventListener("click", () => {
-    currentIndex = (currentIndex - 1 + nodes.length) % nodes.length;
+if (nodes.length && btnNext && btnPrev) {
+  const go = (delta) => {
+    currentIndex = (currentIndex + delta + nodes.length) % nodes.length;
     updateCoverflow();
+  };
+
+  btnNext.addEventListener("click", () => {
+    go(1);
+    restartAutoplay();
+  });
+  btnPrev.addEventListener("click", () => {
+    go(-1);
+    restartAutoplay();
   });
 
   nodes.forEach((node, index) => {
     node.addEventListener("click", () => {
+      if (index === currentIndex) return;
       currentIndex = index;
       updateCoverflow();
+      restartAutoplay();
     });
   });
 
+  if (carouselWrap) {
+    carouselWrap.setAttribute("tabindex", "0");
+    carouselWrap.setAttribute("aria-roledescription", "carousel");
+    carouselWrap.setAttribute("aria-label", "Moderators and executives");
+    carouselWrap.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") {
+        go(1);
+        restartAutoplay();
+      } else if (e.key === "ArrowLeft") {
+        go(-1);
+        restartAutoplay();
+      }
+    });
+
+    // Swipe
+    let sx = 0;
+    let sy = 0;
+    carouselWrap.addEventListener(
+      "touchstart",
+      (e) => {
+        sx = e.touches[0].clientX;
+        sy = e.touches[0].clientY;
+        paused.touch = true;
+      },
+      { passive: true },
+    );
+    carouselWrap.addEventListener(
+      "touchend",
+      (e) => {
+        const dx = e.changedTouches[0].clientX - sx;
+        const dy = e.changedTouches[0].clientY - sy;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+          go(dx < 0 ? 1 : -1);
+        }
+        restartAutoplay();
+        setTimeout(() => (paused.touch = false), 4000);
+      },
+      { passive: true },
+    );
+  }
+
+  /* Autoplay */
+  const AUTOPLAY_MS = 4500;
+  const paused = { hover: false, focus: false, touch: false, offscreen: true };
+  let timer = 0;
+
+  function tick() {
+    if (!Object.values(paused).some(Boolean) && !document.hidden) go(1);
+  }
+  function restartAutoplay() {
+    clearInterval(timer);
+    if (!reduceMotion) timer = setInterval(tick, AUTOPLAY_MS);
+  }
+
+  if (carouselWrap) {
+    carouselWrap.addEventListener("mouseenter", () => (paused.hover = true));
+    carouselWrap.addEventListener("mouseleave", () => (paused.hover = false));
+    carouselWrap.addEventListener("focusin", () => (paused.focus = true));
+    carouselWrap.addEventListener("focusout", () => (paused.focus = false));
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(
+        ([entry]) => (paused.offscreen = !entry.isIntersecting),
+        { threshold: 0.35 },
+      ).observe(carouselWrap);
+    } else {
+      paused.offscreen = false;
+    }
+  }
+
+  restartCarousel = restartAutoplay;
   updateCoverflow();
+  restartAutoplay();
+}
+
+/* SENATE PAGE REDIRECT BUTTON */
+const senateBtn = $("viewAllExecutivesButton");
+if (senateBtn) {
+  senateBtn.addEventListener("click", () => {
+    window.location.href = "SenatePage.html";
+  });
 }
 
 /* =====================================================
-   PROJECT MODAL (UNCHANGED)
+   LATEST EVENT CARD — collapse / expand
 ===================================================== */
-const eventModal = document.getElementById("event-modal");
-const closeModalBtn = document.getElementById("close-modal-btn");
-const projectContainer1 = document.getElementById("project-container1");
-
-if (eventModal && closeModalBtn) {
-  // Open Modal
-  if (projectContainer1) {
-    projectContainer1.addEventListener("click", () => {
-      eventModal.style.display = "flex";
-      setTimeout(() => eventModal.classList.add("active"), 10);
-    });
-  }
-
-  // Close Modal Helper function
-  const closeModal = () => {
-    eventModal.classList.remove("active");
-    setTimeout(() => {
-      eventModal.style.display = "none";
-    }, 300); // Matches CSS transition duration
-  };
-
-  // Close via Close Button
-  closeModalBtn.addEventListener("click", closeModal);
-
-  // Close when clicking the background overlay backdrop
-  eventModal.addEventListener("click", (event) => {
-    if (event.target === eventModal) {
-      closeModal();
-    }
-  });
-}
-
-// SENATE PAGE REDIRECT BUTTON
-
-const SenatePageRedirectBtn = document.getElementById(
-  "viewAllExecutivesButton",
-);
-
-SenatePageRedirectBtn.addEventListener("click", () => {
-  window.location.href = "SenatePage.html";
-});
-
-// CURRENT EVENT CONTAINER COLLAPSING AND UPFOLDING CODE
-
-const cecContent = document.getElementById("CECcontent");
-const cecToggle = document.getElementById("CECtoggle");
+const cecContent = $("CECcontent");
+const cecToggle = $("CECtoggle");
 
 if (cecContent && cecToggle) {
-  const VISIBLE_RATIO = 0.4; // show 30% when collapsed
+  const VISIBLE_RATIO = 0.4; // share of the content shown when collapsed
+  const MAX_COLLAPSED = 420; // ...but never taller than this (long on phones)
   let expanded = false;
 
-  // Set max-height to the right pixel value for the current state
+  function collapsedHeight(full) {
+    return Math.min(Math.round(full * VISIBLE_RATIO), MAX_COLLAPSED);
+  }
+
   function applyHeight() {
-    const fullHeight = cecContent.scrollHeight; // the real, full height of the content
-    cecContent.style.maxHeight = expanded
-      ? fullHeight + "px"
-      : Math.round(fullHeight * VISIBLE_RATIO) + "px";
+    const full = cecContent.scrollHeight;
+    cecContent.style.maxHeight =
+      (expanded ? full : collapsedHeight(full)) + "px";
   }
 
   cecToggle.addEventListener("click", () => {
     expanded = !expanded;
 
     cecContent.classList.toggle("is-collapsed", !expanded);
-    cecToggle.setAttribute("aria-expanded", expanded);
+    cecToggle.setAttribute("aria-expanded", String(expanded));
     cecToggle.firstChild.textContent = expanded
       ? "Show less "
       : "See full details ";
     applyHeight();
 
-    // when collapsing, bring the top of the card back into view
+    // When collapsing, bring the card back into view (only if needed)
     if (!expanded) {
-      cecContent.parentElement.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+      const card = cecContent.parentElement;
+      if (card.getBoundingClientRect().top < 0) {
+        card.scrollIntoView({
+          behavior: reduceMotion ? "auto" : "smooth",
+          block: "start",
+        });
+      }
     }
   });
 
-  applyHeight(); // initial state
-  window.addEventListener("load", applyHeight); // re-measure once images/fonts load
-  window.addEventListener("resize", applyHeight); // text wraps differently on resize
+  applyHeight();
+  window.addEventListener("load", applyHeight);
+  let rt = 0;
+  window.addEventListener(
+    "resize",
+    () => {
+      clearTimeout(rt);
+      rt = setTimeout(applyHeight, 100);
+    },
+    { passive: true },
+  );
 }
 
-// =====================================================
-//   EVENTS SECTION INTERSECTION OBSERVER ANIMATION
-// =====================================================
-document.addEventListener("DOMContentLoaded", () => {
-  const eventsSection = document.getElementById("events-page-section");
-
-  if (eventsSection) {
-    const observerOptions = {
-      root: null, // uses the browser viewport
-      threshold: 0.15, // Triggers when 15% of the section is visible
-    };
-
-    const observer = new IntersectionObserver((entries, observerInstance) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          // Add the animation trigger class
-          entry.target.classList.add("animate-in");
-          // Stop observing once animated so it doesn't re-trigger on scroll up/down
-          observerInstance.unobserve(entry.target);
-        }
+/* =====================================================
+   SUBTLE POINTER EFFECTS (mouse/trackpad only)
+   - Cursor-following glow on cards
+   - Gentle 3D tilt on the hero logo
+   Everything is rAF-throttled and only writes CSS variables.
+===================================================== */
+if (finePointer && !reduceMotion) {
+  // Spotlight glow
+  document
+    .querySelectorAll(".event-container, .project-container, #currentEventContainer")
+    .forEach((card) => {
+      card.classList.add("has-spotlight");
+      let raf = 0;
+      card.addEventListener("pointermove", (e) => {
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          raf = 0;
+          const r = card.getBoundingClientRect();
+          card.style.setProperty("--mx", e.clientX - r.left + "px");
+          card.style.setProperty("--my", e.clientY - r.top + "px");
+        });
       });
-    }, observerOptions);
+    });
 
-    observer.observe(eventsSection);
+  // Hero logo tilt
+  const heroCard = $("home-page-image");
+  const heroImg = heroCard && heroCard.querySelector("img");
+  if (heroCard && heroImg) {
+    let raf = 0;
+    heroCard.addEventListener("pointermove", (e) => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const r = heroCard.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        heroImg.style.transform = `perspective(900px) rotateY(${px * 10}deg) rotateX(${-py * 10}deg) scale(1.03)`;
+      });
+    });
+    heroCard.addEventListener("pointerleave", () => {
+      heroImg.style.transform = "";
+    });
   }
-});
+}

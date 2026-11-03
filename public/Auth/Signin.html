@@ -1,147 +1,249 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Sign In - FX-13 Valour</title>
-     <link rel="icon" type="image/png" href="/Images/Robotics Club Logo.png"> 
-     <style>
-          /* --- Global Theme Integration --- */
-:root {
-    --electric-blue: #007BFF;
-    --matte-black: #0d0d0d;
-    --deep-charcoal: #161616;
-    --off-white: #e8e8e8;
-    --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Sign In - FX-13 Valour</title>
+    <meta name="theme-color" content="#0d0d0d" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/Images/icons/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/Images/icons/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/Images/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <script>document.documentElement.classList.add("js");</script>
+    <link rel="stylesheet" href="../CSS/main.css" />
+    <link rel="stylesheet" href="../CSS/motion.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="auth.css" />
+  </head>
+  <body class="auth-body">
+    <!-- Interactive star background (shared with the homepage) -->
+    <canvas id="bg-canvas"></canvas>
 
-body {
-    background-color: var(--matte-black);
-    color: var(--off-white);
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    <nav class="main-navigation-bar">
+      <div class="nav-section links-group">
+        <div class="nav-dropdown">
+          <button
+            class="dropdown-trigger new-dropdown-btn menu-icon-btn"
+            aria-label="Menu"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="dropdown-content multi-section-dropdown">
+            <div class="dropdown-section">
+              <h4 class="dropdown-subheader">Posters</h4>
+              <a href="#">Tech in Fiction</a>
+              <a href="#">Tech in Motion</a>
+            </div>
+            <div class="dropdown-section">
+              <h4 class="dropdown-subheader">Additional information</h4>
+              <a href="#">Rules for events</a>
+              <a href="#">Guidelines for Fairness</a>
+            </div>
+          </div>
+        </div>
+        <a href="../index.html#home-page-section" class="nav-item-link">Home</a>
+        <a href="../index.html#events-page-section" class="nav-item-link">Events</a>
 
-/* --- Selection Container --- */
-#container {
-    background: var(--deep-charcoal);
-    padding: 60px 40px;
-    border: 1px solid rgba(0, 123, 255, 0.15);
-    border-radius: 20px;
-    text-align: center;
-    max-width: 500px;
-    width: 90%;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-    position: relative;
-}
+        <div class="nav-dropdown">
+          <button class="dropdown-trigger">
+            Projects <span class="arrow">▾</span>
+          </button>
+          <div class="dropdown-content">
+            <a href="../index.html#projects-page-section">AeroSense Drone</a>
+          </div>
+        </div>
 
-/* Decorative Scanner Line */
-#container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40%;
-    height: 2px;
-    background: var(--electric-blue);
-    box-shadow: 0 0 15px var(--electric-blue);
-}
+        <a href="../SenatePage.html" class="nav-item-link">Executives</a>
+      </div>
 
-#text {
-    font-size: 0.9rem;
-    letter-spacing: 4px;
-    font-weight: 700;
-    color: var(--off-white);
-    margin-bottom: 40px;
-    opacity: 0.8;
-    text-transform: uppercase;
-}
+      <div class="nav-section logo-container">
+        <h1 class="brand-title">
+          FX-13 <span class="highlight-blue">VALOUR</span>
+        </h1>
+      </div>
 
-/* --- Action Buttons --- */
-.btn {
-    display: block;
-    width: 100%;
-    background: transparent;
-    border: 1px solid rgba(0, 123, 255, 0.3);
-    margin: 15px 0;
-    padding: 0; /* Important: padding moves to the <a> tag */
-    border-radius: 8px;
-    cursor: pointer;
-    transition: var(--transition);
-    position: relative;
-    overflow: hidden;
-}
+      <div class="nav-section button-group">
+        <button
+          id="Contact-Button"
+          onclick="window.location.href = '/contactus.html'"
+        >
+          Contact Us
+        </button>
+        <!-- REMEMBER TO CHANGE IT TO PUBLIC HREF -->
+        <button id="Sign-in-Button">
+          <a href="/Auth/Signin.html">Sign in</a>
+        </button>
+        <button id="Profile-Button">
+          <span class="icon-wrapper">
+            <!-- REMEMBER TO CHANGE IT TO PUBLIC HREF -->
+            <img
+              src="https://img.icons8.com/ios-glyphs/30/007BFF/user-male-circle.png"
+              alt="Profile"
+            />
+          </span>
+          View Profile
+        </button>
+      </div>
 
-.btn a {
-    display: block;
-    padding: 20px;
-    color: var(--off-white);
-    text-decoration: none;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    position: relative;
-    z-index: 2;
-    transition: var(--transition);
-}
+      <!-- Mobile hamburger -->
+      <button
+        class="mobile-menu-toggle"
+        id="mobileToggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <i class="fa-solid fa-bars" id="mobileIcon"></i>
+      </button>
 
-/* Hover Fill Effect */
-.btn::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: var(--electric-blue);
-    transition: var(--transition);
-    z-index: 1;
-}
+      <!-- Mobile slide-down menu -->
+      <div class="mobile-menu-overlay" id="mobileMenu" role="navigation">
+        <div class="mobile-nav-links">
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger1">
+              <span
+                >Browse
+                <i
+                  class="fa-solid fa-bars"
+                  style="font-size: 0.85rem; margin-left: 6px"
+                ></i
+              ></span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner1">
+              <h4 class="dropdown-subheader">Posters</h4>
+              <a href="#">Tech in Fiction</a>
+              <a href="#">Tech in Motion</a>
+              <h4 class="dropdown-subheader" style="margin-top: 8px">
+                Additional information
+              </h4>
+              <a href="#">Rules for events</a>
+              <a href="#">Guidelines for Fairness</a>
+            </div>
+          </div>
+          <a href="../index.html#home-page-section" class="nav-item-link">Home</a>
+          <a href="../index.html#events-page-section" class="nav-item-link">Events</a>
+          <a href="../aerosense.html" class="nav-item-link">AQ-levels</a>
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger2">
+              <span>Projects</span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner2">
+              <a href="../index.html#projects-page-section">AeroSense Drone</a>
+            </div>
+          </div>
+          <a href="../SenatePage.html" class="nav-item-link">Executives</a>
+        </div>
+        <div class="mobile-buttons">
+          <button id="Contact-Button-Mobile">
+            <a href="/contactus.html">Contact us</a>
+          </button>
+          <button id="Sign-in-Button-Mobile">
+            <a href="/Auth/Signin.html">Sign in</a>
+          </button>
+          <button id="Profile-Button-Mobile">
+            <span class="icon-wrapper">
+              <img
+                src="https://img.icons8.com/ios-glyphs/30/007BFF/user-male-circle.png"
+                alt="Profile"
+              />
+            </span>
+            View Profile
+          </button>
+        </div>
+      </div>
+    </nav>
 
-.btn:hover {
-    border-color: var(--electric-blue);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 123, 255, 0.2);
-}
+    <main class="auth-page">
+      <section class="auth-shell auth-chooser">
+        <div class="auth-card">
+          <div id="form">
+            <p class="auth-eyebrow">FX-13 Valour accounts</p>
+            <h1 id="signInp">Sign In</h1>
+            <p class="auth-sub">Which type of member are you in this club?</p>
 
-.btn:hover::after {
-    left: 0;
-}
+            <div class="role-grid">
+              <a class="role-card" href="participantSignIn.html">
+                <span class="role-text">
+                  <strong>I am a member / participant</strong>
+                  <small>Profile, achievements and event certificates</small>
+                </span>
+              </a>
+              <a class="role-card" href="executiveSignIn.html">
+                <span class="role-text">
+                  <strong>I am an executive</strong>
+                  <small>Executive dashboard, contributions and attendance</small>
+                </span>
+              </a>
+            </div>
 
-.btn:hover a {
-    color: var(--matte-black);
-}
+            <p id="signUp">
+              New here?
+              <span><a href="participantSignUp.html">Create a member account</a></span>
+            </p>
+            <p class="auth-switch">
+              FX-13 security protocol
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
 
-/* Active State */
-.btn:active {
-    transform: translateY(-1px);
-}
+    <footer id="main-footer">
+      <div class="footer-divider"></div>
 
-/* Bottom Label */
-#container::after {
-    content: "FX-13 SECURITY PROTOCOL";
-    position: absolute;
-    bottom: 20px;
-    left: 0;
-    width: 100%;
-    font-size: 0.6rem;
-    letter-spacing: 3px;
-    opacity: 0.3;
-    color: var(--electric-blue);
-}
-     </style>
-</head>
-<body>
-     <div id="container">
-          <p id="text">WHICH TYPE OF MEMBER ARE YOU TO THIS CLUB?</p>
-          <button class="btn"><a href="participantSignIn.html">I am a member/participant</a></button>
-          <button class="btn"><a href="executiveSignIn.html">I am an executive</a></button>
-     </div>
-</body>
+      <div class="footer-container" data-reveal-stagger="0.1">
+        <div class="footer-section" data-reveal>
+          <h3>Contact Us</h3>
+          <p>
+            <i class="fa-regular fa-envelope"></i> fx13valourrobotics@gmail.com
+          </p>
+          <p>
+            <i class="fa-solid fa-location-dot"></i> 24 Asad Avenue,
+            Mohammadpur, Dhaka – 1207, Bangladesh
+          </p>
+        </div>
+
+        <div class="footer-section" data-reveal>
+          <h3>Development</h3>
+          <p>Built for FX-13 Valour Robotics Club</p>
+          <p>
+            Developed by
+            <span class="dev-link">Nuban Sami Alam</span>,
+            <span class="dev-link">Shreyan Ahmed</span> &amp;
+            <span class="dev-link">Amlan Halder</span>
+          </p>
+        </div>
+
+        <div class="footer-section" data-reveal>
+          <h3>Patrons</h3>
+          <div class="sponsors-grid">
+            <a
+              href="https://www.facebook.com/SFXGH"
+              class="sponsor-box"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              SFX Greenherald International School
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 FX-13 Valour Robotics Club. All Systems Operational.</p>
+      </div>
+    </footer>
+
+    <script defer src="../particles.js"></script>
+    <script defer src="../site.js"></script>
+
+  </body>
 </html>

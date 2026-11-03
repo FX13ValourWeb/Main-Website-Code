@@ -1,0 +1,277 @@
+/* =====================================================
+   SHARED MOTION + POLISH LAYER
+   Loaded on every page (after the page's own stylesheet).
+   ===================================================== */
+
+:root {
+  /* One family of easings used site-wide so everything feels related */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* fast start, soft landing */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1); /* tiny overshoot */
+  --nav-h: 80px;
+}
+
+html {
+  /* Anchor links land below the sticky navbar instead of under it */
+  scroll-padding-top: calc(var(--nav-h) + 16px);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: rgba(0, 123, 255, 0.35);
+  color: #fff;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* Background stars fade in instead of popping on */
+#bg-canvas {
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+#bg-canvas.is-ready {
+  opacity: 1;
+}
+
+/* Clear, consistent keyboard focus ring (mouse clicks don't show it) */
+:focus-visible {
+  outline: 2px solid #007bff;
+  outline-offset: 3px;
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ---------------------------------------------
+   SCROLL REVEAL  (driven by site.js)
+   Content is only hidden when JS is running (.js on <html>),
+   so nothing disappears if scripts fail to load.
+--------------------------------------------- */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity 0.9s var(--ease-out),
+    transform 0.9s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+}
+.js [data-reveal="left"] {
+  transform: translate3d(-36px, 0, 0);
+}
+.js [data-reveal="right"] {
+  transform: translate3d(36px, 0, 0);
+}
+.js [data-reveal="scale"] {
+  transform: scale(0.94) translate3d(0, 16px, 0);
+}
+.js [data-reveal="fade"] {
+  transform: none;
+}
+.js [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------------------------------------------
+   PAGE ENTRANCE utility (small standalone pages)
+--------------------------------------------- */
+@keyframes fx-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fx-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fx-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fx-enter {
+  animation: fx-enter 0.8s var(--ease-out) both;
+  animation-delay: var(--d, 0s);
+}
+
+/* ---------------------------------------------
+   NAVBAR polish
+--------------------------------------------- */
+.main-navigation-bar.is-scrolled {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  border-bottom-color: rgba(0, 123, 255, 0.18);
+}
+
+/* Thin blue scroll-progress line under the navbar.
+   Pure CSS (scroll-driven animation) → zero JS, zero jank.
+   Browsers without support simply don't show it. */
+@supports (animation-timeline: scroll()) {
+  .main-navigation-bar::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: linear-gradient(90deg, #007bff, #38b6ff);
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.6);
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    animation: fx-scroll-progress linear both;
+    animation-timeline: scroll(root block);
+    pointer-events: none;
+  }
+  @keyframes fx-scroll-progress {
+    to {
+      transform: scaleX(1);
+    }
+  }
+}
+
+/* Hamburger icon gives a small spin when toggled */
+.mobile-menu-toggle i {
+  display: inline-block;
+  transition: transform 0.45s var(--ease-out);
+}
+.mobile-menu-toggle.is-open i {
+  transform: rotate(90deg);
+}
+
+/* ---------------------------------------------
+   REDUCED MOTION — respect the OS setting everywhere
+--------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+  .js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .main-navigation-bar::after {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------
+   BACK-TO-TOP BUTTON (added by site.js on long pages)
+--------------------------------------------- */
+.back-to-top {
+  position: fixed;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: rgba(0, 123, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.45),
+    0 0 18px rgba(0, 123, 255, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  cursor: pointer;
+  z-index: 900;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px) scale(0.9);
+  transition:
+    opacity 0.35s ease,
+    transform 0.5s var(--ease-out),
+    visibility 0s linear 0.35s,
+    background-color 0.3s ease;
+}
+.back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 0s;
+}
+.back-to-top:hover {
+  background: #007bff;
+  transform: translateY(-3px);
+}
+.back-to-top:active {
+  transform: scale(0.94);
+}
+body.menu-open .back-to-top,
+body.modal-open .back-to-top {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Current section highlighted in the navbar */
+.nav-item-link.is-active {
+  color: var(--electric-blue, #007bff);
+  opacity: 1;
+}
+.links-group .nav-item-link.is-active::after {
+  width: 100%;
+}
+.mobile-nav-links .nav-item-link.is-active {
+  padding-left: 10px;
+  border-left: 2px solid var(--electric-blue, #007bff);
+}
+.mobile-nav-links .nav-item-link {
+  transition:
+    color 0.3s ease,
+    padding-left 0.35s var(--ease-out),
+    opacity 0.3s ease,
+    transform 0.4s var(--ease-out);
+}
+
+/* Dim the page behind the open phone menu (tap outside closes it).
+   The layer sits just under the sticky navbar (z-index 1000). */
+@media (max-width: 860px) {
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 998;
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.4s ease,
+      visibility 0s linear 0.4s;
+  }
+  body.menu-open::before {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+}
