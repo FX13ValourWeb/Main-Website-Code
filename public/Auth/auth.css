@@ -754,23 +754,6 @@
 .role-card:active {
   transform: scale(0.99);
 }
-.role-icon {
-  position: relative;
-  flex-shrink: 0;
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
-  display: grid;
-  place-items: center;
-  font-size: 1.3rem;
-  color: var(--electric-blue);
-  background: rgba(0, 123, 255, 0.12);
-  border: 1px solid rgba(0, 123, 255, 0.3);
-  transition: transform 0.5s var(--ease-spring);
-}
-.role-card:hover .role-icon {
-  transform: rotate(-6deg) scale(1.06);
-}
 .role-text {
   position: relative;
   display: flex;
@@ -786,12 +769,4 @@
 .role-text small {
   font-size: 0.8rem;
   color: var(--auth-muted);
-}
-.role-arrow {
-  position: relative;
-  color: var(--electric-blue);
-  transition: transform 0.45s var(--ease-spring);
-}
-.role-card:hover .role-arrow {
-  transform: translateX(4px);
 }
