@@ -158,13 +158,103 @@
     });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => {
-      initNav();
-      initReveal();
+  /* ---------------------------------------------
+     BACK-TO-TOP BUTTON (long pages only)
+  --------------------------------------------- */
+  function initBackToTop() {
+    if (document.documentElement.scrollHeight < window.innerHeight * 2.5) return;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "back-to-top";
+    btn.setAttribute("aria-label", "Back to top");
+    btn.innerHTML =
+      '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 5l-7 7m7-7l7 7M12 5v14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    document.body.appendChild(btn);
+    btn.addEventListener("click", () =>
+      window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" }),
+    );
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      btn.classList.toggle("is-visible", window.scrollY > window.innerHeight * 1.2);
+    };
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      },
+      { passive: true },
+    );
+    update();
+  }
+
+  /* ---------------------------------------------
+     ACTIVE SECTION in the navbar (same-page links)
+  --------------------------------------------- */
+  function initScrollSpy() {
+    if (!("IntersectionObserver" in window)) return;
+    const links = Array.from(
+      document.querySelectorAll('.main-navigation-bar a[href^="#"]'),
+    ).filter((a) => a.getAttribute("href").length > 1);
+    const sections = new Map();
+    links.forEach((a) => {
+      const sec = document.querySelector(a.getAttribute("href"));
+      if (!sec) return;
+      if (!sections.has(sec)) sections.set(sec, []);
+      sections.get(sec).push(a);
     });
-  } else {
+    if (!sections.size) return;
+
+    const visible = new Map();
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => visible.set(e.target, e.isIntersecting ? e.intersectionRatio : 0));
+        let best = null;
+        let bestRatio = 0;
+        visible.forEach((ratio, sec) => {
+          if (ratio > bestRatio) {
+            best = sec;
+            bestRatio = ratio;
+          }
+        });
+        links.forEach((a) => a.classList.remove("is-active"));
+        if (best) sections.get(best).forEach((a) => a.classList.add("is-active"));
+      },
+      { threshold: [0, 0.15, 0.3, 0.5, 0.75], rootMargin: "-20% 0px -40% 0px" },
+    );
+    sections.forEach((_, sec) => io.observe(sec));
+  }
+
+  /* ---------------------------------------------
+     CURRENT PAGE in the navbar (links to other pages)
+  --------------------------------------------- */
+  function markCurrentPage() {
+    const here = location.pathname.replace(/\/index\.html$/, "/").toLowerCase();
+    document.querySelectorAll(".main-navigation-bar a[href]").forEach((a) => {
+      const href = a.getAttribute("href");
+      if (!href || href.startsWith("#") || href.includes("#")) return;
+      const path = new URL(href, location.href).pathname.toLowerCase();
+      if (path === here && path !== "/") {
+        a.classList.add("is-active");
+        a.setAttribute("aria-current", "page");
+      }
+    });
+  }
+
+  function start() {
+    markCurrentPage();
     initNav();
     initReveal();
+    initBackToTop();
+    initScrollSpy();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start);
+  } else {
+    start();
   }
 })();

@@ -2,510 +2,301 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Executive SignIn - FX-13 Valour</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Executive Sign In - FX-13 Valour</title>
+    <meta name="theme-color" content="#0d0d0d" />
     <link rel="icon" type="image/png" href="/Images/Robotics Club Logo.png" />
-    <style>
-      /* ── VARIABLES ──────────────────────────────────────────────────── */
-      :root {
-        --electric-blue: #007bff;
-        --matte-black: #0d0d0d;
-        --deep-charcoal: #161616;
-        --off-white: #e8e8e8;
-        --muted-gray: #888888;
-        --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-      }
-
-      /* ── RESET & BASE ────────────────────────────────────────────────── */
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      body {
-        background-color: var(--matte-black);
-        color: var(--off-white);
-        font-family: "Inter", sans-serif;
-        /* FIX: removed overflow:hidden — it clips the overlay on small screens */
-        overflow-x: hidden;
-      }
-
-      /* ── SPLIT SCREEN ────────────────────────────────────────────────── */
-      #signInScreen {
-        display: flex;
-        height: 100vh;
-        width: 100vw;
-        /* FIX: contains the brand logo so position:absolute works correctly */
-        position: relative;
-      }
-
-      /* ── LEFT: IMAGE PANEL ───────────────────────────────────────────── */
-      #imgContainer {
-        flex: 1;
-        background: var(--deep-charcoal);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-right: 1px solid rgba(0, 123, 255, 0.1);
-        overflow: hidden;
-      }
-
-      #imgContainer img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        filter: drop-shadow(0 0 20px rgba(0, 123, 255, 0.2));
-      }
-
-      /* ── BRAND LOGO ──────────────────────────────────────────────────── */
-      #roboticsBrandLogo {
-        /* FIX: absolute (not fixed) so it stays inside #signInScreen */
-        position: absolute;
-        top: 32px;
-        left: 40px;
-        font-size: 1.8rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        color: var(--off-white);
-        letter-spacing: 2px;
-        z-index: 10;
-        pointer-events: none;
-      }
-
-      #roboticsBrandLogo span {
-        color: var(--electric-blue);
-      }
-
-      /* ── RIGHT: FORM PANEL ───────────────────────────────────────────── */
-      #formContainer {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: var(--matte-black);
-        /* Padding gives room for the brand logo at the top */
-        padding: 100px 10% 60px;
-      }
-
-      #form {
-        width: 100%;
-        max-width: 400px;
-        display: flex;
-        flex-direction: column;
-      }
-
-      /* ── HEADING ─────────────────────────────────────────────────────── */
-      #signInp {
-        font-size: 2.5rem;
-        font-weight: 900;
-        text-transform: uppercase;
-        letter-spacing: -1px;
-        margin-bottom: 30px;
-        border-left: 5px solid var(--electric-blue);
-        padding-left: 15px;
-        line-height: 1.1;
-      }
-
-      /* ── LABELS ──────────────────────────────────────────────────────── */
-      label {
-        display: block;
-        font-size: 0.75rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        color: var(--electric-blue);
-        margin-top: 22px;
-        margin-bottom: 8px;
-      }
-
-      /* ── INPUTS ──────────────────────────────────────────────────────── */
-      input {
-        width: 100%;
-        background: var(--deep-charcoal);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 15px;
-        color: var(--off-white);
-        font-size: 1rem;
-        font-family: "Inter", sans-serif;
-        border-radius: 4px;
-        transition: var(--transition);
-      }
-
-      input::placeholder {
-        color: rgba(255, 255, 255, 0.25);
-      }
-
-      input:focus {
-        outline: none;
-        border-color: var(--electric-blue);
-        box-shadow: 0 0 15px rgba(0, 123, 255, 0.2);
-        background: #1a1a1a;
-      }
-
-      /* ── SUBMIT BUTTON ───────────────────────────────────────────────── */
-      button {
-        width: 100%;
-        background-color: var(--electric-blue);
-        color: white;
-        padding: 15px;
-        border: none;
-        font-family: "Inter", sans-serif;
-        font-size: 0.9rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        cursor: pointer;
-        /* FIX: was 80px — far too much, especially on short screens */
-        margin-top: 36px;
-        border-radius: 4px;
-        transition:
-          transform 0.2s ease,
-          background-color 0.3s ease;
-      }
-
-      button:hover {
-        background-color: #0056b3;
-        transform: translateY(-2px);
-      }
-
-      button:active {
-        transform: translateY(0);
-        filter: brightness(0.85);
-      }
-
-      /* ── SIGN UP LINK ────────────────────────────────────────────────── */
-      #signUp {
-        margin-top: 28px;
-        font-size: 0.85rem;
-        opacity: 0.6;
-        text-align: center;
-      }
-
-      #signUp span a {
-        color: var(--electric-blue);
-        text-decoration: none;
-        font-weight: 700;
-        margin-left: 5px;
-        transition: var(--transition);
-      }
-
-      #signUp span a:hover {
-        text-decoration: underline;
-        text-shadow: 0 0 10px var(--electric-blue);
-      }
-
-      /* ── OVERLAY BOX ─────────────────────────────────────────────────── */
-
-      #successSignInExecutive {
-        display: none;
-      }
-      /* ── OVERLAY BOX ─────────────────────────────────────────────────── */
-
-      .successSignIn {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: var(--matte-black);
-        justify-content: center;
-        align-items: center;
-        z-index: 100;
-        padding: 20px;
-      }
-
-      .success-box {
-        border: 1px solid var(--electric-blue);
-        padding: 60px 40px 50px;
-        max-width: 600px;
-        width: 100%;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 0;
-      }
-
-      /* Top-left bracket */
-      .success-box::before {
-        content: "";
-        position: absolute;
-        top: -5px;
-        left: -5px;
-        width: 20px;
-        height: 20px;
-        border-top: 2px solid var(--electric-blue);
-        border-left: 2px solid var(--electric-blue);
-      }
-
-      /* Bottom-right bracket */
-      .success-box::after {
-        content: "";
-        position: absolute;
-        bottom: -5px;
-        right: -5px;
-        width: 20px;
-        height: 20px;
-        border-bottom: 2px solid var(--electric-blue);
-        border-right: 2px solid var(--electric-blue);
-      }
-
-      #Congratulations {
-        color: var(--electric-blue);
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 5px;
-        margin-bottom: 12px;
-        font-weight: 600;
-      }
-
-      #AccountStatus {
-        font-size: 2.5rem;
-        font-weight: 900;
-        margin-bottom: 18px;
-        color: var(--off-white);
-        letter-spacing: -1px;
-        line-height: 1.15;
-      }
-
-      #details {
-        color: var(--muted-gray);
-        font-size: 1rem;
-        max-width: 400px;
-        /* FIX: was 0px — gives breathing room above the button */
-        margin: 0 auto 32px;
-        line-height: 1.6;
-      }
-
-      .successSignIn button {
-        background-color: transparent;
-        font-size: 1rem;
-        font-family: "Inter", sans-serif;
-        font-weight: 600;
-        letter-spacing: 1.5px;
-        border: 1px solid var(--electric-blue);
-        border-radius: 0;
-        width: auto;
-        min-width: 300px;
-        /* FIX: reset the global margin-top so it respects #details margin-bottom */
-        margin-top: 0;
-        padding: 0;
-        transition: background-color 0.3s ease;
-      }
-
-      .successSignIn button a {
-        color: var(--electric-blue);
-        text-decoration: none;
-        display: block;
-        padding: 14px 24px;
-      }
-
-      .successSignIn button:hover {
-        background-color: var(--electric-blue);
-        transform: none;
-      }
-
-      .successSignIn button:hover a {
-        color: white;
-      }
-
-      /* ── RESPONSIVE: TABLET ≤ 900px ──────────────────────────────────── */
-      @media (max-width: 900px) {
-        #imgContainer {
-          display: none;
-        }
-
-        #roboticsBrandLogo {
-          /* FIX: use translate(-50%) without overflow-causing width:100% */
-          left: 50%;
-          transform: translateX(-50%);
-          white-space: nowrap;
-          font-size: 1.5rem;
-        }
-
-        #formContainer {
-          padding: 100px 40px 60px;
-        }
-      }
-
-      /* ── RESPONSIVE: TABLET ≤ 600px ──────────────────────────────────── */
-      @media (max-width: 600px) {
-        #formContainer {
-          padding: 90px 28px 48px;
-        }
-
-        #signInp {
-          font-size: 2rem;
-        }
-
-        .success-box {
-          padding: 40px 24px 36px;
-        }
-
-        #AccountStatus {
-          font-size: 1.9rem;
-          letter-spacing: -0.5px;
-        }
-
-        .successSignIn button {
-          min-width: 0;
-          width: 100%;
-          font-size: 0.9rem;
-        }
-      }
-
-      /* ── RESPONSIVE: MOBILE ≤ 480px ─────────────────────────────────── */
-      @media (max-width: 480px) {
-        #roboticsBrandLogo {
-          font-size: 1.2rem;
-          top: 20px;
-        }
-
-        #formContainer {
-          padding: 80px 20px 40px;
-        }
-
-        #signInp {
-          font-size: 1.75rem;
-          margin-bottom: 20px;
-        }
-
-        .successSignIn {
-          padding: 16px;
-        }
-
-        .success-box {
-          padding: 32px 20px 28px;
-        }
-
-        .success-box::before,
-        .success-box::after {
-          width: 14px;
-          height: 14px;
-        }
-
-        #Congratulations {
-          font-size: 0.7rem;
-          letter-spacing: 3px;
-        }
-
-        #AccountStatus {
-          font-size: 1.4rem;
-          letter-spacing: -0.5px;
-          line-height: 1.3;
-          margin-bottom: 12px;
-        }
-
-        #details {
-          font-size: 0.88rem;
-          margin-bottom: 24px;
-        }
-
-        .successSignIn button {
-          min-width: 0;
-          width: 100%;
-          font-size: 0.8rem;
-          margin-top: 0;
-        }
-
-        .successSignIn button a {
-          padding: 12px 16px;
-          letter-spacing: 0.5px;
-        }
-      }
-
-      /* ── RESPONSIVE: SMALL ≤ 360px ──────────────────────────────────── */
-      @media (max-width: 360px) {
-        #formContainer {
-          padding: 72px 16px 32px;
-        }
-
-        #signInp {
-          font-size: 1.5rem;
-        }
-
-        .success-box {
-          padding: 24px 14px 22px;
-        }
-
-        #AccountStatus {
-          font-size: 1.2rem;
-        }
-
-        .successSignIn button a {
-          padding: 10px 12px;
-        }
-      }
-    </style>
+    <script>document.documentElement.classList.add("js");</script>
+    <link rel="stylesheet" href="../CSS/main.css" />
+    <link rel="stylesheet" href="../CSS/motion.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="auth.css" />
   </head>
-  <body>
-    <div id="signInScreen">
-      <p id="roboticsBrandLogo">FX-13 <span>Valour</span></p>
-      <div id="imgContainer">
-        <img src="/Images/Executive SignIn.png" alt="FX-13 Valour executives" />
-      </div>
-      <div id="formContainer">
-                <div id="form">
-          <p id="signInp">Sign In</p>
-          <label for="email">Email: </label>
-          <input type="email" id="email" autocomplete="email" />
-          <label for="password">Password: </label>
-          <input type="password" id="password" autocomplete="current-password" />
-          <button id="signInBtn" type="button">Continue</button>
-          <button type="button" style="margin-top: 10px" onclick="window.location.href = '/'">
-            GO BACK TO HOMEPAGE
+  <body class="auth-body">
+    <!-- Interactive star background (shared with the homepage) -->
+    <canvas id="bg-canvas"></canvas>
+
+    <nav class="main-navigation-bar">
+      <div class="nav-section links-group">
+        <div class="nav-dropdown">
+          <button
+            class="dropdown-trigger new-dropdown-btn menu-icon-btn"
+            aria-label="Menu"
+          >
+            <i class="fa-solid fa-bars"></i>
           </button>
-          <p id="signUp">
-            Don't have an account?
-            <span><a href="executiveSignUp.html">Sign Up</a></span>
-          </p>
+          <div class="dropdown-content multi-section-dropdown">
+            <div class="dropdown-section">
+              <h4 class="dropdown-subheader">Posters</h4>
+              <a href="#">Tech in Fiction</a>
+              <a href="#">Tech in Motion</a>
+            </div>
+            <div class="dropdown-section">
+              <h4 class="dropdown-subheader">Additional information</h4>
+              <a href="#">Rules for events</a>
+              <a href="#">Guidelines for Fairness</a>
+            </div>
+          </div>
+        </div>
+        <a href="../index.html#home-page-section" class="nav-item-link">Home</a>
+        <a href="../index.html#events-page-section" class="nav-item-link">Events</a>
+
+        <div class="nav-dropdown">
+          <button class="dropdown-trigger">
+            Projects <span class="arrow">▾</span>
+          </button>
+          <div class="dropdown-content">
+            <a href="../index.html#projects-page-section">AeroSense Drone</a>
+          </div>
+        </div>
+
+        <a href="../SenatePage.html" class="nav-item-link">Executives</a>
+      </div>
+
+      <div class="nav-section logo-container">
+        <h1 class="brand-title">
+          FX-13 <span class="highlight-blue">VALOUR</span>
+        </h1>
+      </div>
+
+      <div class="nav-section button-group">
+        <button
+          id="Contact-Button"
+          onclick="window.location.href = '/contactus.html'"
+        >
+          Contact Us
+        </button>
+        <!-- REMEMBER TO CHANGE IT TO PUBLIC HREF -->
+        <button id="Sign-in-Button">
+          <a href="/Auth/Signin.html">Sign in</a>
+        </button>
+        <button id="Profile-Button">
+          <span class="icon-wrapper">
+            <!-- REMEMBER TO CHANGE IT TO PUBLIC HREF -->
+            <img
+              src="https://img.icons8.com/ios-glyphs/30/007BFF/user-male-circle.png"
+              alt="Profile"
+            />
+          </span>
+          View Profile
+        </button>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button
+        class="mobile-menu-toggle"
+        id="mobileToggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <i class="fa-solid fa-bars" id="mobileIcon"></i>
+      </button>
+
+      <!-- Mobile slide-down menu -->
+      <div class="mobile-menu-overlay" id="mobileMenu" role="navigation">
+        <div class="mobile-nav-links">
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger1">
+              <span
+                >Browse
+                <i
+                  class="fa-solid fa-bars"
+                  style="font-size: 0.85rem; margin-left: 6px"
+                ></i
+              ></span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner1">
+              <h4 class="dropdown-subheader">Posters</h4>
+              <a href="#">Tech in Fiction</a>
+              <a href="#">Tech in Motion</a>
+              <h4 class="dropdown-subheader" style="margin-top: 8px">
+                Additional information
+              </h4>
+              <a href="#">Rules for events</a>
+              <a href="#">Guidelines for Fairness</a>
+            </div>
+          </div>
+          <a href="../index.html#home-page-section" class="nav-item-link">Home</a>
+          <a href="../index.html#events-page-section" class="nav-item-link">Events</a>
+          <a href="../aerosense.html" class="nav-item-link">AQ-levels</a>
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger2">
+              <span>Projects</span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner2">
+              <a href="../index.html#projects-page-section">AeroSense Drone</a>
+            </div>
+          </div>
+          <a href="../SenatePage.html" class="nav-item-link">Executives</a>
+        </div>
+        <div class="mobile-buttons">
+          <button id="Contact-Button-Mobile">
+            <a href="/contactus.html">Contact us</a>
+          </button>
+          <button id="Sign-in-Button-Mobile">
+            <a href="/Auth/Signin.html">Sign in</a>
+          </button>
+          <button id="Profile-Button-Mobile">
+            <span class="icon-wrapper">
+              <img
+                src="https://img.icons8.com/ios-glyphs/30/007BFF/user-male-circle.png"
+                alt="Profile"
+              />
+            </span>
+            View Profile
+          </button>
         </div>
       </div>
-    </div>
+    </nav>
 
-    <!-- Success Overlay EXECUTIVE-->
-    <div id="successSignInExecutive" class="successSignIn">
+    <main class="auth-page">
+      <section class="auth-shell" id="signInScreen">
+        <aside class="auth-visual">
+          <img src="/Images/Executive SignIn.png" alt="FX-13 Valour executives" />
+          <div class="auth-visual-content">
+            <span class="auth-pill">Executive portal</span>
+            <h2>Welcome back, <span>Executive</span></h2>
+            <p>Sign in to reach the executive dashboard, your contributions and attendance log.</p>
+            <ul class="auth-perks">
+            <li><i class="fa-solid fa-gauge-high" aria-hidden="true"></i> Dashboard</li>
+            <li><i class="fa-solid fa-diagram-project" aria-hidden="true"></i> Contributions</li>
+            <li><i class="fa-solid fa-clipboard-check" aria-hidden="true"></i> Attendance</li>
+            </ul>
+          </div>
+        </aside>
+
+        <div class="auth-card" id="formContainer">
+          <div id="form">
+            <p class="auth-eyebrow">Executive sign in</p>
+            <h1 id="signInp">Sign In</h1>
+            <p class="auth-sub">Use the email and password you registered with.</p>
+
+            <div class="auth-fields">
+              <div class="field">
+                <label for="email">Email</label>
+                <div class="input-wrap">
+                  <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                  <input
+                    type="email"
+                    id="email"
+                    placeholder="you@example.com"
+                    autocomplete="email" inputmode="email"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="field">
+                <label for="password">Password</label>
+                <div class="input-wrap">
+                  <i class="fa-solid fa-lock" aria-hidden="true"></i>
+                  <input
+                    type="password"
+                    id="password"
+                    placeholder="Your password"
+                    autocomplete="current-password"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <button id="signInBtn" class="auth-btn" type="button">
+              Continue <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </button>
+            <button
+              type="button"
+              class="auth-btn ghost"
+              onclick="window.location.href = '/'"
+            >
+              <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back to homepage
+            </button>
+
+            <p id="signUp">
+              Don't have an account?
+              <span><a href="executiveSignUp.html">Sign Up</a></span>
+            </p>
+            <p class="auth-switch">
+              <i class="fa-solid fa-shuffle" aria-hidden="true"></i>Not an executive?
+              <a href="participantSignIn.html">Member sign in</a>
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="successSignInExecutive" class="successSignIn" role="dialog" aria-modal="true" aria-labelledby="AccountStatus">
       <div class="success-box">
         <p id="Congratulations">System Update</p>
         <p id="AccountStatus">Successfully Signed In as Executive 🎉</p>
-        <p id="details">
-          Your executive credentials have been verified. You can now access your
-          profile and the internal dashboard.
-        </p>
-        <button>
-          <a href="/Auth/profile.html">GO TO EXECUTIVE DASHBOARD</a>
-        </button>
+        <p id="details">Your executive credentials have been verified. You can now access your profile and the internal dashboard.</p>
+        <a class="auth-btn" href="/Auth/profile.html">Go to executive dashboard <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
       </div>
     </div>
 
-    <!-- Success Overlay MEMEBER-->
-    <!-- <div id="successSignInMember" class="successSignIn">
-        <div class="success-box">
-            <p id="Congratulations">System Update</p>
-            <p id="AccountStatus">Account Created Successfully 🎉</p>
-            <p id="details">Your executive credentials have been verified. You can now access your profile and the internal dashboard.</p>
-            <button><a href="https://fx-13-valour-robotics-club.web.app">GO TO MEMBER DASHBOARD</a></button>
-        </div>
-    </div> -->
-
-    <!-- Not Executive Error -->
-    <div id="notExecutive" class="successSignIn">
+    <div id="notExecutive" class="successSignIn" role="dialog" aria-modal="true" aria-labelledby="AccountStatus">
       <div class="success-box">
         <p id="Congratulations">System Update</p>
         <p id="AccountStatus">You are not an Executive Yet ❌</p>
-        <p id="details">Click the button to go to Participant Sign In</p>
-        <!-- REMEMBER TO CHANGE ITS SOURCE TO GLOBAL -->
-        <button>
-          <a href="/Auth/participantSignIn.html">GO TO PARTICIPANT SIGN IN</a>
-        </button>
+        <p id="details">Click the button to go to Participant Sign In.</p>
+        <a class="auth-btn" href="/Auth/participantSignIn.html">Go to participant sign in <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
       </div>
     </div>
+    <footer id="main-footer">
+      <div class="footer-divider"></div>
+
+      <div class="footer-container" data-reveal-stagger="0.1">
+        <div class="footer-section" data-reveal>
+          <h3>Contact Us</h3>
+          <p>
+            <i class="fa-regular fa-envelope"></i> fx13valourrobotics@gmail.com
+          </p>
+          <p>
+            <i class="fa-solid fa-location-dot"></i> 24 Asad Avenue,
+            Mohammadpur, Dhaka – 1207, Bangladesh
+          </p>
+        </div>
+
+        <div class="footer-section" data-reveal>
+          <h3>Development</h3>
+          <p>Built for FX-13 Valour Robotics Club</p>
+          <p>
+            Developed by
+            <span class="dev-link">Nuban Sami Alam</span>,
+            <span class="dev-link">Shreyan Ahmed</span> &amp;
+            <span class="dev-link">Amlan Halder</span>
+          </p>
+        </div>
+
+        <div class="footer-section" data-reveal>
+          <h3>Patrons</h3>
+          <div class="sponsors-grid">
+            <a
+              href="https://www.facebook.com/SFXGH"
+              class="sponsor-box"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              SFX Greenherald International School
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 FX-13 Valour Robotics Club. All Systems Operational.</p>
+      </div>
+    </footer>
+
+    <script defer src="../particles.js"></script>
+    <script defer src="../site.js"></script>
     <script type="module" src="executiveSignIn.js"></script>
   </body>
 </html>

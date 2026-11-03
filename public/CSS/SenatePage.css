@@ -540,3 +540,97 @@
 }
 
 /* FOOTER FOOTER FOOTER */
+
+/* =====================================================
+   PHONES: compact two-column cabinet grid
+   ===================================================== */
+@media (max-width: 650px) {
+  #page-Wrapper {
+    padding: 36px 4% 60px;
+  }
+  #FoundingCabH {
+    margin: 50px 0 40px;
+  }
+  .ModProfile {
+    padding: 24px 16px;
+  }
+  .ModProfile img {
+    width: 120px;
+    height: 120px;
+  }
+  .ModProfile h1 {
+    font-size: 1.3rem;
+  }
+  .Top3Profiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 14px;
+    row-gap: 14px;
+    width: 100%;
+    max-width: 480px;
+    margin-bottom: 14px;
+  }
+  .Pres {
+    grid-column: 1 / -1;
+    max-width: 100%;
+    padding: 30px 20px;
+  }
+  .VicePres,
+  .Genral {
+    max-width: none;
+    padding: 22px 10px;
+  }
+  .VicePres img,
+  .Genral img {
+    width: 96px;
+    margin-bottom: 14px;
+  }
+  .VicePres h1,
+  .Genral h1 {
+    font-size: 1rem;
+  }
+  .CabinetCardsWrapper {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    max-width: 480px;
+  }
+  .cabinetCard {
+    padding: 20px 10px;
+  }
+  .cabinetCard img {
+    width: 84px;
+    margin-bottom: 12px;
+  }
+  .cabinetCard h1 {
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+  }
+  .Pres p,
+  .VicePres p,
+  .Genral p,
+  .cabinetCard p {
+    font-size: 0.64rem;
+    letter-spacing: 1.2px;
+    line-height: 1.5;
+  }
+  #goBackHomeBtn {
+    padding: 16px 36px;
+  }
+}
+
+@media (max-width: 340px) {
+  .CabinetCardsWrapper,
+  .Top3Profiles {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Touch screens: no hover lift that "sticks" after a tap */
+@media (hover: none) {
+  .ModProfile:hover,
+  .Pres:hover,
+  .VicePres:hover,
+  .Genral:hover,
+  .cabinetCard:hover {
+    transform: none;
+  }
+}

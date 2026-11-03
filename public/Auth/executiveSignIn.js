@@ -9,7 +9,7 @@ import {
   getDoc,
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-import { withLoading, submitOnEnter } from "./auth-ui.js";
+import { withLoading, submitOnEnter, notify, friendlyError, checkRequired } from "./auth-ui.js";
 // ✅ UPDATED TO NEW PROJECT CONFIG
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -40,7 +40,7 @@ loginBtn.addEventListener('click', withLoading(loginBtn, async () => {
   const password = document.getElementById("password").value;
 
   if (!email || !password) {
-    alert("Please fill in all fields.");
+    notify("Please enter your email and password.", ["email", "password"].filter((id) => !document.getElementById(id).value));
     return;
   }
 
@@ -68,11 +68,11 @@ loginBtn.addEventListener('click', withLoading(loginBtn, async () => {
   } catch (error) {
     // Handle common login errors gracefully
     if (error.code === "auth/invalid-credential") {
-      alert("Incorrect email or password. Please try again.");
+      notify("Incorrect email or password. Please try again.", ["email", "password"]);
     } else if (error.code === "auth/user-not-found") {
-      alert("No account found with this email.");
+      notify("No account found with this email.", ["email"]);
     } else {
-      alert("Error: " + error.message);
+      notify(friendlyError(error));
     }
   }
 }));

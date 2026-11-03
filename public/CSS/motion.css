@@ -182,3 +182,96 @@ img {
     display: none;
   }
 }
+
+/* ---------------------------------------------
+   BACK-TO-TOP BUTTON (added by site.js on long pages)
+--------------------------------------------- */
+.back-to-top {
+  position: fixed;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: rgba(0, 123, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.45),
+    0 0 18px rgba(0, 123, 255, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  cursor: pointer;
+  z-index: 900;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px) scale(0.9);
+  transition:
+    opacity 0.35s ease,
+    transform 0.5s var(--ease-out),
+    visibility 0s linear 0.35s,
+    background-color 0.3s ease;
+}
+.back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 0s;
+}
+.back-to-top:hover {
+  background: #007bff;
+  transform: translateY(-3px);
+}
+.back-to-top:active {
+  transform: scale(0.94);
+}
+body.menu-open .back-to-top,
+body.modal-open .back-to-top {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Current section highlighted in the navbar */
+.nav-item-link.is-active {
+  color: var(--electric-blue, #007bff);
+  opacity: 1;
+}
+.links-group .nav-item-link.is-active::after {
+  width: 100%;
+}
+.mobile-nav-links .nav-item-link.is-active {
+  padding-left: 10px;
+  border-left: 2px solid var(--electric-blue, #007bff);
+}
+.mobile-nav-links .nav-item-link {
+  transition:
+    color 0.3s ease,
+    padding-left 0.35s var(--ease-out),
+    opacity 0.3s ease,
+    transform 0.4s var(--ease-out);
+}
+
+/* Dim the page behind the open phone menu (tap outside closes it).
+   The layer sits just under the sticky navbar (z-index 1000). */
+@media (max-width: 860px) {
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 998;
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.4s ease,
+      visibility 0s linear 0.4s;
+  }
+  body.menu-open::before {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+}

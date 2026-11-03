@@ -346,6 +346,7 @@ const nodes = document.querySelectorAll(".exec-node");
 const btnPrev = document.querySelector(".carousel-prev");
 const btnNext = document.querySelector(".carousel-next");
 let currentIndex = 0;
+let restartCarousel = () => {};
 
 function updateCoverflow() {
   const n = nodes.length;
@@ -359,6 +360,32 @@ function updateCoverflow() {
     else if (offset === 2) node.classList.add("next-2");
     node.setAttribute("aria-hidden", offset === 0 ? "false" : "true");
   });
+  carouselDots.forEach((d, i) => {
+    d.classList.toggle("active", i === currentIndex);
+    d.setAttribute("aria-current", i === currentIndex ? "true" : "false");
+  });
+}
+
+// Position dots under the carousel (also clickable)
+const carouselDots = [];
+if (carouselWrap && nodes.length) {
+  const dotsWrap = document.createElement("div");
+  dotsWrap.className = "carousel-dots";
+  nodes.forEach((node, i) => {
+    const dot = document.createElement("button");
+    dot.type = "button";
+    dot.className = "carousel-dot";
+    const name = node.querySelector(".exec-name");
+    dot.setAttribute("aria-label", "Show " + (name ? name.textContent : "executive " + (i + 1)));
+    dot.addEventListener("click", () => {
+      currentIndex = i;
+      updateCoverflow();
+      restartCarousel();
+    });
+    dotsWrap.appendChild(dot);
+    carouselDots.push(dot);
+  });
+  carouselWrap.insertAdjacentElement("afterend", dotsWrap);
 }
 
 if (nodes.length && btnNext && btnPrev) {
@@ -454,6 +481,7 @@ if (nodes.length && btnNext && btnPrev) {
     }
   }
 
+  restartCarousel = restartAutoplay;
   updateCoverflow();
   restartAutoplay();
 }

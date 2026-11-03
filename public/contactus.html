@@ -2,8 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0d0d0d" />
     <title>Contact Us - FX-13 Valour</title>
+    <script>document.documentElement.classList.add("js");</script>
     <link rel="stylesheet" href="/CSS/main.css" />
     <link rel="stylesheet" href="/CSS/motion.css" />
 
@@ -38,7 +40,8 @@
       .all-sections {
         position: relative;
         z-index: 1; /* Pushes content above canvas layer */
-        min-height: 100vh;
+        min-height: calc(100vh - var(--nav-h, 80px));
+        min-height: calc(100svh - var(--nav-h, 80px));
         display: flex;
         justify-content: center;
         align-items: center;
@@ -200,6 +203,141 @@
   <body>
     <canvas id="bg-canvas"></canvas>
 
+    <nav class="main-navigation-bar">
+      <div class="nav-section links-group">
+        <div class="nav-dropdown">
+          <button
+            class="dropdown-trigger new-dropdown-btn menu-icon-btn"
+            aria-label="Menu"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="dropdown-content multi-section-dropdown">
+            <div class="dropdown-section">
+              <h4 class="dropdown-subheader">Posters</h4>
+              <a href="#">Tech in Fiction</a>
+              <a href="#">Tech in Motion</a>
+            </div>
+            <div class="dropdown-section">
+              <h4 class="dropdown-subheader">Additional information</h4>
+              <a href="#">Rules for events</a>
+              <a href="#">Guidelines for Fairness</a>
+            </div>
+          </div>
+        </div>
+        <a href="index.html#home-page-section" class="nav-item-link">Home</a>
+        <a href="index.html#events-page-section" class="nav-item-link">Events</a>
+
+        <div class="nav-dropdown">
+          <button class="dropdown-trigger">
+            Projects <span class="arrow">▾</span>
+          </button>
+          <div class="dropdown-content">
+            <a href="index.html#projects-page-section">AeroSense Drone</a>
+          </div>
+        </div>
+
+        <a href="SenatePage.html" class="nav-item-link">Executives</a>
+      </div>
+
+      <div class="nav-section logo-container">
+        <h1 class="brand-title">
+          FX-13 <span class="highlight-blue">VALOUR</span>
+        </h1>
+      </div>
+
+      <div class="nav-section button-group">
+        <button
+          id="Contact-Button"
+          onclick="window.location.href = '/contactus.html'"
+        >
+          Contact Us
+        </button>
+        <!-- REMEMBER TO CHANGE IT TO PUBLIC HREF -->
+        <button id="Sign-in-Button">
+          <a href="/Auth/Signin.html">Sign in</a>
+        </button>
+        <button id="Profile-Button">
+          <span class="icon-wrapper">
+            <!-- REMEMBER TO CHANGE IT TO PUBLIC HREF -->
+            <img
+              src="https://img.icons8.com/ios-glyphs/30/007BFF/user-male-circle.png"
+              alt="Profile"
+            />
+          </span>
+          View Profile
+        </button>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button
+        class="mobile-menu-toggle"
+        id="mobileToggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <i class="fa-solid fa-bars" id="mobileIcon"></i>
+      </button>
+
+      <!-- Mobile slide-down menu -->
+      <div class="mobile-menu-overlay" id="mobileMenu" role="navigation">
+        <div class="mobile-nav-links">
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger1">
+              <span
+                >Browse
+                <i
+                  class="fa-solid fa-bars"
+                  style="font-size: 0.85rem; margin-left: 6px"
+                ></i
+              ></span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner1">
+              <h4 class="dropdown-subheader">Posters</h4>
+              <a href="#">Tech in Fiction</a>
+              <a href="#">Tech in Motion</a>
+              <h4 class="dropdown-subheader" style="margin-top: 8px">
+                Additional information
+              </h4>
+              <a href="#">Rules for events</a>
+              <a href="#">Guidelines for Fairness</a>
+            </div>
+          </div>
+          <a href="index.html#home-page-section" class="nav-item-link">Home</a>
+          <a href="index.html#events-page-section" class="nav-item-link">Events</a>
+          <a href="aerosense.html" class="nav-item-link">AQ-levels</a>
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger2">
+              <span>Projects</span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner2">
+              <a href="index.html#projects-page-section">AeroSense Drone</a>
+            </div>
+          </div>
+          <a href="SenatePage.html" class="nav-item-link">Executives</a>
+        </div>
+        <div class="mobile-buttons">
+          <button id="Contact-Button-Mobile">
+            <a href="/contactus.html">Contact us</a>
+          </button>
+          <button id="Sign-in-Button-Mobile">
+            <a href="/Auth/Signin.html">Sign in</a>
+          </button>
+          <button id="Profile-Button-Mobile">
+            <span class="icon-wrapper">
+              <img
+                src="https://img.icons8.com/ios-glyphs/30/007BFF/user-male-circle.png"
+                alt="Profile"
+              />
+            </span>
+            View Profile
+          </button>
+        </div>
+      </div>
+    </nav>
+
     <section class="all-sections">
       <h1 class="contact-title">Contact Us</h1>
 
@@ -220,5 +358,7 @@
     </section>
 
     <script defer src="particles.js"></script>
+    <script defer src="site.js"></script>
+    <script type="module" src="index.js"></script>
   </body>
 </html>
