@@ -918,3 +918,18 @@ body {
     padding: 24px;
   }
 }
+
+/* Patrons box: crest + name, works as a link */
+.sponsor-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: inherit;
+  text-decoration: none;
+}
+.sponsor-crest {
+  width: 26px;
+  height: auto;
+  flex-shrink: 0;
+}
