@@ -2,7 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/fireba
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-import { withLoading, submitOnEnter, notify, friendlyError, checkRequired } from "./auth-ui.js";
+import { withLoading, submitOnEnter, notify, friendlyError, checkRequired } from "./auth-ui.js?v=20261104";
 // ✅ UPDATED TO NEW PROJECT CONFIG
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
