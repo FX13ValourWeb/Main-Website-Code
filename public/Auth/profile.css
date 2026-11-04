@@ -37,9 +37,15 @@ body {
     Arial,
     sans-serif;
   margin: 0;
-  padding: 20px 60px;
   min-height: 100vh;
   box-sizing: border-box;
+}
+
+/* Page content sits in a centred column under the site navbar */
+.profile-main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 60px 0;
 }
 
 /* --- 1. Top Center Header (Brand Consistent) --- */
@@ -306,8 +312,8 @@ body {
    ========================================== */
 @media (max-width: 768px) {
   /* Desktop side padding (60px) left very little room on phones */
-  body {
-    padding: 12px 16px;
+  .profile-main {
+    padding: 20px 16px 0;
   }
 
   /* --- 2. Main Profile Section Overrides --- */
@@ -927,4 +933,87 @@ body {
   gap: 10px;
   color: inherit;
   text-decoration: none;
+}
+
+/* =====================================================
+   NAVBAR ON THE PROFILE PAGE
+   You're signed in here, so show "View Profile" (current page)
+   instead of "Sign in".
+   ===================================================== */
+.profile-body :is(#Sign-in-Button, #Sign-in-Button-Mobile) {
+  display: none !important;
+}
+.profile-body :is(#Profile-Button, #Profile-Button-Mobile) {
+  display: flex !important;
+  border-color: var(--electric-blue);
+}
+
+/* "Profile Picture" caption under the circle */
+#p1 {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+/* Name placeholder pulses while the profile loads */
+#fullNameDisplay.is-loading span {
+  animation: profile-pulse 1.4s ease-in-out infinite;
+}
+@keyframes profile-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* Message shown when the profile can't be found / loaded */
+.profile-status {
+  margin-top: 12px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  max-width: 560px;
+}
+.profile-status a {
+  color: var(--electric-blue);
+  font-weight: 600;
+}
+
+/* Roomier spacing now that the browser's default margins are reset */
+.contact-row p {
+  margin: 0;
+}
+#tags {
+  flex-wrap: wrap;
+}
+#participantAchievements {
+  margin-bottom: 20px;
+}
+#website,
+#logOut,
+#editProfile {
+  font-family: inherit;
+}
+
+/* Tablets: stack the profile card a little earlier */
+@media (max-width: 1100px) and (min-width: 769px) {
+  .profile-main {
+    padding: 32px 32px 0;
+  }
+  #profile {
+    gap: 36px;
+    padding: 40px;
+  }
+  #img {
+    width: 190px;
+    height: 190px;
+  }
+  #fullNameDisplay {
+    font-size: 3.2rem;
+  }
+  .contact-row {
+    flex-wrap: wrap;
+    gap: 12px 32px;
+  }
 }

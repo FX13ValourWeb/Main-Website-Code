@@ -75,7 +75,6 @@ continueBtn.addEventListener('click', withLoading(continueBtn, async () => {
                     await setDoc(doc(db , 'Users' , `${fullName} Cl: ${executiveClass}`), {
                          email : email,
                          role : "participant",
-                         password: password,
                          fullName : fullName,
                          phoneNumber : phoneNumber,
                          executiveClass : executiveClass,
