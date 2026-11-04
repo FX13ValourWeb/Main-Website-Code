@@ -3764,78 +3764,35 @@ body.modal-open {
 }
 
 /* =====================================================
-   SFX GREENHERALD CREST
+   SFX GREENHERALD CREST (homepage hero, above the typewriter line)
    ===================================================== */
-
-/* Hero badge: "A club of SFX Greenherald International School" */
-.school-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  margin-top: 30px;
-  padding: 10px 18px 10px 12px;
-  border-radius: 14px;
-  text-decoration: none;
-  color: var(--off-white);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  animation: fadeInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.15s backwards;
-  transition:
-    border-color 0.4s ease,
-    background-color 0.4s ease,
-    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+.school-crest {
+  display: inline-block;
+  margin-bottom: 18px;
+  line-height: 0;
+  border-radius: 12px;
+  animation: fadeInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.05s backwards;
 }
-.school-badge img {
-  width: 40px;
+.school-crest img {
+  width: 58px;
   height: auto;
-  flex-shrink: 0;
-  opacity: 0.92;
-  transition: transform 0.6s cubic-bezier(0.34, 1.4, 0.64, 1);
-}
-.school-badge-text {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  font-size: 0.88rem;
-  font-weight: 600;
-  line-height: 1.35;
-  letter-spacing: 0.3px;
-}
-.school-badge-text small {
-  font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--electric-blue);
+  opacity: 0.95;
+  filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.12));
+  transition:
+    transform 0.6s cubic-bezier(0.34, 1.4, 0.64, 1),
+    filter 0.4s ease;
 }
 @media (hover: hover) {
-  .school-badge:hover {
-    border-color: rgba(0, 123, 255, 0.45);
-    background: rgba(0, 123, 255, 0.06);
-    transform: translateY(-2px);
-  }
-  .school-badge:hover img {
-    transform: scale(1.06) rotate(-3deg);
+  .school-crest:hover img {
+    transform: scale(1.06);
+    filter: drop-shadow(0 0 16px rgba(0, 123, 255, 0.45));
   }
 }
-@media (max-width: 360px) {
-  .school-badge-text {
-    font-size: 0.8rem;
+@media (max-width: 992px) {
+  .school-crest {
+    margin-bottom: 14px;
   }
-}
-
-/* Footer patrons box with the crest */
-.sponsor-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  font-size: 0.75rem;
-}
-.sponsor-crest {
-  width: 26px;
-  height: auto;
-  flex-shrink: 0;
+  .school-crest img {
+    width: 52px;
+  }
 }

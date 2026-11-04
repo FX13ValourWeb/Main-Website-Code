@@ -928,8 +928,3 @@ body {
   color: inherit;
   text-decoration: none;
 }
-.sponsor-crest {
-  width: 26px;
-  height: auto;
-  flex-shrink: 0;
-}
