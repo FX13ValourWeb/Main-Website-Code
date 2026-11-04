@@ -346,27 +346,6 @@
               strict 8-minute time limit, focusing on a designated theme
               combining robotics and environmental sustainability.
             </p>
-            <p class="CECsubheading">Example Questions</p>
-            <p class="CECdetails">
-              <span
-                ><span class="CECspan1">Question 1: </span> A cylindrical water
-                tank has a radius of 7 cm and a height of 20 cm. A robotic
-                system fills the tank to 75% of its capacity. If the robot pumps
-                water at a rate of 11 cm³ per second, approximately how many
-                seconds will it take to fill the tank to that level? <br />
-                (Take π = 22/7) <br />A) 150 s B) 175 s C) 210 s D) 220 s <br />
-                <span class="CECspan1">Answer: </span>B) 175s</span
-              >
-              <span
-                ><span class="CECspan1">Question 2: </span> Which component of a
-                robot is primarily responsible for detecting changes in the
-                robot's surroundings, such as distance, light, temperature, or
-                obstacles? <br />
-
-                A) Actuator B) Sensor C) Motor D) Microcontroller <br />
-                <span class="CECspan1">Answer: </span>B) Sensor</span
-              >
-            </p>
           </div>
 
           <button
@@ -383,6 +362,7 @@
         <div
           class="event-container"
           id="pathFindersEventCard"
+          data-modal="pathFinders-modal-conatiner"
           data-reveal
           role="button"
           tabindex="0"
@@ -428,6 +408,52 @@
           </div>
         </div>
 
+        <div
+          class="event-container"
+          id="rwbEventCard"
+          data-modal="rwb-modal"
+          data-reveal
+          role="button"
+          tabindex="0"
+          aria-haspopup="dialog"
+        >
+          <img loading="lazy" decoding="async"
+            src="/Images/robotics-without-borders-card.jpg"
+            alt="Robotics Without Borders event card"
+          />
+          <div class="events-text">
+            <div class="events-heading-div">
+              <span class="events-heading">ROBOTICS WITHOUT BORDERS</span>
+            </div>
+            <div class="events-tags-div">
+              <span>Classes 5 – 8</span>
+              <span>Solo</span>
+            </div>
+            <p class="events-text">
+              Robotics Without Borders is FX-13 Valour's competition
+              that brings together Engineering, Robotics and
+              Presentation for students of Classes 5 to 8. Participants
+              compete individually across two rounds: an on-site pen-
+              and-paper exam that tests speed, accuracy and the
+              fundamentals of Mathematics, Engineering, Physics and
+              Robotics, followed by an online presentation on Zoom for
+              the top 8. Finalists showcase a project that connects
+              robotics with environmental sustainability, such as
+              automated waste management and global clean-up solutions.
+              The top three are crowned Champion, First Runner-Up and
+              Second Runner-Up, with official certificates for their
+              achievements.
+            </p>
+            <button
+              class="event-container-view-leaderboard"
+              onclick="window.location.href = '/LeaderBoardsRWB.html'"
+            >
+              View Leaderboard
+            </button>
+            <p class="event-number">2</p>
+          </div>
+        </div>
+
         <div class="event-container" data-reveal>
           <img loading="lazy" decoding="async"
             src="/Images/Euphrasi Event Logo.jpg"
@@ -447,7 +473,7 @@
               the students of Classes 3 to 6.
             </p>
 
-            <p class="event-number">2</p>
+            <p class="event-number">3</p>
           </div>
         </div>
 
@@ -468,7 +494,7 @@
               lives.
             </p>
 
-            <p class="event-number">3</p>
+            <p class="event-number">4</p>
           </div>
         </div>
       </div>
@@ -499,15 +525,15 @@
     <!-- EVENT MODAL TEMPLATE for PathFinders-->
 
     <div
-      id="pathFinders-modal-conatiner"
+      id="pathFinders-modal-conatiner" class="event-detail-modal"
       role="dialog"
       aria-modal="true"
       aria-labelledby="pathFinders-modal-heading"
     >
-      <button id="closeModal" type="button" aria-label="Close">✖</button>
+      <button id="closeModal" class="event-modal-close" type="button" aria-label="Close">✖</button>
       <div id="pathFinders-modal-heading-section">
-        <p id="pathFinders-modal-heading">PathFinders</p>
-        <div id="pathFinders-modal-important-details">
+        <p id="pathFinders-modal-heading" class="event-detail-heading">PathFinders</p>
+        <div id="pathFinders-modal-important-details" class="event-detail-info">
           <p class="pathFinders-modal-event-info">
             For Classes: <span>3 & 4</span>
           </p>
@@ -527,10 +553,10 @@
         </div>
       </div>
 
-      <div id="pathFinders-gallery-wrapper">
+      <div id="pathFinders-gallery-wrapper" class="event-gallery-wrapper">
         <button class="slider-btn prev-btn" type="button" aria-label="Previous photo">&#10094;</button>
 
-        <div id="pathFinders-gallery-viewport">
+        <div id="pathFinders-gallery-viewport" class="event-gallery-viewport">
           <img loading="lazy" decoding="async"
             src="/Images/PathFinder Event Logo.jpg"
             class="gallery-img active"
@@ -572,7 +598,7 @@
       </div>
       <div class="gallery-dots" aria-hidden="true"></div>
 
-      <div id="pathFinders-modal-event-description">
+      <div id="pathFinders-modal-event-description" class="event-detail-description">
         <h3>Event Description</h3>
         <p>
           Designed for students of Classes 3, 4, and 5, Pathfinders is an
@@ -593,7 +619,7 @@
         </p>
       </div>
 
-      <div id="pathFinders-modal-other-buttons">
+      <div id="pathFinders-modal-other-buttons" class="event-detail-buttons">
         <button
           class="pathFindersButton"
           id="pathFindersLeaderboardsButton"
@@ -601,19 +627,82 @@
         >
           View Leaderboards
         </button>
+      </div>
+    </div>
+
+    <!-- EVENT MODAL for Robotics Without Borders (same layout as PathFinders) -->
+    <div
+      id="rwb-modal"
+      class="event-detail-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="rwb-modal-heading"
+    >
+      <button class="event-modal-close" type="button" aria-label="Close">✖</button>
+      <div>
+        <p id="rwb-modal-heading" class="event-detail-heading">Robotics Without Borders</p>
+        <!-- Placeholder details: update when the final information is confirmed -->
+        <div class="event-detail-info">
+          <p class="pathFinders-modal-event-info">
+            For Classes: <span>5 – 8</span>
+          </p>
+          <p class="pathFinders-modal-event-info">Type: <span>Solo</span></p>
+          <p class="pathFinders-modal-event-info">
+            Timing: <span>To be announced</span>
+          </p>
+          <p class="pathFinders-modal-event-info">
+            Location: <span>Online & Offline</span>
+          </p>
+          <p class="pathFinders-modal-event-info">
+            Previously Hosted: <span>1 time</span>
+          </p>
+          <p class="pathFinders-modal-event-info">
+            First Event Hosted In: <span>_/_/____</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="event-gallery-wrapper">
+        <button class="slider-btn prev-btn" type="button" aria-label="Previous photo">&#10094;</button>
+
+        <div class="event-gallery-viewport">
+          <img
+            loading="lazy"
+            decoding="async"
+            src="/Images/robotics-without-borders-card.jpg"
+            class="gallery-img active"
+            alt="Robotics Without Borders"
+          />
+        </div>
+
+        <button class="slider-btn next-btn" type="button" aria-label="Next photo">&#10095;</button>
+      </div>
+      <div class="gallery-dots" aria-hidden="true"></div>
+
+      <div class="event-detail-description">
+        <h3>Event Description</h3>
+        <p>
+          Robotics Without Borders is FX-13 Valour's competition that
+          brings together Engineering, Robotics and Presentation for
+          students of Classes 5 to 8. Participants compete individually
+          across two rounds: an on-site pen-and-paper exam that tests
+          speed, accuracy and the fundamentals of Mathematics,
+          Engineering, Physics and Robotics, followed by an online
+          presentation on Zoom for the top 8. Finalists showcase a
+          project that connects robotics with environmental
+          sustainability, such as automated waste management and global
+          clean-up solutions. The top three are crowned Champion, First
+          Runner-Up and Second Runner-Up, with official certificates for
+          their achievements.
+        </p>
+      </div>
+
+      <div class="event-detail-buttons">
         <button
           class="pathFindersButton"
-          id="pathFindersPQButton"
-          onclick="window.location.href = 'Past-Papers.html'"
+          onclick="window.location.href = 'LeaderBoardsRWB.html'"
         >
-          Past Papers
-        </button>
-        <button
-          class="pathFindersButton"
-          id="pathFindersStudyMaterialButton"
-          onclick="window.location.href = 'Study-Material.html'"
-        >
-          Study Material
+          View Leaderboards
         </button>
       </div>
     </div>
