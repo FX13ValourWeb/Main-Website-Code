@@ -219,75 +219,69 @@ function onActivate(el, fn) {
 }
 
 /* =====================================================
-   PATHFINDERS MODAL + GALLERY
+   EVENT DETAIL POP-UPS (PathFinders, Robotics Without Borders, ...)
+   Each event card has data-modal="<id of its pop-up>". Every pop-up
+   shares one backdrop and can have its own photo gallery.
 ===================================================== */
-const pathFindersCard = $("pathFindersEventCard");
-const pathFindersPanel = $("pathFinders-modal-conatiner");
 const modalBackground = $("modalBackground");
-const closeModalBtn = $("closeModal");
+const eventModals = [];
 
-let pathFindersModal = null;
-if (pathFindersCard && pathFindersPanel && modalBackground) {
-  pathFindersModal = createModal({
-    panel: pathFindersPanel,
-    backdrop: modalBackground,
-    closeBtn: closeModalBtn,
-  });
-  onActivate(pathFindersCard, pathFindersModal.open);
-  modalBackground.addEventListener("click", pathFindersModal.close);
-}
+function setupGallery(panel, isOpen) {
+  const images = Array.from(panel.querySelectorAll(".gallery-img"));
+  const viewport = panel.querySelector(".event-gallery-viewport");
+  const dotsWrap = panel.querySelector(".gallery-dots");
+  const nextBtn = panel.querySelector(".next-btn");
+  const prevBtn = panel.querySelector(".prev-btn");
+  if (!images.length) return;
 
-const galleryImages = Array.from(document.querySelectorAll(".gallery-img"));
-const galleryViewport = $("pathFinders-gallery-viewport");
-const dotsWrap = document.querySelector(".gallery-dots");
-const nextBtn = document.querySelector(".next-btn");
-const prevBtn = document.querySelector(".prev-btn");
-let currentImageIndex = 0;
+  // A single photo needs no arrows or dots
+  if (images.length < 2) {
+    [nextBtn, prevBtn, dotsWrap].forEach((el) => el && (el.hidden = true));
+    images[0].classList.add("active");
+    return;
+  }
 
-if (galleryImages.length && nextBtn && prevBtn) {
-  const dots = galleryImages.map((_, i) => {
+  let current = Math.max(0, images.findIndex((img) => img.classList.contains("active")));
+  const dots = images.map((_, i) => {
     if (!dotsWrap) return null;
     const d = document.createElement("span");
-    d.className = "gallery-dot" + (i === 0 ? " active" : "");
+    d.className = "gallery-dot" + (i === current ? " active" : "");
     dotsWrap.appendChild(d);
     return d;
   });
 
-  function showImage(index, dir) {
-    const prev = galleryImages[currentImageIndex];
-    currentImageIndex = (index + galleryImages.length) % galleryImages.length;
-    const next = galleryImages[currentImageIndex];
+  function show(index, dir) {
+    const prev = images[current];
+    current = (index + images.length) % images.length;
+    const next = images[current];
     if (prev === next) return;
-
     // Direction-aware slide + crossfade
-    galleryImages.forEach((img) =>
+    images.forEach((img) =>
       img.classList.remove("from-left", "from-right", "leaving-left", "leaving-right"),
     );
     prev.classList.remove("active");
     prev.classList.add(dir > 0 ? "leaving-left" : "leaving-right");
     next.classList.add(dir > 0 ? "from-right" : "from-left");
-    // force a reflow so the "from" position is applied before animating
-    void next.offsetWidth;
+    void next.offsetWidth; // apply the start position before animating
     next.classList.add("active");
     next.classList.remove("from-left", "from-right");
-
-    dots.forEach((d, i) => d && d.classList.toggle("active", i === currentImageIndex));
+    dots.forEach((d, i) => d && d.classList.toggle("active", i === current));
   }
 
-  nextBtn.addEventListener("click", () => showImage(currentImageIndex + 1, 1));
-  prevBtn.addEventListener("click", () => showImage(currentImageIndex - 1, -1));
+  if (nextBtn) nextBtn.addEventListener("click", () => show(current + 1, 1));
+  if (prevBtn) prevBtn.addEventListener("click", () => show(current - 1, -1));
 
   document.addEventListener("keydown", (e) => {
-    if (!pathFindersModal || !pathFindersModal.isOpen) return;
-    if (e.key === "ArrowRight") showImage(currentImageIndex + 1, 1);
-    if (e.key === "ArrowLeft") showImage(currentImageIndex - 1, -1);
+    if (!isOpen()) return;
+    if (e.key === "ArrowRight") show(current + 1, 1);
+    if (e.key === "ArrowLeft") show(current - 1, -1);
   });
 
   // Swipe on touch screens
-  if (galleryViewport) {
+  if (viewport) {
     let startX = 0;
     let startY = 0;
-    galleryViewport.addEventListener(
+    viewport.addEventListener(
       "touchstart",
       (e) => {
         startX = e.touches[0].clientX;
@@ -295,18 +289,38 @@ if (galleryImages.length && nextBtn && prevBtn) {
       },
       { passive: true },
     );
-    galleryViewport.addEventListener(
+    viewport.addEventListener(
       "touchend",
       (e) => {
         const dx = e.changedTouches[0].clientX - startX;
         const dy = e.changedTouches[0].clientY - startY;
         if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
-          showImage(currentImageIndex + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+          show(current + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
         }
       },
       { passive: true },
     );
   }
+}
+
+if (modalBackground) {
+  document.querySelectorAll(".event-container[data-modal]").forEach((card) => {
+    const panel = $(card.dataset.modal);
+    if (!panel) return;
+    const modal = createModal({
+      panel,
+      backdrop: modalBackground,
+      closeBtn: panel.querySelector(".event-modal-close"),
+    });
+    eventModals.push(modal);
+    onActivate(card, modal.open);
+    setupGallery(panel, () => modal.isOpen);
+  });
+
+  // Clicking the shared backdrop closes whichever pop-up is open
+  modalBackground.addEventListener("click", () =>
+    eventModals.forEach((m) => m.isOpen && m.close()),
+  );
 }
 
 /* =====================================================

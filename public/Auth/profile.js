@@ -29,13 +29,44 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// Small UI helpers for the loading / error states
+const nameEl = document.getElementById("fullNameDisplay");
+const statusEl = document.getElementById("profileStatus");
+const profileCard = document.getElementById("profile");
+
+function setName(first, rest) {
+  // textContent (not innerHTML) so names can never inject HTML
+  nameEl.textContent = first ? first + " " : "";
+  const span = document.createElement("span");
+  span.textContent = rest || "";
+  nameEl.appendChild(span);
+  nameEl.classList.remove("is-loading");
+  profileCard?.setAttribute("aria-busy", "false");
+}
+
+function showStatus(title, message) {
+  setName("", title);
+  if (statusEl) {
+    statusEl.textContent = message;
+    statusEl.hidden = false;
+  }
+}
+
+// "View Profile" in the navbar just keeps you on this page
+document
+  .querySelectorAll("#Profile-Button, #Profile-Button-Mobile")
+  .forEach((btn) =>
+    btn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" })),
+  );
+
 // 1. Check Authentication State
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     console.log("Logged in as:", user.email);
     await loadExecutiveData(user.email);
   } else {
-    window.location.href = "Signin.html";
+    // replace() so the Back button doesn't bounce you back here
+    window.location.replace("Signin.html");
   }
 });
 
@@ -50,11 +81,17 @@ async function loadExecutiveData(email) {
       const data = querySnapshot.docs[0].data();
       updateUI(data);
     } else {
-      document.getElementById("fullNameDisplay").innerHTML =
-        "<span>Profile Not Found</span>";
+      showStatus(
+        "Profile Not Found",
+        "You're signed in as " + email + ", but no club profile is linked to this email yet. If you think this is a mistake, please contact the club.",
+      );
     }
   } catch (error) {
     console.error("Firestore Error:", error);
+    showStatus(
+      "Couldn't load profile",
+      "Something went wrong while loading your profile. Check your internet connection and refresh the page.",
+    );
   }
 }
 
@@ -62,11 +99,12 @@ async function loadExecutiveData(email) {
 function updateUI(data) {
   // --- Name Display ---
   if (data.fullName) {
-    const parts = data.fullName.split(" ");
+    const parts = String(data.fullName).trim().split(/\s+/);
     const first = parts[0];
     const rest = parts.slice(1).join(" ");
-    document.getElementById("fullNameDisplay").innerHTML =
-      `${first} <span>${rest}</span>`;
+    setName(first, rest);
+  } else {
+    setName("", "Member");
   }
 
   // --- Academic & Contact Info ---
@@ -142,7 +180,12 @@ function updateUI(data) {
     sPosition.textContent = data.specialPosition;
     sPosition.style.display = "inline-block";
   }
-  document.getElementById("roleTag").textContent = data.role;
+  const roleTag = document.getElementById("roleTag");
+  if (data.role) {
+    const role = String(data.role);
+    roleTag.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+    roleTag.hidden = false;
+  }
   if (data.specialTag1) {
     const sTag = document.getElementById("specialTag1");
     sTag.textContent = data.specialTag1;
@@ -201,10 +244,15 @@ function updateUI(data) {
     Object.entries(data.contributions).forEach(([projectName, details]) => {
       const item = document.createElement("div");
       item.className = "data-item";
-      item.innerHTML = `
-                <p class="item-title"><strong>${projectName}</strong></p>
-                <p class="item-detail">${details}</p>
-            `;
+      const title = document.createElement("p");
+      title.className = "item-title";
+      const strong = document.createElement("strong");
+      strong.textContent = projectName;
+      title.appendChild(strong);
+      const detail = document.createElement("p");
+      detail.className = "item-detail";
+      detail.textContent = details;
+      item.append(title, detail);
       contributionsContainer.appendChild(item);
     });
   }
@@ -217,13 +265,16 @@ function updateUI(data) {
     const sortedDates = Object.keys(data.attendance).sort().reverse();
 
     sortedDates.forEach((date) => {
-      const status = data.attendance[date];
+      const status = String(data.attendance[date] ?? "");
       const item = document.createElement("div");
       item.className = "attendance-row";
-      item.innerHTML = `
-                <span class="date-label">${date}</span>
-                <span class="status-badge ${status.toLowerCase()}">${status}</span>
-            `;
+      const dateLabel = document.createElement("span");
+      dateLabel.className = "date-label";
+      dateLabel.textContent = date;
+      const badge = document.createElement("span");
+      badge.className = "status-badge " + status.toLowerCase().replace(/[^a-z]/g, "");
+      badge.textContent = status;
+      item.append(dateLabel, badge);
       attendanceContainer.appendChild(item);
     });
   }

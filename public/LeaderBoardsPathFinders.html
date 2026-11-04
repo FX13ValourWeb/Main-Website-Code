@@ -11,8 +11,8 @@
     <link rel="manifest" href="/site.webmanifest" />
     <title>PathFinders Leaderboards - FX-13 Valour</title>
     <script>document.documentElement.classList.add("js");</script>
-    <link rel="stylesheet" href="CSS/main.css" />
-    <link rel="stylesheet" href="CSS/motion.css" />
+    <link rel="stylesheet" href="CSS/main.css?v=20261104" />
+    <link rel="stylesheet" href="CSS/motion.css?v=20261104" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -230,7 +230,11 @@
       #leaderboardsContainer > :nth-child(4) { animation-delay: 0.18s; }
       #leaderboardsContainer > :nth-child(5),
       #leaderboardsContainer > :nth-child(6) { animation-delay: 0.26s; }
-      .go-home-wrap { animation-delay: 0.34s; }
+      #leaderboardsContainer > :nth-child(7),
+      #leaderboardsContainer > :nth-child(8) { animation-delay: 0.34s; }
+      #leaderboardsContainer > :nth-child(9),
+      #leaderboardsContainer > :nth-child(10) { animation-delay: 0.42s; }
+      .go-home-wrap { animation-delay: 0.5s; }
 
       /* ── CONTENTS ROW (horizontal classes) ──────────────────── */
       .Contents {
@@ -626,7 +630,15 @@
         <div class="Contents">
           <div class="class">
             <p class="className">Class: 3</p>
-            <p class="comingSoon">Coming Soon!</p>
+            <p class="headings">
+              <span>Rank</span>
+              <span>Name</span>
+            </p>
+            <p class="textContents">
+              <span>1st</span><span>Abdullah Al Tawseef</span>
+              <span>2nd</span><span>Ehan Fariez</span>
+              <span>3rd</span><span>Rushda Farinaz</span>
+            </p>
           </div>
           <div class="divider"></div>
           <div class="class">
@@ -639,6 +651,74 @@
               <span>1st</span><span>Sabir Al Mamun</span>
               <span>2nd</span><span>Walia Hasan Uzma</span>
               <span>3rd</span><span>Arnina Naim</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PathFinders 4 -->
+      <button type="button" class="leaderboardTitle" aria-expanded="false" aria-controls="PathFinders4">
+        PathFinders 4
+      </button>
+      <div id="PathFinders4" class="leaderboard" role="region">
+        <div class="Contents">
+          <div class="class">
+            <p class="className">Class: 3</p>
+            <p class="headings">
+              <span>Rank</span>
+              <span>Name</span>
+            </p>
+            <p class="textContents">
+              <span>1st</span><span>Ehan Fariez</span>
+              <span>2nd</span><span>Mershia Mahreen</span>
+              <span>3rd</span><span>Mehnaaz Noor</span>
+            </p>
+          </div>
+          <div class="divider"></div>
+          <div class="class">
+            <p class="className">Class: 4</p>
+            <p class="headings">
+              <span>Rank</span>
+              <span>Name</span>
+            </p>
+            <p class="textContents">
+              <span>1st</span><span>Ayyan Arif</span>
+              <span>2nd</span><span>Breyan Francis Rozario</span>
+              <span>3rd</span><span>Devangana Mustofi</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PathFinders 5 -->
+      <button type="button" class="leaderboardTitle" aria-expanded="false" aria-controls="PathFinders5">
+        PathFinders 5
+      </button>
+      <div id="PathFinders5" class="leaderboard" role="region">
+        <div class="Contents">
+          <div class="class">
+            <p class="className">Class: 3</p>
+            <p class="headings">
+              <span>Rank</span>
+              <span>Name</span>
+            </p>
+            <p class="textContents">
+              <span>1st</span><span>Ehan Fariez</span>
+              <span>2nd</span><span>Aryana Shilpi Das</span>
+              <span>3rd</span><span>Ruzaina Farheen</span>
+            </p>
+          </div>
+          <div class="divider"></div>
+          <div class="class">
+            <p class="className">Class: 4</p>
+            <p class="headings">
+              <span>Rank</span>
+              <span>Name</span>
+            </p>
+            <p class="textContents">
+              <span>1st</span><span>Izyan Hossain Zarar</span>
+              <span>2nd</span><span>Sanori</span>
+              <span>3rd</span><span>Anina Naim</span>
             </p>
           </div>
         </div>
@@ -685,8 +765,8 @@
         });
       });
     </script>
-    <script defer src="particles.js"></script>
-    <script defer src="site.js"></script>
-    <script type="module" src="index.js"></script>
+    <script defer src="particles.js?v=20261104"></script>
+    <script defer src="site.js?v=20261104"></script>
+    <script type="module" src="index.js?v=20261104"></script>
   </body>
 </html>
