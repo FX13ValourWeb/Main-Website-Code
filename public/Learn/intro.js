@@ -12,17 +12,19 @@
     el.remove();
     return;
   }
+  // Everything page-specific comes from data-* attributes on #course-intro
+  const num = (v, d) => (v || d).split(",").map(Number);
   try {
-    sessionStorage.setItem("fx13-course-intro-seen", "1");
+    sessionStorage.setItem(el.dataset.seenKey || "fx13-course-intro-seen", "1");
   } catch (e) {}
 
-  const FROM = [0, 123, 255];
-  const TO = (el.dataset.to || "31, 209, 122").split(",").map(Number);
-  const BG_FROM = [3, 9, 22];
-  const BG_TO = [3, 16, 10];
+  const FROM = num(el.dataset.from, "0, 123, 255");
+  const TO = num(el.dataset.to, "31, 209, 122");
+  const BG_FROM = num(el.dataset.bgFrom, "3, 9, 22");
+  const BG_TO = num(el.dataset.bgTo, "3, 16, 10");
 
   // [text, size, x%, y%] — consecutive captions sit far apart
-  const CAPTIONS = [
+  let CAPTIONS = [
     ["Loading assets", 1.0, 32, 34],
     ["Unboxing your ESP32", 1.3, 66, 64],
     ["Soldering 38 pins", 0.85, 70, 26],
@@ -32,6 +34,9 @@
     ["Flashing the firmware", 0.9, 36, 54],
     ["Almost ready", 1.35, 62, 76],
   ];
+  try {
+    if (el.dataset.captions) CAPTIONS = JSON.parse(el.dataset.captions);
+  } catch (e) {}
   const STEP = 0.78; // seconds between captions
   const LIFE = 2.5; // seconds each caption lives
   const CAPTIONS_END = (CAPTIONS.length - 1) * STEP + LIFE * 0.55;
@@ -45,8 +50,8 @@
   const cv = el.querySelector(".ci-stars");
   const g = cv.getContext("2d");
 
-  let ready = !!window.__courseReady;
-  window.addEventListener("course:ready", () => (ready = true), { once: true });
+  let ready = !!(window.__courseReady || window.__introReady);
+  window.addEventListener(el.dataset.readyEvent || "course:ready", () => (ready = true), { once: true });
 
   /* ---- starfield flying toward the viewer ---- */
   let W = 0, H = 0, dpr = 1;

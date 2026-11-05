@@ -256,10 +256,17 @@
     document.addEventListener(
       "click",
       (e) => {
-        const a = e.target.closest && e.target.closest("a[href*='learn-microcontrollers.html']");
+        const a = e.target.closest && e.target.closest("a[href]");
         if (!a) return;
+        const href = a.getAttribute("href") || "";
+        const key = href.includes("learn-microcontrollers.html")
+          ? "fx13-course-intro"
+          : href.includes("aerosense.html")
+            ? "fx13-aero-intro"
+            : null;
+        if (!key) return;
         try {
-          sessionStorage.setItem("fx13-course-intro", "1");
+          sessionStorage.setItem(key, "1");
         } catch (err) {}
       },
       true,

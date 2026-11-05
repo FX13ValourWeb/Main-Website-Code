@@ -193,7 +193,7 @@ let heroBlink = null;
 async function initBoard() {
   try {
     if (!window.WebGLRenderingContext) throw new Error("no webgl");
-    const mod = await import("./board3d.js?v=20261107");
+    const mod = await import("./board3d.js?v=20261108");
     board = await mod.createBoard(canvas3d, { accent: cssVar("--accent-rgb", "0, 123, 255") });
   } catch (e) {
     console.warn("3D view unavailable, using the static image instead.", e);
@@ -982,7 +982,7 @@ initBoard().finally(() => {
   window.__courseReady = true;
   window.dispatchEvent(new Event("course:ready"));
 });
-import("./sandbox.js?v=20261107").then((m) => m.initSandbox($("#sandbox"))).catch((e) => console.error("Sandbox failed to load", e));
+import("./sandbox.js?v=20261108").then((m) => m.initSandbox($("#sandbox"))).catch((e) => console.error("Sandbox failed to load", e));
 
 /* =====================================================
    IMMERSIVE NAVBAR — tucks away once you're in the course.
