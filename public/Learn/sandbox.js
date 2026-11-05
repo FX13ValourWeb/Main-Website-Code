@@ -494,7 +494,7 @@ export function initSandbox(root) {
     const b = document.createElement("button");
     b.type = "button";
     b.setAttribute("role", "tab");
-    b.innerHTML = `<b>LESSON ${String(i + 1).padStart(2, "0")}</b>${L.title}`;
+    b.innerHTML = `<b>Lesson ${String(i + 1).padStart(2, "0")}</b>${L.title}`;
     b.addEventListener("click", () => selectLesson(i));
     tabs.appendChild(b);
   });

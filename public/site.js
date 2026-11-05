@@ -237,7 +237,9 @@
       const href = a.getAttribute("href");
       if (!href || href.startsWith("#") || href.includes("#")) return;
       const path = new URL(href, location.href).pathname.toLowerCase();
-      if (path === here && path !== "/") {
+      // course pages (learn-*.html) belong under "Learn"
+      const inCourse = /\/learn-[^/]+\.html$/.test(here) && path.endsWith("/learn.html");
+      if ((path === here && path !== "/") || inCourse) {
         a.classList.add("is-active");
         a.setAttribute("aria-current", "page");
         const trigger = a.closest(".nav-dropdown")?.querySelector(".dropdown-trigger");

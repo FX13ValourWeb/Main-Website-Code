@@ -26,7 +26,7 @@
   --mono: var(--sans);
   --code: Consolas, "SFMono-Regular", Menlo, "Liberation Mono", "Courier New", monospace;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --pin-h: calc(100vh - var(--nav-h, 72px));
+  --pin-h: 100vh; /* scenes fill the screen; the navbar tucks away */
   /* hand the accent to the shared navbar/footer styles */
   --electric-blue: var(--accent);
   --hover-blue: var(--accent-hover);
@@ -47,7 +47,7 @@
 }
 @supports (height: 100svh) {
   .learn-body {
-    --pin-h: calc(100svh - var(--nav-h, 72px));
+    --pin-h: 100svh;
   }
 }
 .learn-body code,
@@ -151,7 +151,7 @@
 }
 .pin {
   position: sticky;
-  top: var(--nav-h, 72px);
+  top: 0;
   height: var(--pin-h);
   overflow: hidden;
 }
@@ -2469,8 +2469,7 @@
 }
 .intro-on body { overflow: hidden; }
 .intro-on .hero-title .line > span,
-.intro-on .hero-sub,
-.intro-on .hero-meta { animation-play-state: paused; }
+.intro-on .hero-sub { animation-play-state: paused; }
 
 .ci-stars { position: absolute; inset: 0; width: 100%; height: 100%; }
 /* soft edge darkening so captions sit in a lit centre */
@@ -2570,19 +2569,6 @@
 }
 .ci-pct { font-variant-numeric: tabular-nums; width: 3.2em; flex: none; }
 .ci-status { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ci-skip {
-  flex: none;
-  font: inherit;
-  font-weight: 500;
-  color: rgba(242, 244, 247, 0.75);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 999px;
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-.ci-skip:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
 @media (max-width: 560px) {
   .ci-status { display: none; }
 }
@@ -2642,4 +2628,49 @@
     opacity: 1 !important;
     transform: none !important;
   }
+}
+
+/* =========================================================
+   Immersive mode — the navbar tucks away while you're in the
+   course and slides back when you reach for it.
+   ========================================================= */
+.learn-body .main-navigation-bar {
+  /* floats over the scenes instead of pushing them down */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  transition:
+    transform 0.55s var(--ease),
+    opacity 0.4s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.learn-body.nav-tucked .main-navigation-bar {
+  transform: translate3d(0, -100%, 0);
+  opacity: 0;
+  pointer-events: none;
+}
+.learn-body.nav-tucked .main-navigation-bar:focus-within {
+  transform: none;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Leaving the course: a quick green-to-blue wash */
+.exit-wash {
+  position: fixed;
+  inset: 0;
+  z-index: 6000;
+  pointer-events: none;
+  opacity: 0;
+  background: #06291a;
+  transition: opacity 0.3s ease, background-color 0.55s ease 0.12s;
+}
+.exit-wash.is-on {
+  opacity: 1;
+  background: #061a3a;
+  pointer-events: auto;
 }

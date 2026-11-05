@@ -117,7 +117,7 @@ const scenes = $$(".scene").map((el) => ({
 
 function sceneProgress(sc) {
   const r = sc.el.getBoundingClientRect();
-  const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-h")) || 72;
+  const navH = 0; // scenes pin to the very top; the navbar tucks away
   const total = r.height - (window.innerHeight - navH);
   // clamp at 0 so the first scene is "on" even if the page starts a pixel short
   return clamp((navH - r.top) / Math.max(1, total), 0, 1.001);
@@ -193,7 +193,7 @@ let heroBlink = null;
 async function initBoard() {
   try {
     if (!window.WebGLRenderingContext) throw new Error("no webgl");
-    const mod = await import("./board3d.js?v=20261106");
+    const mod = await import("./board3d.js?v=20261107");
     board = await mod.createBoard(canvas3d, { accent: cssVar("--accent-rgb", "0, 123, 255") });
   } catch (e) {
     console.warn("3D view unavailable, using the static image instead.", e);
@@ -224,7 +224,7 @@ function jumpToPart(id) {
   const sc = scenes.find((s) => s.name === "anatomy");
   const i = ANATOMY.indexOf(id);
   const r = sc.el.getBoundingClientRect();
-  const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-h")) || 72;
+  const navH = 0; // scenes pin to the very top; the navbar tucks away
   const total = r.height - (window.innerHeight - navH);
   const target = window.scrollY + r.top - navH + total * ((i + 0.5) / ANATOMY.length);
   window.scrollTo({ top: target, behavior: reduceMotion ? "auto" : "smooth" });
@@ -982,4 +982,92 @@ initBoard().finally(() => {
   window.__courseReady = true;
   window.dispatchEvent(new Event("course:ready"));
 });
-import("./sandbox.js?v=20261106").then((m) => m.initSandbox($("#sandbox"))).catch((e) => console.error("Sandbox failed to load", e));
+import("./sandbox.js?v=20261107").then((m) => m.initSandbox($("#sandbox"))).catch((e) => console.error("Sandbox failed to load", e));
+
+/* =====================================================
+   IMMERSIVE NAVBAR — tucks away once you're in the course.
+   Comes back at the very top, when the pointer reaches the
+   top edge, or (on touch screens) after a clear scroll up.
+   ===================================================== */
+(function navTuck() {
+  const nav = $(".main-navigation-bar");
+  if (!nav) return;
+  const body = document.body;
+  const TOP_ZONE = 120; // px of page where the bar always shows
+  let lastY = window.scrollY;
+  let upRun = 0;
+  let hoverTop = false;
+  let overNav = false;
+
+  const set = (tucked) => body.classList.toggle("nav-tucked", tucked);
+  const menuOpen = () => body.classList.contains("menu-open");
+
+  function update() {
+    const y = window.scrollY;
+    const dy = y - lastY;
+    lastY = y;
+    if (y < TOP_ZONE || menuOpen() || hoverTop || overNav) {
+      upRun = 0;
+      return set(false);
+    }
+    if (dy > 0) {
+      upRun = 0;
+      set(true);
+    } else if (dy < 0) {
+      upRun -= dy;
+      if (upRun > 140) set(false); // a deliberate scroll back up
+    }
+  }
+  window.addEventListener("scroll", update, { passive: true });
+
+  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    window.addEventListener(
+      "pointermove",
+      (e) => {
+        const near = e.clientY < 56;
+        if (near !== hoverTop) {
+          hoverTop = near;
+          update();
+        }
+      },
+      { passive: true },
+    );
+    nav.addEventListener("pointerenter", () => (overNav = true));
+    nav.addEventListener("pointerleave", () => {
+      overNav = false;
+      update();
+    });
+  }
+  update();
+})();
+
+/* =====================================================
+   LEAVING THE COURSE — a quick green-to-blue wash before
+   heading back to the rest of the site.
+   ===================================================== */
+(function exitWash() {
+  if (reduceMotion) return;
+  const wash = document.createElement("div");
+  wash.className = "exit-wash";
+  wash.setAttribute("aria-hidden", "true");
+  document.body.appendChild(wash);
+
+  document.addEventListener("click", (e) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const a = e.target.closest && e.target.closest("a[href]");
+    if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
+    let url;
+    try {
+      url = new URL(a.href, location.href);
+    } catch (err) {
+      return;
+    }
+    if (url.origin !== location.origin) return;
+    if (url.pathname === location.pathname) return; // same page / in-page jumps
+    e.preventDefault();
+    wash.classList.add("is-on");
+    setTimeout(() => (window.location.href = url.href), 650);
+  });
+  // back/forward cache: clear the wash if the page is shown again
+  window.addEventListener("pageshow", () => wash.classList.remove("is-on"));
+})();

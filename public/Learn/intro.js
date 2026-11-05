@@ -42,7 +42,6 @@
   const bar = el.querySelector(".ci-bar i");
   const pct = el.querySelector(".ci-pct");
   const status = el.querySelector(".ci-status");
-  const skip = el.querySelector(".ci-skip");
   const cv = el.querySelector(".ci-stars");
   const g = cv.getContext("2d");
 
@@ -160,7 +159,6 @@
     }, 1200);
   }
 
-  skip.addEventListener("click", leave);
   window.addEventListener("keydown", function onKey(e) {
     if (e.key === "Escape" || e.key === "Enter") {
       window.removeEventListener("keydown", onKey);
