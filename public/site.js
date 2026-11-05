@@ -237,11 +237,40 @@
       const href = a.getAttribute("href");
       if (!href || href.startsWith("#") || href.includes("#")) return;
       const path = new URL(href, location.href).pathname.toLowerCase();
-      if (path === here && path !== "/") {
+      // course pages (learn-*.html) belong under "Learn"
+      const inCourse = /\/learn-[^/]+\.html$/.test(here) && path.endsWith("/learn.html");
+      if ((path === here && path !== "/") || inCourse) {
         a.classList.add("is-active");
         a.setAttribute("aria-current", "page");
+        const trigger = a.closest(".nav-dropdown")?.querySelector(".dropdown-trigger");
+        if (trigger) trigger.classList.add("is-active");
       }
     });
+  }
+
+  /* ---------------------------------------------
+     COURSE LINKS: opening a course from anywhere on
+     the site plays its welcome intro
+  --------------------------------------------- */
+  function initCourseLinks() {
+    document.addEventListener(
+      "click",
+      (e) => {
+        const a = e.target.closest && e.target.closest("a[href]");
+        if (!a) return;
+        const href = a.getAttribute("href") || "";
+        const key = href.includes("learn-microcontrollers.html")
+          ? "fx13-course-intro"
+          : href.includes("aerosense.html")
+            ? "fx13-aero-intro"
+            : null;
+        if (!key) return;
+        try {
+          sessionStorage.setItem(key, "1");
+        } catch (err) {}
+      },
+      true,
+    );
   }
 
   function start() {
@@ -250,6 +279,7 @@
     initReveal();
     initBackToTop();
     initScrollSpy();
+    initCourseLinks();
   }
 
   if (document.readyState === "loading") {

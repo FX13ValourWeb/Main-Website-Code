@@ -1,0 +1,984 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0d0d0d" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/Images/icons/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/Images/icons/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/Images/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>Microcontrollers 101 · Interactive ESP32 Course - FX-13 Valour</title>
+    <meta
+      name="description"
+      content="An interactive, animated guide to microcontrollers from FX-13 Valour Robotics Club. Explore a 3D ESP32 part by part, see how the chip works inside, and write code that runs on a virtual board."
+    />
+    <link rel="canonical" href="https://fx13valour.org/learn-microcontrollers.html" />
+    <meta property="og:title" content="Microcontrollers 101 · FX-13 Valour Learn" />
+    <meta property="og:description" content="An interactive, animated guide to the ESP32 microcontroller." />
+    <meta property="og:image" content="https://fx13valour.org/Learn/esp32-board.png" />
+
+    <script>document.documentElement.classList.add("js");</script>
+    <script>
+      // Course welcome intro: plays when a course is opened from the site,
+      // or on the first visit this session. Skipped for reduced motion.
+      (function () {
+        try {
+          var asked = sessionStorage.getItem("fx13-course-intro") === "1";
+          var seen = sessionStorage.getItem("fx13-course-intro-seen") === "1";
+          sessionStorage.removeItem("fx13-course-intro");
+          var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          if ((asked || !seen) && !calm) document.documentElement.classList.add("intro-on");
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="stylesheet" href="CSS/main.css?v=20261109" />
+    <link rel="stylesheet" href="CSS/motion.css?v=20261109" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="CSS/intro.css?v=20261109" />
+    <link rel="stylesheet" href="Learn/learn.css?v=20261109" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+
+  <body class="learn-body theme-green">
+    <div id="course-intro" data-to="31, 209, 122" role="dialog" aria-label="Loading Microcontrollers 101">
+      <canvas class="ci-stars" aria-hidden="true"></canvas>
+      <div class="ci-words" aria-hidden="true"></div>
+      <div class="ci-finale"><b>Welcome.</b><span>Microcontrollers 101</span></div>
+      <div class="ci-foot">
+        <div class="ci-load">
+          <span class="ci-bar"><i></i></span>
+          <span class="ci-pct">0%</span>
+          <span class="ci-status" aria-live="polite">Loading assets…</span>
+        </div>
+      </div>
+    </div>
+    <script src="Learn/intro.js?v=20261109"></script>
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- 3D stage (fixed behind the scroll scenes) -->
+    <canvas id="board3d" aria-hidden="true"></canvas>
+    <div id="hotspots" class="hotspots" aria-hidden="true"></div>
+
+    <nav class="main-navigation-bar">
+      <div class="nav-section links-group">
+        <div class="nav-dropdown">
+          <button
+            class="dropdown-trigger new-dropdown-btn menu-icon-btn"
+            aria-label="Menu"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="dropdown-content multi-section-dropdown">
+            <div class="dropdown-section">
+              <h4 class="dropdown-subheader">Posters</h4>
+              <a href="#">Tech in Fiction</a>
+              <a href="#">Tech in Motion</a>
+            </div>
+            <div class="dropdown-section">
+              <h4 class="dropdown-subheader">Additional information</h4>
+              <a href="#">Rules for events</a>
+              <a href="#">Guidelines for Fairness</a>
+            </div>
+          </div>
+        </div>
+        <a href="index.html#home-page-section" class="nav-item-link">Home</a>
+        <a href="index.html#events-page-section" class="nav-item-link">Events</a>
+
+        <div class="nav-dropdown">
+          <button class="dropdown-trigger">
+            Projects <span class="arrow">▾</span>
+          </button>
+          <div class="dropdown-content">
+            <a href="index.html#projects-page-section">AeroSense Drone</a>
+          </div>
+        </div>
+
+        <a href="SenatePage.html" class="nav-item-link">Executives</a>
+        <a href="learn.html" class="nav-item-link">Learn</a>
+      </div>
+
+      <div class="nav-section logo-container">
+        <h1 class="brand-title">
+          FX-13 <span class="highlight-blue">VALOUR</span>
+        </h1>
+      </div>
+
+      <div class="nav-section button-group">
+        <button
+          id="Contact-Button"
+          onclick="window.location.href = '/contactus.html'"
+        >
+          Contact Us
+        </button>
+        <!-- REMEMBER TO CHANGE IT TO PUBLIC HREF -->
+        <button id="Sign-in-Button">
+          <a href="/Auth/Signin.html">Sign in</a>
+        </button>
+        <button id="Profile-Button">
+          <span class="icon-wrapper">
+            <!-- REMEMBER TO CHANGE IT TO PUBLIC HREF -->
+            <img
+              src="https://img.icons8.com/ios-glyphs/30/007BFF/user-male-circle.png"
+              alt="Profile"
+            />
+          </span>
+          View Profile
+        </button>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button
+        class="mobile-menu-toggle"
+        id="mobileToggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <i class="fa-solid fa-bars" id="mobileIcon"></i>
+      </button>
+
+      <!-- Mobile slide-down menu -->
+      <div class="mobile-menu-overlay" id="mobileMenu" role="navigation">
+        <div class="mobile-nav-links">
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger1">
+              <span
+                >Browse
+                <i
+                  class="fa-solid fa-bars"
+                  style="font-size: 0.85rem; margin-left: 6px"
+                ></i
+              ></span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner1">
+              <h4 class="dropdown-subheader">Posters</h4>
+              <a href="#">Tech in Fiction</a>
+              <a href="#">Tech in Motion</a>
+              <h4 class="dropdown-subheader" style="margin-top: 8px">
+                Additional information
+              </h4>
+              <a href="#">Rules for events</a>
+              <a href="#">Guidelines for Fairness</a>
+            </div>
+          </div>
+          <a href="index.html#home-page-section" class="nav-item-link">Home</a>
+          <a href="index.html#events-page-section" class="nav-item-link">Events</a>
+          <a href="aerosense.html" class="nav-item-link">AQ-levels</a>
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger2">
+              <span>Projects</span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner2">
+              <a href="index.html#projects-page-section">AeroSense Drone</a>
+            </div>
+          </div>
+          <a href="SenatePage.html" class="nav-item-link">Executives</a>
+          <a href="learn.html" class="nav-item-link">Learn</a>
+        </div>
+        <div class="mobile-buttons">
+          <button id="Contact-Button-Mobile">
+            <a href="/contactus.html">Contact us</a>
+          </button>
+          <button id="Sign-in-Button-Mobile">
+            <a href="/Auth/Signin.html">Sign in</a>
+          </button>
+          <button id="Profile-Button-Mobile">
+            <span class="icon-wrapper">
+              <img
+                src="https://img.icons8.com/ios-glyphs/30/007BFF/user-male-circle.png"
+                alt="Profile"
+              />
+            </span>
+            View Profile
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Chapter rail -->
+    <nav class="chapter-rail" aria-label="Chapters">
+      <button class="rail-toggle" type="button" aria-expanded="false">
+        <span class="rail-now-num">00</span>
+        <span class="rail-now-title">Start</span>
+        <i class="fa-solid fa-chevron-up" aria-hidden="true"></i>
+      </button>
+      <ol class="rail-list">
+        <li data-for="intro"><a href="#intro"><b>00</b><span>Start</span></a></li>
+        <li data-for="ch1"><a href="#ch1"><b>01</b><span>What is it?</span></a></li>
+        <li data-for="ch2"><a href="#ch2"><b>02</b><span>Meet the ESP32</span></a></li>
+        <li data-for="ch3"><a href="#ch3"><b>03</b><span>Inside the chip</span></a></li>
+        <li data-for="ch4"><a href="#ch4"><b>04</b><span>Pins</span></a></li>
+        <li data-for="ch5"><a href="#ch5"><b>05</b><span>Life of a program</span></a></li>
+        <li data-for="ch6"><a href="#ch6"><b>06</b><span>Your turn</span></a></li>
+      </ol>
+    </nav>
+
+    <main class="learn">
+      <!-- =====================================================
+           00 · OPENING
+      ====================================================== -->
+      <section id="intro" class="scene" data-scene="hero" style="--len: 260vh">
+        <div class="pin">
+          <div class="hero-copy" data-step="0 0.42">
+            <p class="eyebrow">Microcontrollers 101</p>
+            <h1 class="hero-title">
+              <span class="line"><span>The tiny brain</span></span>
+              <span class="line"><span>inside <em>everything.</em></span></span>
+            </h1>
+            <p class="hero-sub">
+              An interactive guide to microcontrollers. Take an ESP32 apart, see
+              how it thinks, then write code that runs on it — right here in your
+              browser.
+            </p>
+          </div>
+
+          <div class="hero-reveal" data-step="0.46 1.01">
+            <p class="eyebrow">Meet the star of the show</p>
+            <h2 class="display">This is an <span class="accent">ESP32.</span></h2>
+            <p class="lead">
+              A board about the size of a matchbox. It costs less than a pizza — and
+              it can run robots, read sensors and talk over Wi-Fi.
+            </p>
+          </div>
+
+          <ul class="spec-callouts" data-step="0.56 1.01" aria-label="Key numbers">
+            <li style="--i: 0"><b>240</b><span>MHz · 2 cores</span></li>
+            <li style="--i: 1"><b>520</b><span>KB of fast memory</span></li>
+            <li style="--i: 2"><b>34</b><span>programmable pins</span></li>
+            <li style="--i: 3"><b>Wi-Fi</b><span>+ Bluetooth built in</span></li>
+          </ul>
+
+          <div class="scroll-cue" data-step="0 0.2"><span></span>Scroll to begin</div>
+          <img class="board-fallback" src="Learn/esp32-board.png" alt="ESP32 DevKit board" />
+        </div>
+      </section>
+
+      <!-- =====================================================
+           01 · WHAT IS A MICROCONTROLLER?
+      ====================================================== -->
+      <section id="ch1" class="chapter" data-chapter="1">
+        <header class="chapter-head">
+          <p class="chapter-num"><span>Chapter</span> 01</p>
+          <h2 class="display">What is a microcontroller?</h2>
+          <p class="scrub-text">
+            Every time you press a button on a microwave, a toy lights up, or a drone
+            holds itself steady in the air, a tiny computer is making decisions. That
+            computer is a microcontroller.
+          </p>
+        </header>
+
+        <div class="scene" data-scene="what" style="--len: 420vh">
+          <div class="pin what-pin">
+            <article class="what-step" data-step="0 0.25">
+              <p class="step-index">01 / 04</p>
+              <h3>A whole computer on <span class="accent">one chip.</span></h3>
+              <p>
+                A laptop spreads its brain, memory and connections over many chips on a
+                big board. A microcontroller squeezes all of them into a single chip
+                smaller than your fingernail.
+              </p>
+            </article>
+
+            <article class="what-step" data-step="0.25 0.5">
+              <p class="step-index">02 / 04</p>
+              <h3>Brain, memory and senses.</h3>
+              <ul class="trio">
+                <li>
+                  <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="12" y="12" width="24" height="24" rx="2" /><rect x="19" y="19" width="10" height="10" /><path d="M18 6v6M24 6v6M30 6v6M18 36v6M24 36v6M30 36v6M6 18h6M6 24h6M6 30h6M36 18h6M36 24h6M36 30h6" /></svg>
+                  <b>Processor</b><span>follows instructions, one tiny step at a time</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="14" width="36" height="20" rx="2" /><path d="M12 14v20M18 14v20M24 14v20M30 14v20M36 14v20M10 34v6M18 34v6M26 34v6M34 34v6" /></svg>
+                  <b>Memory</b><span>remembers your program and its numbers</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="6" /><path d="M24 4v10M24 34v10M4 24h10M34 24h10M10 10l7 7M31 31l7 7M38 10l-7 7M17 31l-7 7" /></svg>
+                  <b>Input / Output pins</b><span>feel the world (buttons, sensors) and act on it (lights, motors)</span>
+                </li>
+              </ul>
+            </article>
+
+            <article class="what-step" data-step="0.5 0.75">
+              <p class="step-index">03 / 04</p>
+              <h3>It runs <span class="accent">one job</span>, forever.</h3>
+              <p>
+                Your phone juggles hundreds of apps. A microcontroller usually runs a
+                single program, starting the instant it gets power and repeating it
+                until the power goes off — thousands of times every second.
+              </p>
+              <div class="loop-glyph" aria-hidden="true">
+                <svg viewBox="0 0 220 80"><path id="loopPath" d="M40 40 C40 10 100 10 110 40 C120 70 180 70 180 40 C180 10 120 10 110 40 C100 70 40 70 40 40 Z" /><circle r="5" class="loop-dot"><animateMotion dur="2.4s" repeatCount="indefinite"><mpath href="#loopPath" /></animateMotion></circle></svg>
+              </div>
+            </article>
+
+            <article class="what-step" data-step="0.75 1.01">
+              <p class="step-index">04 / 04</p>
+              <h3>Small, cheap, and incredibly efficient.</h3>
+              <table class="compare">
+                <thead>
+                  <tr><th></th><th>Laptop</th><th>ESP32</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Starts up in</td><td>~20 seconds</td><td><b>under 1 second</b></td></tr>
+                  <tr><td>Power used</td><td>~45 watts</td><td><b>~0.5 watts</b></td></tr>
+                  <tr><td>Asleep, uses</td><td>~1 watt</td><td><b>0.00003 watts</b></td></tr>
+                  <tr><td>Costs about</td><td>$600+</td><td><b>$5</b></td></tr>
+                </tbody>
+              </table>
+            </article>
+          </div>
+        </div>
+
+        <div class="everywhere">
+          <p class="eyebrow">Look around you</p>
+          <h3 class="display-sm">They're hiding in <span class="accent">everything.</span></h3>
+          <p class="muted">Tap a device to see what its microcontroller is doing.</p>
+          <div class="device-grid" role="list">
+            <button class="device" role="listitem" data-job="Reads the dial, opens the water valve, spins the drum at the right speed and stops the moment you open the door.">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="9" y="5" width="30" height="38" rx="3" /><path d="M9 13h30" /><circle cx="24" cy="28" r="9" /><circle cx="24" cy="28" r="5" /><circle cx="14" cy="9" r="1.2" /><circle cx="18" cy="9" r="1.2" /><path d="M28 9h7" /></svg>
+              <span>Washing machine</span>
+            </button>
+            <button class="device" role="listitem" data-job="Reads its tilt sensor about 1,000 times a second and adjusts all four motors so the drone stays level in the wind.">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="19" y="20" width="10" height="8" rx="2" /><path d="M19 22L11 14M29 22l8-8M19 26l-8 8M29 26l8 8" /><ellipse cx="10" cy="13" rx="6" ry="1.6" /><ellipse cx="38" cy="13" rx="6" ry="1.6" /><ellipse cx="10" cy="35" rx="6" ry="1.6" /><ellipse cx="38" cy="35" rx="6" ry="1.6" /></svg>
+              <span>Drone</span>
+            </button>
+            <button class="device" role="listitem" data-job="Counts your steps from a motion sensor, keeps the time, and only wakes the screen when you lift your wrist — to save battery.">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M18 4h12l1 8H17zM17 36h14l-1 8H18z" /><rect x="13" y="12" width="22" height="24" rx="6" /><path d="M24 18v6l4 3" /></svg>
+              <span>Smartwatch</span>
+            </button>
+            <button class="device" role="listitem" data-job="Measures the room temperature every few seconds and switches the heater or AC on and off to keep it just right.">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17" /><path d="M14 30a12 12 0 1 1 20 0" /><path d="M24 24l6-6" /><circle cx="24" cy="24" r="2" /></svg>
+              <span>Thermostat</span>
+            </button>
+            <button class="device" role="listitem" data-job="A modern car has 50 to 100 of them: one for the windows, one for the airbags, one for the engine, one for the brakes…">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M5 30v-6l5-2 5-8h18l6 8 4 2v6z" /><circle cx="14" cy="31" r="4" /><circle cx="34" cy="31" r="4" /><path d="M17 22h14" /></svg>
+              <span>Car</span>
+            </button>
+            <button class="device" role="listitem" data-job="Runs the red → green → amber timing, and some even count waiting cars with sensors to change the lights sooner.">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="16" y="3" width="16" height="36" rx="4" /><circle cx="24" cy="11" r="3.5" /><circle cx="24" cy="21" r="3.5" /><circle cx="24" cy="31" r="3.5" /><path d="M24 39v6" /></svg>
+              <span>Traffic light</span>
+            </button>
+            <button class="device" role="listitem" data-job="Reads its distance sensor, decides which way to turn, and drives the wheel motors — the same thing our club builds!">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="12" y="12" width="24" height="16" rx="3" /><circle cx="19" cy="20" r="2.4" /><circle cx="29" cy="20" r="2.4" /><path d="M24 12V6M22 6h4M15 28v6h18v-6M10 34h28M14 40a3 3 0 1 0 0-.1M34 40a3 3 0 1 0 0-.1" /></svg>
+              <span>Robot</span>
+            </button>
+            <button class="device" role="listitem" data-job="Reads the keypad, counts down the timer, switches the magnetron on and off and beeps when your food is ready.">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="4" y="10" width="40" height="28" rx="3" /><rect x="8" y="14" width="24" height="20" rx="1.5" /><path d="M36 15h4M36 20h4M36 25h4" /><circle cx="38" cy="31" r="1.6" /></svg>
+              <span>Microwave</span>
+            </button>
+          </div>
+          <p class="device-job" aria-live="polite">Pick a device above.</p>
+        </div>
+
+        <div class="checkpoint" data-q="0"></div>
+      </section>
+
+      <!-- =====================================================
+           02 · MEET THE ESP32 DEVKIT
+      ====================================================== -->
+      <section id="ch2" class="chapter" data-chapter="2">
+        <header class="chapter-head">
+          <p class="chapter-num"><span>Chapter</span> 02</p>
+          <h2 class="display">Meet the ESP32 DevKit.</h2>
+          <p class="scrub-text">
+            The ESP32 chip doesn't work alone. It sits on a small board with
+            everything it needs: power, a USB port to talk to your computer,
+            buttons, a light and rows of pins. Let's walk around it, part by part.
+          </p>
+        </header>
+
+        <div class="scene" data-scene="anatomy" style="--len: 1000vh">
+          <div class="pin anatomy-pin">
+            <div class="part-cards">
+              <article class="part-card" data-part="module" data-step="0 0.1">
+                <p class="part-tag">01 · The brain</p>
+                <h3>ESP32-WROOM-32 module</h3>
+                <p>
+                  The silver box is a metal <b>shield</b>. Hidden underneath is the
+                  ESP32 chip itself, plus its memory. The shield blocks radio noise
+                  so the chip and its Wi-Fi don't interfere with each other.
+                </p>
+                <p class="analogy">Think of it as: the brain, wearing a helmet.</p>
+                <details>
+                  <summary>Deeper dive</summary>
+                  <p>Inside: an ESP32-D0WDQ6 chip with two Xtensa LX6 processor cores at up to 240 MHz, 520 KB of SRAM, a 4 MB SPI flash chip for your program, and a 40 MHz crystal that sets the timing. You'll lift the shield off in Chapter 3.</p>
+                </details>
+              </article>
+
+              <article class="part-card" data-part="antenna" data-step="0.1 0.2">
+                <p class="part-tag">02 · Wireless</p>
+                <h3>PCB antenna</h3>
+                <p>
+                  That gold zig-zag isn't decoration — it's the Wi-Fi and Bluetooth
+                  antenna, printed straight onto the board. Its exact length is tuned
+                  to catch 2.4 GHz radio waves.
+                </p>
+                <p class="analogy">Think of it as: the board's ears and mouth for radio.</p>
+                <details>
+                  <summary>Deeper dive</summary>
+                  <p>It's a "meandered inverted-F" antenna. Folding the trace saves space while keeping its electrical length near a quarter wavelength (about 3 cm at 2.4 GHz). Keep metal and your fingers away from it for the best range.</p>
+                </details>
+              </article>
+
+              <article class="part-card" data-part="usb" data-step="0.2 0.3">
+                <p class="part-tag">03 · Power + data</p>
+                <h3>Micro-USB port</h3>
+                <p>
+                  One cable does two jobs: it powers the board with 5 volts, and it
+                  carries your program from the computer to the chip.
+                </p>
+                <p class="analogy">Think of it as: the lunchbox and the letterbox in one.</p>
+              </article>
+
+              <article class="part-card" data-part="usbuart" data-step="0.3 0.4">
+                <p class="part-tag">04 · Translator</p>
+                <h3>CP2102 USB-to-UART chip</h3>
+                <p>
+                  Your computer speaks USB. The ESP32 speaks a simpler language called
+                  serial (UART). This little chip translates between them — so you can
+                  upload code and read messages from your program.
+                </p>
+                <p class="analogy">Think of it as: an interpreter at a meeting.</p>
+                <details>
+                  <summary>Deeper dive</summary>
+                  <p>It also flips the EN and BOOT lines automatically during an upload, so you rarely need to press the buttons yourself. Some boards use a CH340 chip for the same job.</p>
+                </details>
+              </article>
+
+              <article class="part-card" data-part="regulator" data-step="0.4 0.5">
+                <p class="part-tag">05 · Power</p>
+                <h3>AMS1117 voltage regulator</h3>
+                <p>
+                  USB gives 5 V, but the ESP32 needs exactly 3.3 V — more would damage
+                  it. The regulator steps the voltage down and holds it steady.
+                </p>
+                <p class="analogy">Think of it as: a dam that lets out a calm, steady stream.</p>
+                <details>
+                  <summary>Deeper dive</summary>
+                  <p>It's a linear regulator: it "burns off" the extra 1.7 V as a little heat. It can supply around 800 mA. Important: the ESP32's pins are 3.3 V only — never connect 5 V signals directly to them.</p>
+                </details>
+              </article>
+
+              <article class="part-card" data-part="en" data-step="0.5 0.6">
+                <p class="part-tag">06 · Restart</p>
+                <h3>EN button (reset)</h3>
+                <p>
+                  Pressing EN switches the chip off for a moment and back on, so your
+                  program starts again from the very beginning.
+                </p>
+                <p class="analogy">Think of it as: the restart button on a game console.</p>
+              </article>
+
+              <article class="part-card" data-part="boot" data-step="0.6 0.7">
+                <p class="part-tag">07 · Upload mode</p>
+                <h3>BOOT button</h3>
+                <p>
+                  Hold BOOT while the board restarts and the ESP32 waits for new code
+                  instead of running the old program. Your programs can also read it as
+                  an ordinary button (it's connected to pin 0).
+                </p>
+                <p class="analogy">Think of it as: "Don't start yet — new instructions coming!"</p>
+              </article>
+
+              <article class="part-card" data-part="led" data-step="0.7 0.8">
+                <p class="part-tag">08 · Lights</p>
+                <h3>Power + built-in LEDs</h3>
+                <p>
+                  The red LED means the board has power. The blue one is connected to
+                  pin 2, so your code can switch it on and off — perfect for your very
+                  first program.
+                </p>
+                <p class="analogy">Try it: tap the blue LED's button below.</p>
+                <button class="mini-btn no-drag" type="button" data-action="blink">Blink the blue LED</button>
+              </article>
+
+              <article class="part-card" data-part="pins" data-step="0.8 0.9">
+                <p class="part-tag">09 · Connections</p>
+                <h3>38 header pins</h3>
+                <p>
+                  These metal legs plug into a breadboard. Some give power (3V3, 5V,
+                  GND); most are <b>GPIO</b> pins — "general-purpose input/output" —
+                  that your program can read from or switch on and off.
+                </p>
+                <p class="analogy">Think of it as: the board's hands and nerves.</p>
+                <details>
+                  <summary>Deeper dive</summary>
+                  <p>Pins 34–39 can only read (input only). Pins 0, 2, 5, 12 and 15 are "strapping pins" that set the chip's start-up mode, so use them with care. Some pins can also do analog input, touch sensing, PWM and serial communication.</p>
+                </details>
+              </article>
+
+              <article class="part-card explore-card" data-part="" data-step="0.9 1.01">
+                <p class="part-tag">Your turn</p>
+                <h3>Explore it yourself.</h3>
+                <p>Drag the board to spin it around. Tap any dot to jump back to that part.</p>
+              </article>
+            </div>
+            <div class="anatomy-progress" aria-hidden="true"><span></span></div>
+            <img class="board-fallback" src="Learn/esp32-board.png" alt="ESP32 DevKit board" />
+          </div>
+        </div>
+
+        <div class="checkpoint" data-q="1"></div>
+      </section>
+
+      <!-- =====================================================
+           03 · INSIDE THE CHIP
+      ====================================================== -->
+      <section id="ch3" class="chapter" data-chapter="3">
+        <header class="chapter-head">
+          <p class="chapter-num"><span>Chapter</span> 03</p>
+          <h2 class="display">Inside the chip.</h2>
+          <p class="scrub-text">
+            Time to lift the lid. Under the metal shield live three things that make
+            the whole board work: the brain, the memory that stores your program, and
+            a crystal that keeps the beat.
+          </p>
+        </header>
+
+        <div class="scene" data-scene="inside" style="--len: 420vh">
+          <div class="pin inside-pin">
+            <article class="inside-step" data-part="soc" data-step="0.18 0.45">
+              <p class="part-tag">The brain</p>
+              <h3>ESP32 system-on-chip</h3>
+              <p>Two processor cores, fast memory, the Wi-Fi radio and all the pin controls — on one piece of silicon 5 mm wide.</p>
+            </article>
+            <article class="inside-step" data-part="flash" data-step="0.45 0.7">
+              <p class="part-tag">The notebook</p>
+              <h3>4 MB flash memory</h3>
+              <p>Your program lives here. Like a USB stick, it remembers everything even when the power is off.</p>
+            </article>
+            <article class="inside-step" data-part="crystal" data-step="0.7 0.98">
+              <p class="part-tag">The heartbeat</p>
+              <h3>40 MHz crystal</h3>
+              <p>A tiny slice of quartz that vibrates exactly 40 million times a second. Every action in the chip happens in step with this beat.</p>
+            </article>
+            <img class="board-fallback" src="Learn/esp32-board.png" alt="ESP32 DevKit board" />
+          </div>
+        </div>
+
+        <!-- Chip floorplan -->
+        <div class="floorplan-wrap" id="floorplan">
+          <div class="floorplan-copy">
+            <p class="eyebrow">Zoom in further</p>
+            <h3 class="display-sm">One chip, <span class="accent">many teams.</span></h3>
+            <p class="muted">
+              Engineers divide the silicon into areas, each with its own job. This is a
+              simplified map of the ESP32. Tap a block.
+            </p>
+            <div class="block-info" aria-live="polite">
+              <p class="block-name">Tap a block</p>
+              <p class="block-text">Each coloured outline is a different part of the chip.</p>
+            </div>
+          </div>
+          <svg class="floorplan" viewBox="0 0 600 600" role="img" aria-label="Simplified map of the ESP32 chip">
+            <defs>
+              <pattern id="dieGrid" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M12 0H0V12" fill="none" stroke="rgba(255,255,255,0.04)" /></pattern>
+            </defs>
+            <rect class="die" x="10" y="10" width="580" height="580" />
+            <rect x="10" y="10" width="580" height="580" fill="url(#dieGrid)" />
+            <g class="pads"></g>
+            <g class="blocks">
+              <g class="block" data-name="CPU core 0" data-text="One of the two processors. It runs your program's instructions — up to 240 million steps each second."><rect x="40" y="40" width="160" height="150" /><text x="56" y="70">CPU CORE 0</text><text class="sub" x="56" y="92">Xtensa LX6</text></g>
+              <g class="block" data-name="CPU core 1" data-text="The second processor. On the ESP32, one core often handles Wi-Fi while the other runs your code — so both stay fast."><rect x="220" y="40" width="160" height="150" /><text x="236" y="70">CPU CORE 1</text><text class="sub" x="236" y="92">Xtensa LX6</text></g>
+              <g class="block" data-name="ULP co-processor" data-text="An ultra-low-power mini processor that keeps watching sensors while the main cores sleep. This is how an ESP32 can run for months on a battery."><rect x="400" y="40" width="160" height="70" /><text x="416" y="70">ULP</text><text class="sub" x="416" y="92">low-power helper</text></g>
+              <g class="block" data-name="ROM" data-text="Read-only memory with the factory start-up code. It runs first at every reset, then loads your program from flash."><rect x="400" y="120" width="160" height="70" /><text x="416" y="150">ROM 448 KB</text><text class="sub" x="416" y="172">boot code</text></g>
+              <g class="block" data-name="SRAM — 520 KB" data-text="Super-fast working memory, like a desk you write on while you work. It holds your variables while the program runs, but forgets everything when the power goes off."><rect x="40" y="210" width="340" height="120" /><text x="56" y="240">SRAM · 520 KB</text><text class="sub" x="56" y="262">working memory</text></g>
+              <g class="block" data-name="Radio — Wi-Fi + Bluetooth" data-text="Turns data into 2.4 GHz radio waves and back again. It connects to the antenna you saw on the board."><rect x="400" y="210" width="160" height="330" /><text x="416" y="240">RADIO</text><text class="sub" x="416" y="262">Wi-Fi · Bluetooth</text><path class="wave" d="M420 300q15-20 30 0t30 0 30 0 30 0" /><path class="wave" d="M420 330q15-20 30 0t30 0 30 0 30 0" /></g>
+              <g class="block" data-name="Pin controllers" data-text="The circuits behind the pins: digital in/out, a 12-bit analog reader (ADC), two analog outputs (DAC), 10 touch sensors and 16 PWM channels for dimming lights and driving motors."><rect x="40" y="350" width="200" height="190" /><text x="56" y="380">PIN CONTROL</text><text class="sub" x="56" y="402">GPIO · ADC · DAC</text><text class="sub" x="56" y="422">PWM · Touch</text></g>
+              <g class="block" data-name="Communication" data-text="Built-in 'languages' for talking to other chips and sensors: UART (serial), I²C and SPI."><rect x="260" y="350" width="120" height="190" /><text x="276" y="380">COMMS</text><text class="sub" x="276" y="402">UART · I²C</text><text class="sub" x="276" y="422">SPI</text></g>
+            </g>
+          </svg>
+        </div>
+
+        <!-- The heartbeat: clock lab -->
+        <div class="lab lab-wide" id="clockLab">
+          <div class="lab-head">
+            <p class="eyebrow">Lab · The heartbeat</p>
+            <h3>How fast is 240 MHz?</h3>
+            <p class="muted">
+              The crystal's beat drives a <b>clock</b>. On every tick the processor does one
+              small step. Drag the slider from a slow tick up to the ESP32's real speed.
+            </p>
+          </div>
+          <div class="clock-ui">
+            <input type="range" min="0" max="100" value="0" step="0.1" class="clock-range" aria-label="Clock speed" />
+            <div class="clock-readout">
+              <p><span class="mono">Speed</span><b class="clock-freq">1 Hz</b></p>
+              <p><span class="mono">Ticks in one blink of an eye</span><b class="clock-blink">0</b></p>
+              <p class="clock-fact muted">One tick every second. You could count along.</p>
+            </div>
+            <canvas class="clock-wave" aria-hidden="true"></canvas>
+            <div class="clock-led" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <!-- Fetch, decode, execute -->
+        <div class="lab lab-wide" id="cpuLab">
+          <div class="lab-head">
+            <p class="eyebrow">Lab · How it thinks</p>
+            <h3>Fetch. Decode. Execute.</h3>
+            <p class="muted">
+              Your program becomes a list of very simple instructions. The processor
+              repeats three moves for each one, over and over. Step through a program
+              that blinks an LED.
+            </p>
+          </div>
+          <div class="cpu-ui">
+            <ol class="cpu-program" aria-label="Program in memory"></ol>
+            <div class="cpu-core">
+              <div class="cpu-stages">
+                <span data-stage="0">Fetch</span><span data-stage="1">Decode</span><span data-stage="2">Execute</span>
+              </div>
+              <p class="cpu-explain">Press <b>Step</b> to fetch the first instruction.</p>
+              <div class="cpu-regs">
+                <p><span class="mono">PC</span><b class="reg-pc">0</b></p>
+                <p><span class="mono">R1</span><b class="reg-r1">0</b></p>
+                <p><span class="mono">GPIO2</span><b class="reg-led">LOW</b></p>
+              </div>
+              <div class="cpu-led" aria-label="LED on GPIO 2"></div>
+              <div class="cpu-buttons">
+                <button type="button" class="btn-line" data-cpu="step">Step</button>
+                <button type="button" class="btn-line" data-cpu="run">Run</button>
+                <button type="button" class="btn-line ghost" data-cpu="reset">Reset</button>
+              </div>
+            </div>
+          </div>
+          <details class="deeper">
+            <summary>Deeper dive</summary>
+            <p>Real ESP32 instructions are binary numbers (Xtensa machine code). The "PC" (program counter) is a register that holds the address of the next instruction. A <code>JUMP</code> simply changes the PC, which is how loops work. The ESP32 overlaps these stages in a pipeline, so it finishes about one instruction per tick.</p>
+          </details>
+        </div>
+
+        <div class="checkpoint" data-q="2"></div>
+      </section>
+
+      <!-- =====================================================
+           04 · PINS
+      ====================================================== -->
+      <section id="ch4" class="chapter" data-chapter="4">
+        <header class="chapter-head">
+          <p class="chapter-num"><span>Chapter</span> 04</p>
+          <h2 class="display">Pins: how it feels and acts.</h2>
+          <p class="scrub-text">
+            A microcontroller only sees electricity. Inside, everything becomes a
+            voltage — and a voltage becomes a number your program can use. Here are the
+            four tricks every pin can do.
+          </p>
+        </header>
+
+        <div class="lab-grid">
+          <!-- Digital output -->
+          <div class="lab" id="labOut">
+            <div class="lab-head">
+              <p class="eyebrow">Lab 1 · Digital output</p>
+              <h3>Switch something on.</h3>
+              <p class="muted">An output pin is either <b>HIGH</b> (3.3 V) or <b>LOW</b> (0 V). Flip it and watch the current flow.</p>
+            </div>
+            <svg class="circuit" viewBox="0 0 360 170" aria-hidden="true">
+              <rect class="chip-box" x="10" y="45" width="80" height="80" rx="4" />
+              <text class="chip-label" x="50" y="80" text-anchor="middle">ESP32</text>
+              <text class="pin-label" x="50" y="100" text-anchor="middle">GPIO 4</text>
+              <path class="wire" d="M90 85 H150" />
+              <path class="resistor" d="M150 85 l6 -10 l12 20 l12 -20 l12 20 l12 -20 l6 10" />
+              <path class="wire" d="M210 85 H250" />
+              <g class="led-sym"><path d="M250 70 v30 l26 -15 z" /><path d="M276 70 v30" /><path class="rays" d="M262 64 l8 -10 M272 66 l8 -10" /></g>
+              <path class="wire" d="M276 85 H320 V140 H50 V125" />
+              <text class="gnd-label" x="200" y="158" text-anchor="middle">GND</text>
+              <path class="flow" d="M90 85 H150 l6 -10 l12 20 l12 -20 l12 20 l12 -20 l6 10 H250 M276 85 H320 V140 H50 V125" />
+            </svg>
+            <div class="lab-controls">
+              <button type="button" class="switch" role="switch" aria-checked="false"><span></span></button>
+              <code class="code-line">digitalWrite(4, <b>LOW</b>);</code>
+              <p class="readout"><span class="mono">Pin</span><b class="v">0.0 V</b></p>
+            </div>
+            <canvas class="scope" aria-hidden="true"></canvas>
+          </div>
+
+          <!-- Digital input -->
+          <div class="lab" id="labIn">
+            <div class="lab-head">
+              <p class="eyebrow">Lab 2 · Digital input</p>
+              <h3>Feel a button press.</h3>
+              <p class="muted">An input pin reads the voltage on it. A "pull-up" keeps it HIGH until the button connects it to ground.</p>
+            </div>
+            <svg class="circuit" viewBox="0 0 360 170" aria-hidden="true">
+              <rect class="chip-box" x="10" y="45" width="80" height="80" rx="4" />
+              <text class="chip-label" x="50" y="80" text-anchor="middle">ESP32</text>
+              <text class="pin-label" x="50" y="100" text-anchor="middle">GPIO 15</text>
+              <path class="wire w-in" d="M90 85 H200" />
+              <text class="pin-label" x="140" y="40" text-anchor="middle">pull-up → 3.3 V</text>
+              <path class="wire faint" d="M140 85 V48" />
+              <g class="btn-sym"><path class="lever" d="M200 85 L250 70" /><circle cx="200" cy="85" r="3" /><circle cx="252" cy="85" r="3" /></g>
+              <path class="wire" d="M252 85 H320 V140 H200" />
+              <text class="gnd-label" x="260" y="158" text-anchor="middle">GND</text>
+            </svg>
+            <div class="lab-controls">
+              <button type="button" class="push" aria-label="Hold to press the button">Hold me</button>
+              <code class="code-line">digitalRead(15) → <b>HIGH</b></code>
+              <p class="readout"><span class="mono">Pin</span><b class="v">3.3 V</b></p>
+            </div>
+          </div>
+
+          <!-- Analog input -->
+          <div class="lab" id="labAdc">
+            <div class="lab-head">
+              <p class="eyebrow">Lab 3 · Analog input</p>
+              <h3>Measure "how much".</h3>
+              <p class="muted">Some pins can measure any voltage between 0 and 3.3 V. The <b>ADC</b> turns it into a number from 0 to 4095.</p>
+            </div>
+            <div class="adc-ui">
+              <div class="knob" role="slider" tabindex="0" aria-label="Potentiometer" aria-valuemin="0" aria-valuemax="4095" aria-valuenow="2048"><span class="knob-mark"></span></div>
+              <div class="adc-out">
+                <p class="readout"><span class="mono">Voltage</span><b class="adc-v">1.65 V</b></p>
+                <code class="code-line">analogRead(34) → <b class="adc-n">2048</b></code>
+                <div class="bits" aria-label="12-bit binary value"></div>
+                <p class="mono small muted">12 bits = 4,096 possible values</p>
+              </div>
+            </div>
+            <div class="adc-bar"><span></span></div>
+          </div>
+
+          <!-- PWM -->
+          <div class="lab" id="labPwm">
+            <div class="lab-head">
+              <p class="eyebrow">Lab 4 · PWM output</p>
+              <h3>Fake a dimmer.</h3>
+              <p class="muted">A digital pin can only be fully on or off. The trick: flick it on and off thousands of times a second. More "on" time = brighter.</p>
+            </div>
+            <canvas class="pwm-wave" aria-hidden="true"></canvas>
+            <div class="lab-controls">
+              <input type="range" min="0" max="255" value="64" class="pwm-range" aria-label="Duty cycle" />
+              <code class="code-line">analogWrite(4, <b class="pwm-n">64</b>);</code>
+              <div class="pwm-led" aria-hidden="true"></div>
+            </div>
+            <p class="mono small muted pwm-duty">On 25% of the time</p>
+          </div>
+        </div>
+
+        <div class="checkpoint" data-q="3"></div>
+      </section>
+
+      <!-- =====================================================
+           05 · LIFE OF A PROGRAM
+      ====================================================== -->
+      <section id="ch5" class="chapter" data-chapter="5">
+        <header class="chapter-head">
+          <p class="chapter-num"><span>Chapter</span> 05</p>
+          <h2 class="display">The life of a program.</h2>
+          <p class="scrub-text">
+            You write words. The chip only understands numbers. Follow one program on
+            its journey from your keyboard to a blinking light.
+          </p>
+        </header>
+
+        <div class="scene" data-scene="pipeline" style="--len: 520vh">
+          <div class="pin pipe-pin">
+            <svg class="pipe-track" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true">
+              <path class="track" d="M40 60 H960" />
+              <path class="track-fill" d="M40 60 H960" />
+            </svg>
+            <ol class="pipe-stations" aria-hidden="true">
+              <li><span>01</span>Write</li>
+              <li><span>02</span>Compile</li>
+              <li><span>03</span>Upload</li>
+              <li><span>04</span>Store</li>
+              <li><span>05</span>setup()</li>
+              <li><span>06</span>loop()</li>
+            </ol>
+            <div class="pipe-stages">
+              <article class="pipe-stage" data-step="0 0.17">
+                <h3>1. You write the code.</h3>
+                <p>In the Arduino IDE you write instructions in C++, a language people can read.</p>
+<pre class="code-card"><code><span class="k">void</span> <span class="f">setup</span>() {
+  <span class="f">pinMode</span>(<span class="n">2</span>, OUTPUT);
+}
+<span class="k">void</span> <span class="f">loop</span>() {
+  <span class="f">digitalWrite</span>(<span class="n">2</span>, HIGH);
+  <span class="f">delay</span>(<span class="n">500</span>);
+  <span class="f">digitalWrite</span>(<span class="n">2</span>, LOW);
+  <span class="f">delay</span>(<span class="n">500</span>);
+}</code></pre>
+              </article>
+              <article class="pipe-stage" data-step="0.17 0.34">
+                <h3>2. The compiler translates it.</h3>
+                <p>A program called a <b>compiler</b> turns your words into machine code: the binary numbers the ESP32's processor actually runs.</p>
+                <div class="binary" aria-hidden="true"></div>
+              </article>
+              <article class="pipe-stage" data-step="0.34 0.5">
+                <h3>3. It travels down the USB cable.</h3>
+                <p>The CP2102 chip on the board receives the bytes as a fast serial stream — about 115,000 bytes every second.</p>
+                <div class="usb-stream" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+              </article>
+              <article class="pipe-stage" data-step="0.5 0.67">
+                <h3>4. It's saved into flash.</h3>
+                <p>The program is written into the 4 MB flash chip. It stays there even with the power off — unplug it and plug it back in, and your program is still there.</p>
+                <div class="flash-cells" aria-hidden="true"></div>
+              </article>
+              <article class="pipe-stage" data-step="0.67 0.84">
+                <h3>5. setup() runs — once.</h3>
+                <p>The board resets, and your <code>setup()</code> function runs a single time. It's for getting ready: choosing which pins are inputs and which are outputs.</p>
+              </article>
+              <article class="pipe-stage" data-step="0.84 1.01">
+                <h3>6. loop() runs — forever.</h3>
+                <p>Then <code>loop()</code> starts, and when it reaches the end it simply starts again. Round and round, until the power goes off.</p>
+                <div class="loop-ring" aria-hidden="true"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="46" /><circle class="loop-runner" cx="60" cy="14" r="6" /></svg><span class="loop-led"></span></div>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <div class="checkpoint" data-q="4"></div>
+      </section>
+
+      <!-- =====================================================
+           06 · YOUR TURN — SANDBOX
+      ====================================================== -->
+      <section id="ch6" class="chapter" data-chapter="6">
+        <header class="chapter-head">
+          <p class="chapter-num"><span>Chapter</span> 06</p>
+          <h2 class="display">Your turn. <span class="accent">Code it.</span></h2>
+          <p class="scrub-text">
+            This is a virtual ESP32 on a breadboard. Write real Arduino code on the
+            left, press Run, and watch it come alive on the right.
+          </p>
+        </header>
+
+        <div class="sandbox" id="sandbox">
+          <div class="sb-lessons" role="tablist" aria-label="Lessons"></div>
+          <div class="sb-task" aria-live="polite"></div>
+          <div class="sb-main">
+            <div class="sb-editor-wrap">
+              <div class="sb-toolbar">
+                <span class="sb-file mono">sketch.ino</span>
+                <button type="button" class="sb-btn run"><i class="fa-solid fa-play" aria-hidden="true"></i> Run</button>
+                <button type="button" class="sb-btn stop" disabled><i class="fa-solid fa-stop" aria-hidden="true"></i> Stop</button>
+                <button type="button" class="sb-btn reset ghost" title="Restore this lesson's starting code"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i></button>
+              </div>
+              <div class="sb-editor">
+                <pre class="sb-lines" aria-hidden="true"></pre>
+                <pre class="sb-highlight" aria-hidden="true"><code></code></pre>
+                <textarea class="sb-code" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Code editor"></textarea>
+              </div>
+            </div>
+            <div class="sb-bench">
+              <svg class="bench" viewBox="0 0 520 360" role="img" aria-label="Virtual ESP32 on a breadboard"></svg>
+              <div class="sb-inputs">
+                <button type="button" class="sb-push" aria-label="Hold to press the button on GPIO 15">Hold to press · GPIO 15</button>
+                <label class="sb-pot"><span class="mono">Knob · GPIO 34</span><input type="range" min="0" max="4095" value="2048" /></label>
+              </div>
+              <div class="sb-serial">
+                <p class="sb-serial-head mono">Serial monitor · 115200 baud <button type="button" class="sb-clear">Clear</button></p>
+                <pre class="sb-serial-out" aria-live="polite"></pre>
+              </div>
+            </div>
+          </div>
+          <details class="deeper sb-ref">
+            <summary>Code you can use here</summary>
+            <ul class="mono small">
+              <li><code>pinMode(pin, OUTPUT | INPUT | INPUT_PULLUP)</code></li>
+              <li><code>digitalWrite(pin, HIGH | LOW)</code> · <code>digitalRead(pin)</code></li>
+              <li><code>analogRead(34)</code> → 0–4095 · <code>analogWrite(4, 0–255)</code></li>
+              <li><code>delay(ms)</code> · <code>millis()</code> · <code>map()</code> · <code>constrain()</code> · <code>random()</code></li>
+              <li><code>Serial.begin(115200)</code> · <code>Serial.print()</code> · <code>Serial.println()</code></li>
+              <li>Pins on this bench: <b>2</b> blue LED (on board) · <b>4</b> red LED · <b>15</b> button · <b>34</b> knob</li>
+            </ul>
+          </details>
+        </div>
+
+        <div class="checkpoint" data-q="5"></div>
+      </section>
+
+      <!-- =====================================================
+           FINALE
+      ====================================================== -->
+      <section id="finale" class="chapter finale" data-chapter="7">
+        <div class="badge-wrap">
+          <svg class="badge" viewBox="0 0 240 240" aria-hidden="true">
+            <polygon class="hex" points="120,12 214,66 214,174 120,228 26,174 26,66" />
+            <polygon class="hex inner" points="120,32 196,76 196,164 120,208 44,164 44,76" />
+            <path class="trace" d="M44 120 H84 L96 104 H120 M196 120 H156 L144 136 H120 M120 32 V64 M120 208 V176" />
+            <rect class="chip" x="92" y="92" width="56" height="56" rx="4" />
+            <text x="120" y="126" text-anchor="middle">ESP32</text>
+          </svg>
+          <div class="badge-copy">
+            <p class="eyebrow">Lesson complete</p>
+            <h2 class="display">You're an <span class="accent">ESP32 Explorer.</span></h2>
+            <p class="lead finale-score">You answered the checkpoints.</p>
+            <div class="finale-actions">
+              <a class="btn-solid" href="#ch6">Keep coding</a>
+              <a class="btn-line" href="index.html#events-page-section">See our events</a>
+              <button type="button" class="btn-line ghost restart">Restart lesson</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="main-footer">
+      <div class="footer-divider"></div>
+
+      <div class="footer-container" data-reveal-stagger="0.1">
+        <div class="footer-section" data-reveal>
+          <h3>Contact Us</h3>
+          <p>
+            <i class="fa-regular fa-envelope"></i> fx13valourrobotics@gmail.com
+          </p>
+          <p>
+            <i class="fa-solid fa-location-dot"></i> 24 Asad Avenue,
+            Mohammadpur, Dhaka – 1207, Bangladesh
+          </p>
+        </div>
+
+        <div class="footer-section" data-reveal>
+          <h3>Development</h3>
+          <p>Built for FX-13 Valour Robotics Club</p>
+          <p>
+            Developed by
+            <span class="dev-link">Nuban Sami Alam</span>,
+            <span class="dev-link">Shreyan Ahmed</span> &amp;
+            <span class="dev-link">Amlan Halder</span>
+          </p>
+        </div>
+
+        <div class="footer-section" data-reveal>
+          <h3>Patrons</h3>
+          <div class="sponsors-grid">
+            <a
+              href="https://www.facebook.com/SFXGH"
+              class="sponsor-box"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>SFX Greenherald International School</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 FX-13 Valour Robotics Club. All Systems Operational.</p>
+      </div>
+    </footer>
+
+    <script defer src="particles.js?v=20261109"></script>
+    <script defer src="site.js?v=20261109"></script>
+    <script type="module" src="index.js?v=20261109"></script>
+    <script type="module" src="Learn/learn.js?v=20261109"></script>
+  </body>
+</html>

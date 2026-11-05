@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0d0d0d" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/Images/icons/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/Images/icons/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/Images/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <title>Learn · Interactive Courses - FX-13 Valour</title>
+    <meta
+      name="description"
+      content="Interactive, hands-on courses from FX-13 Valour Robotics Club. Pick a course and learn by exploring, experimenting and coding right in your browser."
+    />
+    <link rel="canonical" href="https://fx13valour.org/learn.html" />
+    <meta property="og:title" content="Learn · FX-13 Valour" />
+    <meta property="og:description" content="Interactive, hands-on courses from FX-13 Valour Robotics Club." />
+    <meta property="og:image" content="https://fx13valour.org/Learn/esp32-board.png" />
+
+    <script>document.documentElement.classList.add("js");</script>
+    <link rel="stylesheet" href="CSS/main.css?v=20261109" />
+    <link rel="stylesheet" href="CSS/motion.css?v=20261109" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="Learn/hub.css?v=20261109" />
+  </head>
+
+  <body class="hub-body">
+    <canvas id="bg-canvas"></canvas>
+
+    <nav class="main-navigation-bar">
+      <div class="nav-section links-group">
+        <div class="nav-dropdown">
+          <button
+            class="dropdown-trigger new-dropdown-btn menu-icon-btn"
+            aria-label="Menu"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="dropdown-content multi-section-dropdown">
+            <div class="dropdown-section">
+              <h4 class="dropdown-subheader">Posters</h4>
+              <a href="#">Tech in Fiction</a>
+              <a href="#">Tech in Motion</a>
+            </div>
+            <div class="dropdown-section">
+              <h4 class="dropdown-subheader">Additional information</h4>
+              <a href="#">Rules for events</a>
+              <a href="#">Guidelines for Fairness</a>
+            </div>
+          </div>
+        </div>
+        <a href="index.html#home-page-section" class="nav-item-link">Home</a>
+        <a href="index.html#events-page-section" class="nav-item-link">Events</a>
+
+        <div class="nav-dropdown">
+          <button class="dropdown-trigger">
+            Projects <span class="arrow">▾</span>
+          </button>
+          <div class="dropdown-content">
+            <a href="index.html#projects-page-section">AeroSense Drone</a>
+          </div>
+        </div>
+
+        <a href="SenatePage.html" class="nav-item-link">Executives</a>
+        <a href="learn.html" class="nav-item-link">Learn</a>
+      </div>
+
+      <div class="nav-section logo-container">
+        <h1 class="brand-title">
+          FX-13 <span class="highlight-blue">VALOUR</span>
+        </h1>
+      </div>
+
+      <div class="nav-section button-group">
+        <button
+          id="Contact-Button"
+          onclick="window.location.href = '/contactus.html'"
+        >
+          Contact Us
+        </button>
+        <!-- REMEMBER TO CHANGE IT TO PUBLIC HREF -->
+        <button id="Sign-in-Button">
+          <a href="/Auth/Signin.html">Sign in</a>
+        </button>
+        <button id="Profile-Button">
+          <span class="icon-wrapper">
+            <!-- REMEMBER TO CHANGE IT TO PUBLIC HREF -->
+            <img
+              src="https://img.icons8.com/ios-glyphs/30/007BFF/user-male-circle.png"
+              alt="Profile"
+            />
+          </span>
+          View Profile
+        </button>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button
+        class="mobile-menu-toggle"
+        id="mobileToggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <i class="fa-solid fa-bars" id="mobileIcon"></i>
+      </button>
+
+      <!-- Mobile slide-down menu -->
+      <div class="mobile-menu-overlay" id="mobileMenu" role="navigation">
+        <div class="mobile-nav-links">
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger1">
+              <span
+                >Browse
+                <i
+                  class="fa-solid fa-bars"
+                  style="font-size: 0.85rem; margin-left: 6px"
+                ></i
+              ></span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner1">
+              <h4 class="dropdown-subheader">Posters</h4>
+              <a href="#">Tech in Fiction</a>
+              <a href="#">Tech in Motion</a>
+              <h4 class="dropdown-subheader" style="margin-top: 8px">
+                Additional information
+              </h4>
+              <a href="#">Rules for events</a>
+              <a href="#">Guidelines for Fairness</a>
+            </div>
+          </div>
+          <a href="index.html#home-page-section" class="nav-item-link">Home</a>
+          <a href="index.html#events-page-section" class="nav-item-link">Events</a>
+          <a href="aerosense.html" class="nav-item-link">AQ-levels</a>
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger2">
+              <span>Projects</span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner2">
+              <a href="index.html#projects-page-section">AeroSense Drone</a>
+            </div>
+          </div>
+          <a href="SenatePage.html" class="nav-item-link">Executives</a>
+          <a href="learn.html" class="nav-item-link">Learn</a>
+        </div>
+        <div class="mobile-buttons">
+          <button id="Contact-Button-Mobile">
+            <a href="/contactus.html">Contact us</a>
+          </button>
+          <button id="Sign-in-Button-Mobile">
+            <a href="/Auth/Signin.html">Sign in</a>
+          </button>
+          <button id="Profile-Button-Mobile">
+            <span class="icon-wrapper">
+              <img
+                src="https://img.icons8.com/ios-glyphs/30/007BFF/user-male-circle.png"
+                alt="Profile"
+              />
+            </span>
+            View Profile
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="hub">
+      <header class="hub-head">
+        <p class="hub-kicker" data-reveal>FX-13 Valour Learn</p>
+        <h1 class="hub-title" data-reveal>Learn by doing.<br /><span>Pick a course.</span></h1>
+        <p class="hub-sub" data-reveal>
+          Interactive courses you explore, poke at and code — no setup, no
+          downloads. Your progress saves as you go.
+        </p>
+      </header>
+
+      <section class="course-grid" aria-label="Courses" data-reveal-stagger>
+        <a
+          class="course-card theme-green"
+          href="learn-microcontrollers.html"
+          data-progress-key="fx13-learn-esp32-v1"
+          data-total="6"
+          data-reveal
+        >
+          <div class="cc-visual" aria-hidden="true">
+            <svg class="cc-traces" viewBox="0 0 600 300" preserveAspectRatio="xMidYMid slice">
+              <path pathLength="1" d="M0 70 H120 L150 100 H230" />
+              <path pathLength="1" d="M0 230 H90 L130 190 H220" />
+              <path pathLength="1" d="M600 60 H500 L470 90 H390" />
+              <path pathLength="1" d="M600 240 H520 L480 200 H380" />
+              <path pathLength="1" d="M300 0 V40 L330 70" />
+              <path pathLength="1" d="M280 300 V262 L250 232" />
+              <circle cx="230" cy="100" r="4" />
+              <circle cx="220" cy="190" r="4" />
+              <circle cx="390" cy="90" r="4" />
+              <circle cx="380" cy="200" r="4" />
+              <circle cx="330" cy="70" r="4" />
+              <circle cx="250" cy="232" r="4" />
+            </svg>
+            <img class="cc-board" src="Learn/esp32-board.png" alt="" width="1018" height="574" loading="eager" />
+          </div>
+          <div class="cc-body">
+            <p class="cc-kicker">Course 01 · Electronics</p>
+            <h2 class="cc-title">Microcontrollers 101</h2>
+            <p class="cc-text">
+              Take an ESP32 apart in 3D, see how a chip thinks, then write code
+              that runs on a virtual board — all in your browser.
+            </p>
+            <div class="cc-foot">
+              <div class="cc-progress"><span class="cc-bar"><i></i></span><span>Not started</span></div>
+              <span class="cc-cta"><span>Start course</span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+            </div>
+          </div>
+        </a>
+
+        <div class="course-card is-soon" data-reveal>
+          <div class="soon-visual" aria-hidden="true">
+            <svg viewBox="0 0 120 120">
+              <rect x="34" y="34" width="52" height="52" rx="8" />
+              <path class="slot" d="M60 8 A52 52 0 1 1 59.9 8" />
+            </svg>
+          </div>
+          <div class="cc-body">
+            <p class="cc-kicker" style="color: var(--ink-3)">Course 02</p>
+            <h2 class="cc-title">More courses on the way</h2>
+            <p class="cc-text">We're building the next one now. Check back soon.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="hub-veil" aria-hidden="true"></div>
+
+    <footer id="main-footer">
+      <div class="footer-divider"></div>
+
+      <div class="footer-container" data-reveal-stagger="0.1">
+        <div class="footer-section" data-reveal>
+          <h3>Contact Us</h3>
+          <p>
+            <i class="fa-regular fa-envelope"></i> fx13valourrobotics@gmail.com
+          </p>
+          <p>
+            <i class="fa-solid fa-location-dot"></i> 24 Asad Avenue,
+            Mohammadpur, Dhaka – 1207, Bangladesh
+          </p>
+        </div>
+
+        <div class="footer-section" data-reveal>
+          <h3>Development</h3>
+          <p>Built for FX-13 Valour Robotics Club</p>
+          <p>
+            Developed by
+            <span class="dev-link">Nuban Sami Alam</span>,
+            <span class="dev-link">Shreyan Ahmed</span> &amp;
+            <span class="dev-link">Amlan Halder</span>
+          </p>
+        </div>
+
+        <div class="footer-section" data-reveal>
+          <h3>Patrons</h3>
+          <div class="sponsors-grid">
+            <a
+              href="https://www.facebook.com/SFXGH"
+              class="sponsor-box"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>SFX Greenherald International School</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 FX-13 Valour Robotics Club. All Systems Operational.</p>
+      </div>
+    </footer>
+
+    <script defer src="particles.js?v=20261109"></script>
+    <script defer src="site.js?v=20261109"></script>
+    <script type="module" src="index.js?v=20261109"></script>
+    <script defer src="Learn/hub.js?v=20261109"></script>
+  </body>
+</html>
