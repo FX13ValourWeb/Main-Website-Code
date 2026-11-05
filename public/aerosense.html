@@ -33,9 +33,9 @@
         } catch (e) {}
       })();
     </script>
-    <link rel="stylesheet" href="CSS/main.css?v=20261108" />
-    <link rel="stylesheet" href="CSS/motion.css?v=20261108" />
-    <link rel="stylesheet" href="CSS/intro.css?v=20261108" />
+    <link rel="stylesheet" href="CSS/main.css?v=20261109" />
+    <link rel="stylesheet" href="CSS/motion.css?v=20261109" />
+    <link rel="stylesheet" href="CSS/intro.css?v=20261109" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -44,7 +44,7 @@
       referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="AeroSense/aero.css?v=20261108" />
+    <link rel="stylesheet" href="AeroSense/aero.css?v=20261109" />
   </head>
 
   <body class="aero-body">
@@ -55,7 +55,10 @@
       data-bg-to="20, 5, 7"
       data-seen-key="fx13-aero-intro-seen"
       data-ready-event="aero:ready"
-      data-captions="[[&quot;Calibrating the sensors&quot;, 1.0, 32, 32], [&quot;Charging the drone&quot;, 1.3, 66, 62], [&quot;Plotting flight paths&quot;, 0.9, 68, 26], [&quot;Sampling Dhaka's air&quot;, 1.25, 34, 68], [&quot;Counting fine particles&quot;, 0.95, 30, 24], [&quot;Mapping the city&quot;, 1.3, 62, 44]]"
+      data-step="0.5"
+      data-life="1.9"
+      data-hold="1.3"
+      data-captions="[[&quot;Calibrating the sensors&quot;,1.0,32,34],[&quot;Plotting flight paths&quot;,1.25,66,62],[&quot;Sampling Dhaka's air&quot;,0.95,64,28],[&quot;Mapping the city&quot;,1.3,36,66]]"
       role="dialog"
       aria-label="Loading AeroSense"
     >
@@ -70,7 +73,7 @@
         </div>
       </div>
     </div>
-    <script src="Learn/intro.js?v=20261108"></script>
+    <script src="Learn/intro.js?v=20261109"></script>
 
     <canvas id="bg-canvas"></canvas>
 
@@ -225,7 +228,6 @@
         <div class="hero-facts" data-reveal-stagger>
           <div data-reveal><b id="fLocations" class="num">4</b><span>Locations flown across Dhaka</span></div>
           <div data-reveal><b id="fReadings" class="num">449</b><span>Readings logged, one every 5 seconds</span></div>
-          <div data-reveal><b class="num">25 Oct</b><span>2026 · four flights between 12:53 and 14:36</span></div>
           <div data-reveal class="is-alert"><b id="fWorst" class="num">190</b><span id="fWorstLabel">Highest PM2.5 average</span></div>
         </div>
       </section>
@@ -233,7 +235,6 @@
       <!-- ============ Map ============ -->
       <section class="aero-section" id="map">
         <p class="aero-kicker" data-reveal>The map</p>
-        <h2 class="aero-h2" data-reveal>Four places. One afternoon.</h2>
         <p class="aero-lead" data-reveal>
           Each pin is a place the drone flew, and the number on it is the average
           PM2.5 measured there. Bigger pins mean dirtier air. Pick one to see
@@ -387,6 +388,17 @@
           </div>
         </div>
       </section>
+      <section class="aero-section" id="next">
+        <div class="next-card" data-reveal>
+          <p class="aero-kicker">Still flying</p>
+          <h2 class="aero-h2">This project is still under development.</h2>
+          <p class="aero-lead">
+            AeroSense is an ongoing research project. The team will keep flying new
+            locations across Dhaka and taking more readings, and every new flight will
+            be added to this map as it happens. Check back soon.
+          </p>
+        </div>
+      </section>
       <div class="aero-end"></div>
     </main>
 
@@ -443,9 +455,9 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script defer src="particles.js?v=20261108"></script>
-    <script defer src="site.js?v=20261108"></script>
-    <script type="module" src="index.js?v=20261108"></script>
-    <script defer src="AeroSense/aero.js?v=20261108"></script>
+    <script defer src="particles.js?v=20261109"></script>
+    <script defer src="site.js?v=20261109"></script>
+    <script type="module" src="index.js?v=20261109"></script>
+    <script defer src="AeroSense/aero.js?v=20261109"></script>
   </body>
 </html>

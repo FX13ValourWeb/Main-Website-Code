@@ -72,7 +72,7 @@
 
 .hero-facts {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-top: clamp(40px, 6vh, 64px);
   border-top: 1px solid var(--line);
 }
@@ -114,6 +114,10 @@
 /* tint the dark basemap toward the page red */
 .aero-body .leaflet-tile-pane {
   filter: sepia(0.85) hue-rotate(-38deg) saturate(1.7) brightness(0.82) contrast(1.06);
+}
+/* fallback light map (OpenStreetMap): flip it dark first, then tint */
+.aero-body .map-light .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) grayscale(1) brightness(0.62) contrast(1.1) sepia(0.85) hue-rotate(-38deg) saturate(1.7);
 }
 .aero-body .leaflet-container {
   font-family: inherit;
@@ -605,6 +609,13 @@
 .method-grid li { font-size: 0.92rem; color: var(--ink-2); line-height: 1.6; }
 .method-grid ul { padding-left: 18px; margin: 0; }
 .method-grid li + li { margin-top: 6px; }
+.next-card {
+  padding: clamp(26px, 4vw, 44px);
+  border-radius: 24px;
+  border: 1px dashed rgba(var(--accent-rgb), 0.45);
+  background: rgba(var(--accent-rgb), 0.05);
+}
+.next-card .aero-lead { max-width: 680px; }
 .aero-end { height: clamp(60px, 10vh, 120px); }
 
 /* ---------- Theme the shared navbar, footer and motion chrome red ---------- */
@@ -679,6 +690,7 @@
   .hero-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hero-facts > div:nth-child(2) { border-right: 0; margin-right: 0; }
   .hero-facts > div { padding-bottom: 16px; }
+  .hero-facts > div:nth-child(3) { grid-column: 1 / -1; border-top: 1px solid var(--line); }
   .map-shell { border-radius: 18px; min-height: 0; }
   /* pins sit close together on small screens: only the selected one is named */
   .aq-pin:not(.is-active) .aq-pin-label { display: none; }

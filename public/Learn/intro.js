@@ -37,9 +37,10 @@
   try {
     if (el.dataset.captions) CAPTIONS = JSON.parse(el.dataset.captions);
   } catch (e) {}
-  const STEP = 0.78; // seconds between captions
-  const LIFE = 2.5; // seconds each caption lives
+  const STEP = Number(el.dataset.step) || 0.78; // seconds between captions
+  const LIFE = Number(el.dataset.life) || 2.5; // seconds each caption lives
   const CAPTIONS_END = (CAPTIONS.length - 1) * STEP + LIFE * 0.55;
+  const HOLD = Number(el.dataset.hold) || 2.3; // seconds the finale stays
   const MAX_WAIT = 5; // extra seconds we'll wait for the 3D model
 
   const words = el.querySelector(".ci-words");
@@ -112,7 +113,7 @@
       status.textContent = "Ready";
       el.classList.add("is-finale");
     }
-    if (phase === "finale" && t - finaleAt >= 2.3) leave();
+    if (phase === "finale" && t - finaleAt >= HOLD) leave();
 
     // colour: blue → course colour across the captions
     const u = smooth(Math.min(1, t / (CAPTIONS_END + 0.4)));

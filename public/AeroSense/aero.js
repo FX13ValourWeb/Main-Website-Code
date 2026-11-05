@@ -242,17 +242,38 @@
     }
     const coarse = window.matchMedia("(pointer: coarse)").matches;
     map = L.map(host, {
+      maxZoom: 16,
       zoomControl: true,
       scrollWheelZoom: false,
       dragging: !coarse,
       tap: true,
       attributionControl: true,
     });
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-      maxZoom: 19,
-      subdomains: "abcd",
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    }).addTo(map);
+    // Basemap: Esri's dark grey canvas (no key needed). If its tiles fail,
+    // fall back to OpenStreetMap, darkened with a CSS filter.
+    const esriBase = L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+      { maxZoom: 16, attribution: "Tiles &copy; Esri &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap contributors" },
+    );
+    const esriLabels = L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}",
+      { maxZoom: 16 },
+    );
+    let failed = 0;
+    let swapped = false;
+    esriBase.on("tileerror", () => {
+      if (swapped || ++failed < 4) return;
+      swapped = true;
+      map.removeLayer(esriBase);
+      map.removeLayer(esriLabels);
+      host.classList.add("map-light");
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+    });
+    esriBase.addTo(map);
+    esriLabels.addTo(map);
 
     const pts = DATA.locations.map((Lc) => [Lc.lat, Lc.lng]);
     // the day's route, in flight order
@@ -444,7 +465,7 @@
     current = Lc;
     $$(".loc-btn").forEach((b) => b.classList.toggle("is-active", b.dataset.id === id));
     $$(".aq-pin").forEach((p) => p.classList.toggle("is-active", p.dataset.id === id));
-    if (map && from !== "init") map.flyTo([Lc.lat, Lc.lng], Math.max(map.getZoom(), 15), { duration: reduceMotion ? 0 : 0.9 });
+    if (map && from !== "init") map.flyTo([Lc.lat, Lc.lng], Math.min(16, Math.max(map.getZoom(), 15)), { duration: reduceMotion ? 0 : 0.9 });
     const d = $("#detail");
     if (first || reduceMotion) renderDetail();
     else {
@@ -522,7 +543,7 @@
   async function boot() {
     initExitWash();
     try {
-      const res = await fetch("AeroSense/aerosense-data.json?v=20261108");
+      const res = await fetch("AeroSense/aerosense-data.json?v=20261109");
       DATA = await res.json();
     } catch (e) {
       $("#details").insertAdjacentHTML("afterbegin", '<p class="note">The data couldn’t load. Please refresh the page.</p>');
