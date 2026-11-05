@@ -274,6 +274,7 @@ const TOP_ROW = ["5V", "CMD", "D3", "D2", "13", "GND", "12", "14", "27", "26", "
 const BOT_ROW = ["CLK", "D0", "D1", "15", "2", "0", "4", "16", "17", "5", "18", "19", "GND", "21", "RX", "TX", "22", "23", "GND"];
 
 function buildBench(svg) {
+  const accent = getComputedStyle(document.body).getPropertyValue("--accent-2").trim() || "#3d9bff";
   const ns = "http://www.w3.org/2000/svg";
   const el = (tag, attrs, parent = svg, text) => {
     const e = document.createElementNS(ns, tag);
@@ -355,7 +356,7 @@ function buildBench(svg) {
   const [p34x, p34y] = pinPos.T34;
   const [p3x, p3y] = pinPos.T3V3;
   wire([[p4x, p4y], [p4x, 176], [150, 176], [150, 230]], "#f5b84a");
-  wire([[p15x, p15y], [p15x, 172], [96, 172], [96, 288], [270, 288]], "#3d9bff");
+  wire([[p15x, p15y], [p15x, 172], [96, 172], [96, 288], [270, 288]], accent);
   wire([[pgx, pgy], [pgx, 180], [470, 180], [470, 206]], "#2a2f37");
   wire([[p34x, p34y], [p34x, 14], [478, 14], [478, 236], [420, 236]], "#31d07f");
   wire([[p3x, p3y], [p3x, 22], [490, 22], [490, 200]], "#e04848");
@@ -399,7 +400,7 @@ function buildBench(svg) {
     },
     setButton(down) {
       btnCap.setAttribute("r", down ? 8.5 : 10);
-      btnCap.setAttribute("fill", down ? "#3d9bff" : "#cfd3d8");
+      btnCap.setAttribute("fill", down ? accent : "#cfd3d8");
     },
     setKnob(v) {
       knob.setAttribute("transform", `rotate(${-135 + (v / 4095) * 270} 422 248)`);

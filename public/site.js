@@ -240,8 +240,28 @@
       if (path === here && path !== "/") {
         a.classList.add("is-active");
         a.setAttribute("aria-current", "page");
+        const trigger = a.closest(".nav-dropdown")?.querySelector(".dropdown-trigger");
+        if (trigger) trigger.classList.add("is-active");
       }
     });
+  }
+
+  /* ---------------------------------------------
+     COURSE LINKS: opening a course from anywhere on
+     the site plays its welcome intro
+  --------------------------------------------- */
+  function initCourseLinks() {
+    document.addEventListener(
+      "click",
+      (e) => {
+        const a = e.target.closest && e.target.closest("a[href*='learn-microcontrollers.html']");
+        if (!a) return;
+        try {
+          sessionStorage.setItem("fx13-course-intro", "1");
+        } catch (err) {}
+      },
+      true,
+    );
   }
 
   function start() {
@@ -250,6 +270,7 @@
     initReveal();
     initBackToTop();
     initScrollSpy();
+    initCourseLinks();
   }
 
   if (document.readyState === "loading") {

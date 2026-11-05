@@ -7,7 +7,9 @@
 import * as THREE from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
-const BLUE = 0x007bff;
+// Course accent (set from the page theme in createBoard)
+let BLUE = 0x007bff;
+let ACCENT_RGB = "0, 123, 255";
 
 /* Real 38-pin ESP32-DevKitC pin order, starting at the antenna end */
 const PINS_LEFT = ["3V3", "EN", "VP", "VN", "34", "35", "32", "33", "25", "26", "27", "14", "12", "GND", "13", "D2", "D3", "CMD", "5V"];
@@ -39,7 +41,8 @@ function canvasTexture(w, h, draw, { anisotropy = 8 } = {}) {
   return t;
 }
 
-const MONO = '"JetBrains Mono", "SFMono-Regular", Consolas, monospace';
+// Chip markings use the system's built-in code font; labels use the site font.
+const MONO = 'Consolas, "SFMono-Regular", Menlo, "Liberation Mono", monospace';
 const SANS = '"Inter", "Segoe UI", Arial, sans-serif';
 
 /* ---------- textures ---------- */
@@ -70,7 +73,7 @@ function pcbTexture() {
     for (let i = 0; i < 70; i++) {
       let x = r() * W;
       let y = r() * H;
-      g.strokeStyle = r() > 0.85 ? "rgba(0, 123, 255, 0.28)" : "rgba(120, 150, 190, 0.16)";
+      g.strokeStyle = r() > 0.85 ? `rgba(${ACCENT_RGB}, 0.28)` : "rgba(120, 150, 190, 0.16)";
       g.lineWidth = 3 + Math.floor(r() * 3) * 2;
       g.beginPath();
       g.moveTo(x, y);
@@ -160,7 +163,7 @@ function pcbTexture() {
     [tx, ty] = mm(-15, -5.1);
     g.fillText("38-PIN · 3V3 LOGIC", tx, ty);
     [tx, ty] = mm(-15, 6.1);
-    g.fillStyle = "rgba(0, 123, 255, 0.95)";
+    g.fillStyle = `rgba(${ACCENT_RGB}, 0.95)`;
     g.font = `700 30px ${MONO}`;
     g.fillText("FX-13 VALOUR · LEARN", tx, ty);
     g.fillStyle = "#e9edf2";
@@ -395,7 +398,7 @@ function buildBoard() {
   const led = part("led", [-1.4, top + 1.2, -10.6]);
   const ledGeo = new THREE.BoxGeometry(1.6, 0.6, 0.8);
   const pwrMat = new THREE.MeshStandardMaterial({ color: 0xff3b3b, emissive: 0xff2020, emissiveIntensity: 1.6, roughness: 0.3 });
-  const io2Mat = new THREE.MeshStandardMaterial({ color: 0x2f7dff, emissive: BLUE, emissiveIntensity: 0.1, roughness: 0.3 });
+  const io2Mat = new THREE.MeshStandardMaterial({ color: 0x2f7dff, emissive: 0x007bff, emissiveIntensity: 0.1, roughness: 0.3 });
   add(led, ledGeo, pwrMat, -5.2, top + 0.3, -10.6);
   add(led, ledGeo, io2Mat, -1.4, top + 0.3, -10.6);
   parts.led.io2Mat = io2Mat;
@@ -465,14 +468,13 @@ function bracketMarker() {
    ===================================================== */
 const lerp = (a, b, t) => a + (b - a) * t;
 
-export async function createBoard(canvas) {
-  // Make sure the label fonts are ready before drawing textures
-  try {
-    await Promise.race([
-      Promise.all([document.fonts.load(`700 40px Inter`), document.fonts.load(`600 30px "JetBrains Mono"`)]),
-      new Promise((r) => setTimeout(r, 1500)),
-    ]);
-  } catch (e) {}
+export async function createBoard(canvas, { accent } = {}) {
+  // accent: "r, g, b" string from the page theme
+  if (accent && /^\s*\d+\s*,\s*\d+\s*,\s*\d+\s*$/.test(accent)) {
+    ACCENT_RGB = accent.trim();
+    const [r, g, b] = ACCENT_RGB.split(",").map((n) => Number(n));
+    BLUE = (r << 16) | (g << 8) | b;
+  }
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -500,7 +502,7 @@ export async function createBoard(canvas) {
   key.shadow.camera.bottom = -60;
   key.shadow.bias = -0.0004;
   scene.add(key);
-  const rim = new THREE.DirectionalLight(0x4d8dff, 1.4);
+  const rim = new THREE.DirectionalLight(new THREE.Color(BLUE).lerp(new THREE.Color(0xffffff), 0.3), 1.4);
   rim.position.set(-70, 30, -60);
   scene.add(rim);
 
@@ -609,7 +611,7 @@ export async function createBoard(canvas) {
     const dt = last ? Math.min(0.05, (now - last) / 1000) : 0.016;
     last = now;
     t += dt;
-    const k = reduce ? 1 : 1 - Math.pow(0.0009, dt); // smooth, frame-rate independent easing
+    const k = reduce ? 1 : 1 - Math.pow(0.0035, dt); // smooth, frame-rate independent easing
     for (const key of Object.keys(cur)) cur[key] = lerp(cur[key], tgt[key], k);
 
     // user rotation: momentum then gently settle

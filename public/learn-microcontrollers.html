@@ -9,25 +9,32 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/Images/icons/favicon-192.png" />
     <link rel="apple-touch-icon" href="/Images/icons/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <title>How Microcontrollers Work · ESP32 Interactive Guide - FX-13 Valour</title>
+    <title>Microcontrollers 101 · Interactive ESP32 Course - FX-13 Valour</title>
     <meta
       name="description"
       content="An interactive, animated guide to microcontrollers from FX-13 Valour Robotics Club. Explore a 3D ESP32 part by part, see how the chip works inside, and write code that runs on a virtual board."
     />
     <link rel="canonical" href="https://fx13valour.org/learn-microcontrollers.html" />
-    <meta property="og:title" content="How Microcontrollers Work · FX-13 Valour Learn" />
+    <meta property="og:title" content="Microcontrollers 101 · FX-13 Valour Learn" />
     <meta property="og:description" content="An interactive, animated guide to the ESP32 microcontroller." />
     <meta property="og:image" content="https://fx13valour.org/Learn/esp32-board.png" />
 
     <script>document.documentElement.classList.add("js");</script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..900&family=JetBrains+Mono:wght@400;500;700&display=swap"
-    />
-    <link rel="stylesheet" href="CSS/main.css?v=20261105" />
-    <link rel="stylesheet" href="CSS/motion.css?v=20261105" />
+    <script>
+      // Course welcome intro: plays when a course is opened from the site,
+      // or on the first visit this session. Skipped for reduced motion.
+      (function () {
+        try {
+          var asked = sessionStorage.getItem("fx13-course-intro") === "1";
+          var seen = sessionStorage.getItem("fx13-course-intro-seen") === "1";
+          sessionStorage.removeItem("fx13-course-intro");
+          var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          if ((asked || !seen) && !calm) document.documentElement.classList.add("intro-on");
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="stylesheet" href="CSS/main.css?v=20261106" />
+    <link rel="stylesheet" href="CSS/motion.css?v=20261106" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -35,7 +42,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link rel="stylesheet" href="Learn/learn.css?v=20261105" />
+    <link rel="stylesheet" href="Learn/learn.css?v=20261106" />
     <script type="importmap">
       {
         "imports": {
@@ -46,7 +53,21 @@
     </script>
   </head>
 
-  <body class="learn-body">
+  <body class="learn-body theme-green">
+    <div id="course-intro" data-to="31, 209, 122" role="dialog" aria-label="Loading Microcontrollers 101">
+      <canvas class="ci-stars" aria-hidden="true"></canvas>
+      <div class="ci-words" aria-hidden="true"></div>
+      <div class="ci-finale"><b>Welcome.</b><span>Microcontrollers 101</span></div>
+      <div class="ci-foot">
+        <div class="ci-load">
+          <span class="ci-bar"><i></i></span>
+          <span class="ci-pct">0%</span>
+          <span class="ci-status" aria-live="polite">Loading assets…</span>
+        </div>
+        <button type="button" class="ci-skip">Skip intro</button>
+      </div>
+    </div>
+    <script src="Learn/intro.js?v=20261106"></script>
     <canvas id="bg-canvas"></canvas>
 
     <!-- 3D stage (fixed behind the scroll scenes) -->
@@ -88,7 +109,15 @@
         </div>
 
         <a href="SenatePage.html" class="nav-item-link">Executives</a>
-          <a href="learn-microcontrollers.html" class="nav-item-link">Learn</a>
+        <div class="nav-dropdown">
+          <button class="dropdown-trigger">
+            Learn <span class="arrow">▾</span>
+          </button>
+          <div class="dropdown-content">
+            <a href="learn.html">All courses</a>
+            <a href="learn-microcontrollers.html">Microcontrollers 101</a>
+          </div>
+        </div>
       </div>
 
       <div class="nav-section logo-container">
@@ -168,7 +197,16 @@
             </div>
           </div>
           <a href="SenatePage.html" class="nav-item-link">Executives</a>
-          <a href="learn-microcontrollers.html" class="nav-item-link">Learn</a>
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger3">
+              <span>Learn</span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner3">
+              <a href="learn.html">All courses</a>
+              <a href="learn-microcontrollers.html">Microcontrollers 101</a>
+            </div>
+          </div>
         </div>
         <div class="mobile-buttons">
           <button id="Contact-Button-Mobile">
@@ -215,7 +253,7 @@
       <section id="intro" class="scene" data-scene="hero" style="--len: 260vh">
         <div class="pin">
           <div class="hero-copy" data-step="0 0.42">
-            <p class="eyebrow">FX-13 Valour · Learn · Lesson 01</p>
+            <p class="eyebrow">Microcontrollers 101</p>
             <h1 class="hero-title">
               <span class="line"><span>The tiny brain</span></span>
               <span class="line"><span>inside <em>everything.</em></span></span>
@@ -604,8 +642,8 @@
           <div class="clock-ui">
             <input type="range" min="0" max="100" value="0" step="0.1" class="clock-range" aria-label="Clock speed" />
             <div class="clock-readout">
-              <p><span class="mono">SPEED</span><b class="clock-freq">1 Hz</b></p>
-              <p><span class="mono">TICKS IN ONE BLINK OF AN EYE</span><b class="clock-blink">0</b></p>
+              <p><span class="mono">Speed</span><b class="clock-freq">1 Hz</b></p>
+              <p><span class="mono">Ticks in one blink of an eye</span><b class="clock-blink">0</b></p>
               <p class="clock-fact muted">One tick every second. You could count along.</p>
             </div>
             <canvas class="clock-wave" aria-hidden="true"></canvas>
@@ -690,7 +728,7 @@
             <div class="lab-controls">
               <button type="button" class="switch" role="switch" aria-checked="false"><span></span></button>
               <code class="code-line">digitalWrite(4, <b>LOW</b>);</code>
-              <p class="readout"><span class="mono">PIN</span><b class="v">0.0 V</b></p>
+              <p class="readout"><span class="mono">Pin</span><b class="v">0.0 V</b></p>
             </div>
             <canvas class="scope" aria-hidden="true"></canvas>
           </div>
@@ -716,7 +754,7 @@
             <div class="lab-controls">
               <button type="button" class="push" aria-label="Hold to press the button">Hold me</button>
               <code class="code-line">digitalRead(15) → <b>HIGH</b></code>
-              <p class="readout"><span class="mono">PIN</span><b class="v">3.3 V</b></p>
+              <p class="readout"><span class="mono">Pin</span><b class="v">3.3 V</b></p>
             </div>
           </div>
 
@@ -730,7 +768,7 @@
             <div class="adc-ui">
               <div class="knob" role="slider" tabindex="0" aria-label="Potentiometer" aria-valuemin="0" aria-valuemax="4095" aria-valuenow="2048"><span class="knob-mark"></span></div>
               <div class="adc-out">
-                <p class="readout"><span class="mono">VOLTAGE</span><b class="adc-v">1.65 V</b></p>
+                <p class="readout"><span class="mono">Voltage</span><b class="adc-v">1.65 V</b></p>
                 <code class="code-line">analogRead(34) → <b class="adc-n">2048</b></code>
                 <div class="bits" aria-label="12-bit binary value"></div>
                 <p class="mono small muted">12 bits = 4,096 possible values</p>
@@ -752,7 +790,7 @@
               <code class="code-line">analogWrite(4, <b class="pwm-n">64</b>);</code>
               <div class="pwm-led" aria-hidden="true"></div>
             </div>
-            <p class="mono small muted pwm-duty">ON 25% of the time</p>
+            <p class="mono small muted pwm-duty">On 25% of the time</p>
           </div>
         </div>
 
@@ -961,9 +999,9 @@
       </div>
     </footer>
 
-    <script defer src="particles.js?v=20261105"></script>
-    <script defer src="site.js?v=20261105"></script>
-    <script type="module" src="index.js?v=20261105"></script>
-    <script type="module" src="Learn/learn.js?v=20261105"></script>
+    <script defer src="particles.js?v=20261106"></script>
+    <script defer src="site.js?v=20261106"></script>
+    <script type="module" src="index.js?v=20261106"></script>
+    <script type="module" src="Learn/learn.js?v=20261106"></script>
   </body>
 </html>

@@ -11,8 +11,8 @@
     <link rel="manifest" href="/site.webmanifest" />
     <title>Contact Us - FX-13 Valour</title>
     <script>document.documentElement.classList.add("js");</script>
-    <link rel="stylesheet" href="/CSS/main.css?v=20261104" />
-    <link rel="stylesheet" href="/CSS/motion.css?v=20261104" />
+    <link rel="stylesheet" href="/CSS/main.css?v=20261106" />
+    <link rel="stylesheet" href="/CSS/motion.css?v=20261106" />
 
     <link
       rel="stylesheet"
@@ -242,7 +242,15 @@
         </div>
 
         <a href="SenatePage.html" class="nav-item-link">Executives</a>
-          <a href="learn-microcontrollers.html" class="nav-item-link">Learn</a>
+        <div class="nav-dropdown">
+          <button class="dropdown-trigger">
+            Learn <span class="arrow">▾</span>
+          </button>
+          <div class="dropdown-content">
+            <a href="learn.html">All courses</a>
+            <a href="learn-microcontrollers.html">Microcontrollers 101</a>
+          </div>
+        </div>
       </div>
 
       <div class="nav-section logo-container">
@@ -322,7 +330,16 @@
             </div>
           </div>
           <a href="SenatePage.html" class="nav-item-link">Executives</a>
-          <a href="learn-microcontrollers.html" class="nav-item-link">Learn</a>
+          <div class="mobile-dropdown-group">
+            <button class="mobile-dropdown-trigger" id="mdTrigger3">
+              <span>Learn</span>
+              <span class="arrow">▾</span>
+            </button>
+            <div class="mobile-dropdown-inner" id="mdInner3">
+              <a href="learn.html">All courses</a>
+              <a href="learn-microcontrollers.html">Microcontrollers 101</a>
+            </div>
+          </div>
         </div>
         <div class="mobile-buttons">
           <button id="Contact-Button-Mobile">
@@ -363,8 +380,8 @@
       </a>
     </section>
 
-    <script defer src="particles.js?v=20261104"></script>
-    <script defer src="site.js?v=20261104"></script>
-    <script type="module" src="index.js?v=20261104"></script>
+    <script defer src="particles.js?v=20261106"></script>
+    <script defer src="site.js?v=20261106"></script>
+    <script type="module" src="index.js?v=20261106"></script>
   </body>
 </html>

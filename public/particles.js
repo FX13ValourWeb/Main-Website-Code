@@ -36,6 +36,18 @@
      so the blue "web" fades in/out instead of popping. */
   const pointer = { x: 0, y: 0, tx: 0, ty: 0, active: false, strength: 0 };
 
+  // Pointer-line colour. Pages can theme it with a --particle-rgb custom
+  // property on <body> (e.g. "31, 209, 122"); re-read occasionally so a
+  // page can animate it.
+  let lineRGB = "0, 123, 255";
+  let lineRGBRead = -1e9;
+  function readLineRGB(now) {
+    if (now - lineRGBRead < 400) return;
+    lineRGBRead = now;
+    const v = getComputedStyle(document.body).getPropertyValue("--particle-rgb").trim();
+    lineRGB = v || "0, 123, 255";
+  }
+
   function targetCount() {
     const divisor = coarsePointer ? 13000 : 9000;
     const max = coarsePointer ? 70 : 170;
@@ -246,6 +258,7 @@
 
     // 2. Blue lines to the pointer (fade with pointer strength)
     if (pointer.strength > 0.01) {
+      readLineRGB(performance.now());
       for (let b = 0; b < ALPHA_BUCKETS; b++) buckets[b].length = 0;
       for (let a = 0; a < n; a++) {
         const p = particles[a];
@@ -266,7 +279,7 @@
         if (!pts.length) continue;
         const alpha =
           ((b + 0.5) / ALPHA_BUCKETS) * 0.9 * pointer.strength;
-        ctx.strokeStyle = "rgba(0, 123, 255, " + alpha + ")";
+        ctx.strokeStyle = "rgba(" + lineRGB + ", " + alpha + ")";
         ctx.beginPath();
         for (let s = 0; s < pts.length; s += 2) {
           ctx.moveTo(pts[s], pts[s + 1]);

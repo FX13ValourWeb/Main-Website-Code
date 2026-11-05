@@ -234,7 +234,9 @@ body.modal-open .back-to-top {
 }
 
 /* Current section highlighted in the navbar */
-.nav-item-link.is-active {
+.nav-item-link.is-active,
+.dropdown-trigger.is-active,
+.dropdown-content a.is-active {
   color: var(--electric-blue, #007bff);
   opacity: 1;
 }

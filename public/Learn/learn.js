@@ -1,5 +1,5 @@
 /* =====================================================
-   FX-13 VALOUR · LEARN — How microcontrollers work (ESP32)
+   FX-13 VALOUR · LEARN — Microcontrollers 101 (ESP32)
    Scroll engine, 3D choreography, labs, checkpoints
    ===================================================== */
 
@@ -13,6 +13,11 @@ const smooth = (a, b, x) => {
 };
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const isPhone = () => window.innerWidth < 760;
+// Course accent colours come from CSS (body.theme-*), so canvases match the theme.
+const cssVar = (name, fallback) =>
+  getComputedStyle(document.body).getPropertyValue(name).trim() || fallback;
+let accentCache = null;
+const accent2 = () => (accentCache ??= cssVar("--accent-2", "#3d9bff"));
 
 /* =====================================================
    CHECKPOINT QUESTIONS
@@ -188,8 +193,8 @@ let heroBlink = null;
 async function initBoard() {
   try {
     if (!window.WebGLRenderingContext) throw new Error("no webgl");
-    const mod = await import("./board3d.js?v=20261105");
-    board = await mod.createBoard(canvas3d);
+    const mod = await import("./board3d.js?v=20261106");
+    board = await mod.createBoard(canvas3d, { accent: cssVar("--accent-rgb", "0, 123, 255") });
   } catch (e) {
     console.warn("3D view unavailable, using the static image instead.", e);
     document.documentElement.classList.add("no-webgl");
@@ -639,7 +644,7 @@ function onVisible(el, cb) {
     const visHz = Math.min(hz, 6);
     phase += dt * visHz;
     const cycles = clamp(Math.log10(hz + 1) * 3 + 2, 2, 60);
-    g.strokeStyle = "#3d9bff";
+    g.strokeStyle = accent2();
     g.lineWidth = 1.6;
     g.beginPath();
     const hi = h * 0.25;
@@ -772,10 +777,10 @@ function onVisible(el, cb) {
     const { g, w, h } = fitCanvas(scope);
     g.clearRect(0, 0, w, h);
     g.fillStyle = "rgba(255,255,255,0.35)";
-    g.font = "10px JetBrains Mono, monospace";
+    g.font = '10px Consolas, "SFMono-Regular", Menlo, monospace';
     g.fillText("3.3V", 4, 14);
     g.fillText("0V", 4, h - 6);
-    g.strokeStyle = "#3d9bff";
+    g.strokeStyle = accent2();
     g.lineWidth = 1.6;
     g.beginPath();
     hist.forEach((l, i) => {
@@ -873,7 +878,7 @@ function onVisible(el, cb) {
     const v = Number(range.value);
     n.textContent = v;
     led.style.setProperty("--b", (v / 255).toFixed(3));
-    duty.textContent = `ON ${Math.round((v / 255) * 100)}% of the time · switching 5,000 times a second`;
+    duty.textContent = `On ${Math.round((v / 255) * 100)}% of the time · switching 5,000 times a second`;
     setFill(range);
   }
   range.addEventListener("input", update);
@@ -887,7 +892,7 @@ function onVisible(el, cb) {
     g.clearRect(0, 0, w, h);
     const d = Number(range.value) / 255;
     const cycles = 6;
-    g.strokeStyle = "#3d9bff";
+    g.strokeStyle = accent2();
     g.lineWidth = 1.6;
     g.beginPath();
     for (let x = 0; x <= w; x++) {
@@ -973,5 +978,8 @@ $$(".checkpoint").forEach(buildCheckpoint);
 applyLocks();
 updateFinale();
 onScroll();
-initBoard();
-import("./sandbox.js?v=20261105").then((m) => m.initSandbox($("#sandbox"))).catch((e) => console.error("Sandbox failed to load", e));
+initBoard().finally(() => {
+  window.__courseReady = true;
+  window.dispatchEvent(new Event("course:ready"));
+});
+import("./sandbox.js?v=20261106").then((m) => m.initSandbox($("#sandbox"))).catch((e) => console.error("Sandbox failed to load", e));
